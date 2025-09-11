@@ -1,5 +1,20 @@
 {
-  "django": {
-    "settingsFile": "mobland/settings.py"
+  "platform": "django",
+  "app": "furnapp",
+  "team": "your-team-id",
+  "build": {
+    "commands": [
+      "pip install -r requirements.txt",
+      "python manage.py collectstatic --noinput",
+      "python manage.py migrate"
+    ]
+  },
+  "deploy": {
+    "startCommand": "gunicorn mobland.wsgi:application --bind 0.0.0.0:$PORT"
+  },
+  "env": {
+    "DJANGO_SETTINGS_MODULE": "mobland.settings",
+    "DEBUG": "False",
+    "ALLOWED_HOSTS": "furniture.liara.run,*.liara.run"
   }
 }

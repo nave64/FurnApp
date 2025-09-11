@@ -100,12 +100,21 @@ ZARINPAL_MOCK_MODE = True  # Enable mock mode for testing
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'database', 'db.sqlite3'),
+# Check if we're in production (Liara, Heroku, etc.)
+if os.environ.get('DATABASE_URL'):
+    # Production database (PostgreSQL)
+    import dj_database_url
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
-}
+else:
+    # Development database (SQLite)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'database', 'db.sqlite3'),
+        }
+    }
 
 
 # Password validation
