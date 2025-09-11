@@ -1,4 +1,6 @@
-mkdir database;
+#!/bin/bash
+
+mkdir -p database
 
 # Fix migration issue for ProductOptionType
 echo "Checking for ProductOptionType migration issue..."
@@ -29,19 +31,19 @@ else:
 
 # Collect static files for production
 echo "Collecting static files..."
-python manage.py collectstatic --noinput --clear
+python manage.py collectstatic --noinput
 
 # Verify static files were collected
 if [ -d "staticfiles" ]; then
-    echo "✅ Static files collected successfully"
+    echo "Static files collected successfully"
     ls -la staticfiles/ | head -10
 else
-    echo "❌ Static files collection failed"
+    echo "Static files collection failed"
     echo "Checking if static directory exists..."
     if [ -d "static" ]; then
-        echo "✅ Static directory found, retrying collection..."
-        python manage.py collectstatic --noinput --clear
+        echo "Static directory found, retrying collection..."
+        python manage.py collectstatic --noinput
     else
-        echo "❌ Static directory not found - this is the problem!"
+        echo "Static directory not found - this is the problem!"
     fi
 fi
