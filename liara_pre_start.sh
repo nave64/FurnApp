@@ -26,3 +26,7 @@ else:
     print('Database does not exist, running normal migration...')
     os.system('python manage.py migrate')
 "
+
+# Collect static files for production
+echo "Collecting static files..."
+python manage.py collectstatic --noinput
