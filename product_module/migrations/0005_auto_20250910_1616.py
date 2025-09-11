@@ -11,40 +11,10 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='ProductOptionType',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100, verbose_name='نام گزینه (مثل رنگ نما)')),
-            ],
-            options={
-                'verbose_name': 'نوع گزینه',
-                'verbose_name_plural': 'انواع گزینه\u200cها',
-            },
-        ),
-        migrations.CreateModel(
-            name='ProductOptionValue',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('value', models.CharField(max_length=100, verbose_name='مقدار گزینه')),
-                ('option_type', models.ForeignKey(on_delete=models.deletion.CASCADE, related_name='values', to='product_module.productoptiontype')),
-            ],
-            options={
-                'verbose_name': 'مقدار گزینه',
-                'verbose_name_plural': 'مقادیر گزینه\u200cها',
-            },
-        ),
-        migrations.CreateModel(
-            name='ProductSelectableOption',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('allowed_values', models.ManyToManyField(to='product_module.productoptionvalue', verbose_name='مقادیر مجاز')),
-                ('option_type', models.ForeignKey(on_delete=models.deletion.CASCADE, to='product_module.productoptiontype', verbose_name='نوع گزینه')),
-                ('product', models.ForeignKey(on_delete=models.deletion.CASCADE, related_name='selectable_options', to='product_module.product')),
-            ],
-            options={
-                'verbose_name': 'گزینه انتخابی محصول',
-                'verbose_name_plural': 'گزینه\u200cهای انتخابی محصول',
-            },
+        # These models already exist in the database from earlier migrations
+        # This migration is kept for consistency but performs no operations
+        migrations.RunSQL(
+            sql="SELECT 1;",  # No-op SQL
+            reverse_sql="SELECT 1;",  # No-op reverse SQL
         ),
     ]
