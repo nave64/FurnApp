@@ -29,4 +29,19 @@ else:
 
 # Collect static files for production
 echo "Collecting static files..."
-python manage.py collectstatic --noinput
+python manage.py collectstatic --noinput --clear
+
+# Verify static files were collected
+if [ -d "staticfiles" ]; then
+    echo "✅ Static files collected successfully"
+    ls -la staticfiles/ | head -10
+else
+    echo "❌ Static files collection failed"
+    echo "Checking if static directory exists..."
+    if [ -d "static" ]; then
+        echo "✅ Static directory found, retrying collection..."
+        python manage.py collectstatic --noinput --clear
+    else
+        echo "❌ Static directory not found - this is the problem!"
+    fi
+fi

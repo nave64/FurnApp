@@ -1,0 +1,35 @@
+/* Django Admin Sidebar Scroll Position Fix */
+
+/* Instant scrolling for the sidebar (no smooth behavior) */
+#nav-sidebar {
+    scroll-behavior: auto;
+}
+
+/* Custom scrollbar styling for the sidebar */
+#nav-sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+#nav-sidebar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+#nav-sidebar::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+#nav-sidebar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Ensure sidebar maintains its scroll position during transitions */
+#nav-sidebar {
+    transition: none !important;
+}
+
+/* Prevent layout shifts when restoring scroll position */
+#nav-sidebar {
+    min-height: 100vh;
+}

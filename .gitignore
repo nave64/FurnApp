@@ -135,7 +135,7 @@ dmypy.json
 # Django specific
 media/
 staticfiles/
-static/
+# static/  # Commented out - we need static files in production
 
 # IDE
 .vscode/
