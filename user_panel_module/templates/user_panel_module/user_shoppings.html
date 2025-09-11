@@ -1,0 +1,36 @@
+{% extends 'shared/_layout.html' %}
+{% load poll_extras %}
+{% block title %}
+    تاریخچه سفارشات
+{% endblock %}
+
+{% block content %}
+    <div class="d-flex justify-content-center mt-5 mb-5 yekan-font">
+<table style="width:80%; border: 2px solid black" dir="rtl">
+  <tr style="border: 2px solid black">
+    <th style="border: 2px solid black" class="text-center">شناسه</th>
+    <th style="border: 2px solid black" class="text-center">وضعیت تایید نهایی شدن سفارش</th>
+    <th style="border: 2px solid black" class="text-center">قیمت نهایی خرید</th>
+    <th style="border: 2px solid black" class="text-center">تاریخ خرید</th>
+{#      <th style="border: 2px solid black" class="text-center">تعداد</th>#}
+      <th style="border: 2px solid black" class="text-center">جزئیات</th>
+
+
+  </tr>
+     {% for order in object_list %}
+  <tr style="border: 2px solid black">
+    <td style="border: 2px solid black" class="text-center">{{ order.id }}</td>
+      {% if order.is_paid %}
+          <td style="border: 2px solid black" class="text-center"> <span class="text-danger">نهایی شده</span> </td>
+          {% else %}
+          <td style="border: 2px solid black" class="text-center text-danger">نهایی نشده </td>
+      {% endif %}
+
+    <td style="border: 2px solid black" class="text-center">{{ order.calculate_total_price|three_digits_currency }}</td>
+  <td style="border: 2px solid black" class="text-center">{{ order.payment_date| show_jalali_date }}</td>
+    <td style="border: 2px solid black" class="text-center"><a class="" href="{% url 'user_shoppings_detail_page' order_id=order.id %}"><button class="btn btn-success mt-4 mb-4" type="button">جزئیات سفارش</button></a></td>
+  </tr>
+    {% endfor %}
+</table>
+    </div>
+{% endblock %}

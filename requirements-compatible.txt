@@ -1,0 +1,41 @@
+# Django Core - Compatible with Python 3.8+
+Django==4.2.16
+asgiref==3.7.2
+sqlparse==0.4.4
+
+# Database
+# SQLite is included with Python, no additional package needed
+
+# Image Processing
+Pillow==10.4.0
+
+# Rich Text Editor
+django-ckeditor==6.7.3
+django-js-asset==3.1.2
+
+# Forms
+django-crispy-forms==2.4
+
+# Date/Time (Persian/Jalali)
+django-jalali-date==2.0.0
+jalali_core==1.0.0
+jdatetime==5.2.0
+
+# Security
+django-recaptcha==4.1.0
+
+# Template Rendering
+django-render-partial==0.4
+
+# HTTP Requests
+requests==2.32.4
+urllib3==2.5.0
+
+# SMS Service (Kavenegar)
+kavenegar==1.1.2
+
+# Utilities
+certifi==2025.7.14
+charset-normalizer==3.4.2
+idna==3.10
+typing_extensions==4.14.1

@@ -1,0 +1,506 @@
+{% extends 'shared/_layout.html' %}
+{% load poll_extras %}
+{% block title %} صفحه اصلی مبلند {% endblock %}
+{% block content %}
+        <main>
+        <div class="progress-wrap active-progress">
+            <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+                <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" style="transition: stroke-dashoffset 10ms linear; stroke-dasharray: 307.919, 307.919; stroke-dashoffset: 261.083;"></path>
+            </svg>
+        </div>
+            <!-- slider area start -->
+{% if home_video %}
+<section class="video__hero position-relative">
+    <video class="video__bg" autoplay muted loop playsinline>
+        <source src="{{ home_video.video_file.url }}" type="video/mp4">
+        مرورگر شما از ویدیو پشتیبانی نمی‌کند.
+    </video>
+
+    <div class="video__overlay position-absolute w-100 h-100 top-0 start-0"></div>
+
+    <div class="container h-100">
+        <div class="row h-100 align-items-center justify-content-center text-center">
+            <div class="col-12">
+                <div class="video__content text-white position-relative z-2">
+                    <span class="d-block mb-3" data-animation="fadeInUp" data-delay=".3s">{{ home_video.subtitle }}</span>
+                    <h3 class="slider__title mb-3" data-animation="fadeInUp" data-delay=".5s">{{ home_video.title }}</h3>
+                    <p class="lead" data-animation="fadeInUp" data-delay=".6s">{{ home_video.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+              
+            <!-- slider area end -->
+
+            <!-- brand__area start -->
+<section class="bg-light py-5">
+  <div class="container">
+    <h2 class="text-center mb-5">دسته بندی محصولات</h2>
+    <div class="row justify-content-center">
+      <hr>
+      {% for category in dynamic_categories %}
+      <div class="col-6 col-sm-4 col-md-3">
+          <div class="category-card text-center">
+            <a href="{% url 'product_list' %}?category={{ category.url_title }}">
+              <img src="{{ category.image.url }}" alt="{{ category.title }}" class="category-image">
+              <div class="category-title mt-2">{{ category.title }}</div>
+              <div class="category-count text-muted titr-font">{{ category.product_count }} محصول</div>
+            </a>
+          </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+
+
+            
+            {% if hotdeal_setting and hotdeal_setting.is_active and hot_deals %}
+<section class="product__hot-area pt-65 pb-30">
+  <div class="container">
+    <div class="section__title-line section__title-line-2">
+      <div class="row" dir="rtl">
+        <div class="col-xxl-6 col-sm-8 col-6">
+          <div class="section__title-wrapper d-flex align-items-center">
+            <span class="section__title-icon mr-15 pl-5">
+              <img src="/static/img/icon/section-icon-1.png" alt="">
+            </span>
+            <h2 class="section__title-3">پیشنهاد شگفت انگیز</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-30">
+      <!-- Countdown Block -->
+      <div class="col-xxl-5 col-lg-5">
+        <div class="product__hot-info text-center mb-30">
+          <div class="product__hot-title mt-25 mb-30">
+            <h4 class="text-right">زمان باقیمانده</h4>
+          </div>
+          {% if hot_deal_expiry %}
+          <div class="product__hot-countdown mb-25">
+            <div class="product__countdown product__countdown-2" data-countdown="{{ hot_deal_expiry|date:'Y/m/d H:i:s' }}">
+              <!-- JS will render time here -->
+            </div>
+          </div>
+          {% endif %}
+          <a href="{% url 'product_list' %}" class="b-btn-3">مشاهده همه</a>
+        </div>
+      </div>
+
+      <!-- Products Block -->
+      <div class="col-xxl-7 col-lg-7">
+        <div class="product__hot-slider-wrapper position-relative">
+  <!-- Custom Prev Button -->
+  <div class="hot-slider-nav hot-slider-prev">
+    <button class="nav-button-circle" aria-label="Prev"><i class="far fa-chevron-right"></i></button>
+  </div>
+
+  <!-- Slider -->
+  <div class="product__hot-slider owl-carousel owl-theme">
+    {% for deal in hot_deals %}
+      {% with product=deal.product %}
+      <div class="product__item-3">
+        <div class="product__thumb-3 fix p-relative">
+          <a href="{{ product.get_absolute_url }}">
+            {% if product.images.all %}
+             {% with main_image=product.images.first %}
+              {% if main_image.alt_text %}
+               <img id="main-product-image" src="{{ main_image.image.url }}" alt="{{ main_image.alt_text }}">
+              {% else %}
+               <img id="main-product-image" src="{{ main_image.image.url }}" alt="{{ product.title }}">
+              {% endif %}
+             {% endwith %}
+            {% elif product.image %}
+              <img id="main-product-image" src="{{ product.image.url }}" alt="{{ product.title }}">
+            {% endif %}               
+          </a>
+          <div class="product__action product__action-3 transition-3">
+            <ul>
+              <li>
+                <a href="{{ product.get_absolute_url }}">
+                  <i class="fa fa-eye"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+          {% if product.badge_text or product.is_new or product.discount_percent %}
+          <div class="product__flash-4 position-absolute top-0 start-0 d-flex flex-column align-items-start gap-1 p-1 style="z-index: 2;">
+            {% if product.badge_text %}
+              <span class="badge badge-neutral rect-badge badge-sm">{{ product.badge_text }}</span>
+            {% endif %}
+            {% if product.is_new %}
+              <span class="badge badge-neutral rect-badge badge-sm">جدید</span>
+            {% endif %}
+            {% if product.discount_percent %}
+              <span class="badge badge-danger rect-badge titr-font badge-sm">{{ product.discount_percent }}%</span>
+            {% endif %}
+          </div>
+          {% endif %}
+        </div>
+        <div class="product__content-3">
+          <div class="product__tag-3">
+            {% for cat in product.category.all %}
+            <span><a href="#">{{ cat.title }}</a></span>
+            {% endfor %}
+          </div>
+          <h3 class="product__title-3">
+            <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
+          </h3>
+          <div class="product__price product__price-4 mb-10 text-center">
+            {% if product.is_discount_active and product.discount_price %}
+              <del class="d-block text-muted mb-1 titr-font">{{ product.price|three_digits_currency }}</del>
+              <span class="price text-danger d-block titr-font">{{ product.discount_price|three_digits_currency }}</span>
+            {% else %}
+              <span class="price d-block titr-font">{{ product.price|three_digits_currency }}</span>
+            {% endif %}
+          </div>
+          <div class="add-to-cart mt-4">
+  <div class="d-flex align-items-center gap-2">
+    <input type="number" id="product-count" value="1" min="1" class="form-control w-auto" style="max-width: 100px;">
+    <button type="button" onclick="addProductToOrder({{ product.id }})" class="add-to-cart-btn">افزودن به سبد خرید</button>
+  </div>
+</div>
+        </div>
+      </div>
+      {% endwith %}
+    {% endfor %}
+  </div>
+
+<!-- Custom Next Button -->
+<div class="hot-slider-nav hot-slider-next">
+  <button class="nav-button-circle" aria-label="Next">
+    <i class="fas fa-chevron-left"></i>
+  </button>
+</div>
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+           {% for main_cat in furniture_main_categories %}
+<section class="bg-light" data-section="section{{ forloop.counter }}" dir="rtl">
+  <div class="container main-furniture-section" id="maincat{{ main_cat.id }}">
+
+    <!-- Section Title -->
+    <div class="furniture-title">{{ main_cat.title }}</div>
+
+<!-- Tabs  {% if forloop.first %}active{% endif %}" -->
+<div class="furniture-category-tabs mb-3">
+  {% for subcat in main_cat.subcats %}
+    <button class="furniture-category-btn"
+            data-subcategory="subcat{{ main_cat.id }}_{{ forloop.counter }}">
+      {{ subcat.name }}
+    </button>
+  {% endfor %}
+
+  <!-- Manual "همه" tab (last in list) {% if main_cat.subcats|length == 0 %}active{% endif %}" -->
+  <button class="furniture-category-btn active"
+          data-subcategory="subcat{{ main_cat.id }}_all">همه</button>
+</div> 
+
+    <!-- Sliders -->
+    <div class="furniture-products-wrapper position-relative">
+
+      <!-- "همه" tab products -->
+      <div class="subcategory-products" id="subcat{{ main_cat.id }}_all">
+        <div class="furniture-slider owl-carousel" id="furniture-slider-{{ main_cat.id }}-all">
+          {% for product in main_cat.all_subcat_products|slice:":10" %}
+            <div class="furniture-product-card-wrapper">
+              <div class="furniture-product-card position-relative">
+                <a href="{{ product.get_absolute_url }}">
+                  {% if product.images.all %}
+                  {% with main_image=product.images.first %}
+                   {% if main_image.alt_text %}
+                    <img id="main-product-image" src="{{ main_image.image.url }}" alt="{{ main_image.alt_text }}" class="furniture-product-image">
+                   {% else %}
+                    <img id="main-product-image" src="{{ main_image.image.url }}" alt="{{ product.title }}" class="furniture-product-image">
+                   {% endif %}
+                  {% endwith %}
+                 {% elif product.image %}
+                   <img id="main-product-image" src="{{ product.image.url }}" alt="{{ product.title }}" class="furniture-product-image">
+                 {% endif %}   
+                </a>
+                {% if product.badge_text or product.is_new or product.discount_percent %}
+                <div class="product__flash-4 position-absolute top-15 start-20 d-flex flex-column align-items-start gap-1 pl-10 pt-10 style="z-index: 2;">
+                  {% if product.badge_text %}
+                    <span class="badge badge-neutral rect-badge-sm">{{ product.badge_text }}</span>
+                  {% endif %}
+                  {% if product.is_new %}
+                    <span class="badge badge-neutral rect-badge-sm">جدید</span>
+                  {% endif %}
+                  {% if product.discount_percent %}
+                    <span class="badge badge-danger titr-font rect-badge-sm">{{ product.discount_percent }}%</span>
+                  {% endif %}
+                </div>
+                {% endif %} 
+                <div class="furniture-product-name">{{ product.title }}</div>
+                <div class="furniture-product-price titr-font">
+                  {% if product.is_discount_active and product.discount_price %}
+                    <del class="text-muted d-block titr-font">{{ product.price|three_digits_currency }}</del>
+                    <span class="text-danger d-block titr-font">{{ product.discount_price|three_digits_currency }}</span>
+                  {% else %}
+                    <span class="d-block titr-font">{{ product.price|three_digits_currency }}</span>
+                  {% endif %}
+                </div>
+                <a href="{{ product.get_absolute_url }}" class="furniture-detail-btn">جزئیات</a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <div class="hot-slider-nav furniture-slider-prev" data-target="#furniture-slider-{{ main_cat.id }}-all">
+          <button class="nav-button-circle" aria-label="Next"><i class="far fa-chevron-right"></i></button>
+        </div>
+        <div class="hot-slider-nav furniture-slider-next" data-target="#furniture-slider-{{ main_cat.id }}-all">
+          <button class="nav-button-circle" aria-label="Prev"><i class="far fa-chevron-left"></i></button>
+        </div>
+      </div>
+
+      <!-- Individual subcategory sliders -->
+      {% for subcat in main_cat.subcats %}
+      <div class="subcategory-products d-none" id="subcat{{ main_cat.id }}_{{ forloop.counter }}">
+        <div class="furniture-slider owl-carousel" id="furniture-slider-{{ main_cat.id }}-{{ forloop.counter }}">
+          {% for product in subcat.products.all|slice:":10" %}
+            <div class="furniture-product-card-wrapper">
+              <div class="furniture-product-card position-relative">  
+                <a href="{{ product.get_absolute_url }}">
+                  {% if product.images.all %}
+                  {% with main_image=product.images.first %}
+                   {% if main_image.alt_text %}
+                    <img id="main-product-image" src="{{ main_image.image.url }}" alt="{{ main_image.alt_text }}" class="furniture-product-image">
+                   {% else %}
+                    <img id="main-product-image" src="{{ main_image.image.url }}" alt="{{ product.title }}" class="furniture-product-image">
+                   {% endif %}
+                  {% endwith %}
+                 {% elif product.image %}
+                   <img id="main-product-image" src="{{ product.image.url }}" alt="{{ product.title }}" class="furniture-product-image">
+                 {% endif %}                   
+                </a>
+                {% if product.badge_text or product.is_new or product.discount_percent %}
+                <div class="product__flash-4 position-absolute top-15 start-20 d-flex flex-column align-items-start gap-1 pl-10 pt-10 style="z-index: 2;">
+                  {% if product.badge_text %}
+                    <span class="badge badge-neutral rect-badge-sm">{{ product.badge_text }}</span>
+                  {% endif %}
+                  {% if product.is_new %}
+                    <span class="badge badge-neutral rect-badge-sm">جدید</span>
+                  {% endif %}
+                  {% if product.discount_percent %}
+                    <span class="badge badge-danger titr-font rect-badge-sm">{{ product.discount_percent }}%</span>
+                  {% endif %}
+                </div>
+                {% endif %} 
+
+                <div class="furniture-product-name">{{ product.title }}</div>
+                <div class="furniture-product-price">
+                  {% if product.is_discount_active and product.discount_price %}
+                    <del class="text-muted d-block titr-font">{{ product.price|three_digits_currency }}</del>
+                    <span class="text-danger d-block titr-font">{{ product.discount_price|three_digits_currency }}</span>
+                  {% else %}
+                    <span class="d-block titr-font">{{ product.price|three_digits_currency }}</span>
+                  {% endif %}
+                </div>
+                <a href="{{ product.get_absolute_url }}" class="furniture-detail-btn">جزئیات</a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <div class="hot-slider-nav furniture-slider-prev" data-target="#furniture-slider-{{ main_cat.id }}-{{ forloop.counter }}">
+          <button class="nav-button-circle" aria-label="Next"><i class="far fa-chevron-right"></i></button>
+        </div>
+        <div class="hot-slider-nav furniture-slider-next" data-target="#furniture-slider-{{ main_cat.id }}-{{ forloop.counter }}">
+          <button class="nav-button-circle" aria-label="Prev"><i class="far fa-chevron-left"></i></button>
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+  </div>
+</section>
+{% endfor %}
+
+            <!-- product area end -->
+            <!-- product trending area end -->
+
+
+
+            <!-- department__area start -->
+
+            <section class="department__area grey-bg-3 pt-85 pb-90">
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="trending__info text-center">
+                                <h5>بررسی همه بخش‌ها</h5>
+                                <!-- <p>There are many variations passages Lorem Ipsum available majority</p> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-40">
+    {% for card in department_cards %}
+        <div class="col-xl-6 col-lg-6">
+            <div class="department__image w-img mb-30">
+                <div class="department__product-sm-image">
+                    <img src="{{ card.image.url }}" alt="{{ card.title }}">
+                </div>
+                <div class="department__product">
+                    {% if card.category %}
+                    <a href="{% url 'product_list' %}?category={{ card.category.url_title }}">
+                        <span>{{ card.title }}</span>
+{#                        <p>({{ card.product_count }})</p>#}
+                    </a>
+                    {% else %}
+                    <a href="{% url 'product_list' %}">
+                        <span>{{ card.title }}</span>
+{#                        <p>({{ card.product_count }})</p>#}
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="col-xl-12">
+        <div class="view-option-button text-center">
+            <a href="{% url 'product_list' %}" class="select-btn-3">مشاهده همه</a>
+        </div>
+    </div>
+</div>
+
+                </div>
+            </section>
+            <!-- department__area end -->
+
+            <!-- shop modal start -->
+            <div class="modal fade" id="productModalId" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered product__modal" role="document">
+                    <div class="modal-content">
+                        <div class="product__modal-wrapper p-relative">
+                            <div class="product__modal-close p-absolute">
+                                <button data-bs-dismiss="modal"><i class="fal fa-times"></i></button>
+                            </div>
+                            <div class="product__modal-inner">
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="product__modal-box">
+                                            <div class="tab-content" id="modalTabContent">
+                                                <div class="tab-pane fade show active" id="nav1" role="tabpanel" aria-labelledby="nav1-tab">
+                                                    <div class="product__modal-img w-img">
+                                                        <img src="/static/img/products/quick-view/quick-view-1.jpg" alt="">
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="nav2" role="tabpanel" aria-labelledby="nav2-tab">
+                                                    <div class="product__modal-img w-img">
+                                                        <img src="/static/img/products/quick-view/quick-view-2.jpg" alt="">
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="nav3" role="tabpanel" aria-labelledby="nav3-tab">
+                                                    <div class="product__modal-img w-img">
+                                                        <img src="/static/img/products/quick-view/quick-view-3.jpg" alt="">
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="nav4" role="tabpanel" aria-labelledby="nav4-tab">
+                                                    <div class="product__modal-img w-img">
+                                                        <img src="/static/img/products/quick-view/quick-view-4.jpg" alt="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <ul class="nav nav-tabs" id="modalTab" role="tablist">
+                                                <li class="nav-item" role="presentation">
+                                                <button class="nav-link active" id="nav1-tab" data-bs-toggle="tab" data-bs-target="#nav1" type="button" role="tab" aria-controls="nav1" aria-selected="true">
+                                                        <img src="/static/img/products/quick-view/nav/quick-nav-1.jpg" alt="">
+                                                </button>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="nav2-tab" data-bs-toggle="tab" data-bs-target="#nav2" type="button" role="tab" aria-controls="nav2" aria-selected="false">
+                                                    <img src="/static/img/products/quick-view/nav/quick-nav-2.jpg" alt="">
+                                                </button>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="nav3-tab" data-bs-toggle="tab" data-bs-target="#nav3" type="button" role="tab" aria-controls="nav3" aria-selected="false">
+                                                    <img src="/static/img/products/quick-view/nav/quick-nav-3.jpg" alt="">
+                                                </button>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="nav4-tab" data-bs-toggle="tab" data-bs-target="#nav4" type="button" role="tab" aria-controls="nav4" aria-selected="false">
+                                                    <img src="/static/img/products/quick-view/nav/quick-nav-4.jpg" alt="">
+                                                </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="product__modal-content">
+                                        <h4 class="product__modal-title"><a href="product-details.html">Samsung C49J89: £875, Debenhams Plus</a></h4>
+                                        <div class="product__modal-des mb-40">
+                                            <p>Typi non habent claritatem insitam, est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt </p>
+                                        </div>
+                                        <div class="product__modal-stock">
+                                            <span>Availability :</span>
+                                            <span>In Stock</span>
+                                        </div>
+                                        <div class="product__modal-stock sku mb-30">
+                                            <span>SKU:</span>
+                                            <span>Samsung C49J89: £875, Debenhams Plus</span>
+                                        </div>
+                                        <div class="product__modal-review d-sm-flex">
+                                            <div class="rating mb-15 mr-35">
+                                            <ul>
+                                                <li><a href="#"><i class="fal fa-star"></i></a></li>
+                                                <li><a href="#"><i class="fal fa-star"></i></a></li>
+                                                <li><a href="#"><i class="fal fa-star"></i></a></li>
+                                                <li><a href="#"><i class="fal fa-star"></i></a></li>
+                                                <li><a href="#"><i class="fal fa-star"></i></a></li>
+                                            </ul>
+                                            </div>
+                                            <div class="product__modal-add-review mb-15">
+                                            <span><a href="#">1 Review</a></span>
+                                            <span><a href="#">Add Review</a></span>
+                                            </div>
+                                        </div>
+                                        <div class="product__modal-price">
+                                            <span>$560.00</span>
+                                        </div>
+                                        <div class="product__modal-form mb-30">
+                                            <form action="#">
+                                            <div class="pro-quan-area d-lg-flex align-items-center">
+                                                <div class="product-quantity mr-20 mb-25">
+                                                    <div class="cart-plus-minus p-relative"><input type="text" value="1" /></div>
+                                                </div>
+                                                <div class="add-to-cart mt-4">
+  <div class="d-flex align-items-center gap-2">
+{#    <input type="number" id="product-count" value="1" min="1" class="form-control w-auto" style="max-width: 100px;">#}
+    <button type="button" class="add-to-cart-btn">افزودن به سبد خرید</button>
+  </div>
+</div>
+                                            </div>
+                                            </form>
+                                        </div>
+                                        <div class="product__modal-links">
+                                            <ul>
+                                            <li><a href="#" title="Add to Wishlist"><i class="fal fa-heart"></i></a></li>
+                                            <li><a href="#" title="Compare"><i class="far fa-sliders-h"></i></a></li>
+                                            <li><a href="#" title="Print"><i class="fal fa-print"></i></a></li>
+                                            <li><a href="#" title="Print"><i class="fal fa-share-alt"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+{% endblock %}

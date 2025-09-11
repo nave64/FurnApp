@@ -1,0 +1,38 @@
+{% extends 'shared/_layout.html' %}
+{% block title %}لیست علاقه‌مندی‌ها{% endblock %}
+
+{% block content %}
+<div class="container mt-5" dir="rtl">
+    <h2 class="mb-4">لیست علاقه‌مندی‌های شما</h2>
+
+    {% if wishlists %}
+        <div class="row">
+            {% for item in wishlists %}
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 text-center">
+                       {% if item.product.images.all %}
+                        {% with main_image=item.product.images.first %}
+                         {% if main_image.alt_text %}
+                          <img id="main-product-image" src="{{ main_image.image.url }}" alt="{{ main_image.alt_text }}" class="img-fluid">
+                         {% else %}
+                          <img id="main-product-image" src="{{ main_image.image.url }}" alt="{{ item.product.title }}" class="img-fluid">
+                         {% endif %}
+                        {% endwith %}
+                       {% elif item.product.image %}
+                         <img id="main-product-image" src="{{ item.product.image.url }}" alt="{{ item.product.title }}" class="card-img-top">
+                       {% endif %}                           
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.product.title }}</h5>
+                            <a href="{{ item.product.get_absolute_url }}" class="select-btn w-100">مشاهده محصول</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-warning text-center">
+            هنوز محصولی به لیست علاقه‌مندی‌های شما اضافه نشده است.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

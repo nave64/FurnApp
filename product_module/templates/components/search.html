@@ -1,0 +1,72 @@
+{% extends 'shared/_layout.html' %}
+{% load poll_extras %}
+{% block content %}
+<div class="container">
+    <h2 class="mb-4 text-center mt-50">نتایج جستجو برای "{{ query }}"</h2>
+
+    <div class="shop-main-area mb-40" dir="rtl">
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="tab1">
+                <div class="row">
+                    {% for product in products %}
+                    <div class="col-xl-4 col-md-6 col-sm-12">
+                        <div class="product__item mb-4">
+                            <div class="product__thumb w-img fix">
+                                <a href="{{ product.get_absolute_url }}">
+                                   {% if product.images.all %}
+                                    {% with main_image=product.images.first %}
+                                     {% if main_image.alt_text %}
+                                      <img id="main-product-image" src="{{ main_image.image.url }}" alt="{{ main_image.alt_text }}" class="img-fluid">
+                                     {% else %}
+                                      <img id="main-product-image" src="{{ main_image.image.url }}" alt="{{ product.title }}" class="img-fluid">
+                                     {% endif %}
+                                    {% endwith %}
+                                   {% elif product.image %}
+                                     <img id="main-product-image" src="{{ product.image.url }}" alt="{{ product.title }}" class="img-fluid">
+                                   {% endif %}                                      
+                                </a>
+                                {% if product.badge_text %}
+                                <div class="product__flash-4">
+                                    <span>{{ product.badge_text }}</span>
+                                </div>
+                                {% endif %}
+                                <div class="product__action transition-3">
+                                    <ul>
+                                        <li><a href="{{ product.get_absolute_url }}"><i class="far fa-eye"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product__conten text-center mt-3">
+                                <h3 class="product__title">
+                                    <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
+                                </h3>
+                                <div class="product__tag product__tag-4 text-center">
+                                    {% for cat in product.category.all %}
+                                        <span><a href="#">{{ cat.title }}</a></span>
+                                    {% endfor %}
+                                </div>
+                                <div class="product__price product__price-4 mb-10 text-center">
+                                    {% if product.is_discount_active and product.discount_price %}
+                                        <del class="d-block text-muted mb-1">{{ product.price|three_digits_currency }}</del>
+                                        <span class="price text-danger d-block">{{ product.discount_price|three_digits_currency }}</span>
+                                    {% else %}
+                                        <span class="price d-block">{{ product.price|three_digits_currency }}</span>
+                                    {% endif %}
+                                </div>
+                                <div class="product__select-button">
+                                    <a href="{{ product.get_absolute_url }}" class="select-btn w-100">مشاهده جزئیات</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-12">
+                        <p class="text-center">محصولی برای نمایش وجود ندارد.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends 'shared/_layout.html' %}
+{% load poll_extras %}
+{% block title %}سبد خرید{% endblock %}
+
+{% block content %}
+<section class="cart-area pt-120 pb-120" dir="rtl">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                {% include 'user_panel_module/user_basket_content.html' %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- JavaScript Functions -->
+<script>
+// Test if JavaScript is loading
+// console.log('Cart page JavaScript loaded!');
+// alert('Cart page JavaScript loaded!');
+
+// Make functions globally available
+window.increaseQuantity = function(button) {
+    const input = button.parentNode.querySelector('input');
+    const detailId = input.name.replace('count_', '');
+    
+    $.get('/user-panel/change-order-detail?detail_id=' + detailId + '&state=increase').then(res => {
+        if (res.status === 'success') {
+            $('#order-detail-content').html(res.body);
+            // Update cart badge after successful operation
+            if (typeof window.updateCartCount === 'function') {
+                window.updateCartCount();
+            }
+        } else {
+            Swal.fire('خطا', 'مشکلی در به‌روزرسانی سبد خرید وجود دارد', 'error');
+        }
+    }).fail(function(xhr, status, error) {
+        Swal.fire('خطا', 'مشکلی در ارتباط با سرور وجود دارد', 'error');
+    });
+};
+
+window.decreaseQuantity = function(button) {
+    const input = button.parentNode.querySelector('input');
+    const detailId = input.name.replace('count_', '');
+    let value = parseInt(input.value);
+    
+    if (value <= 1) {
+        // If quantity is 1 or less, remove the item
+        removeOrderDetail(detailId);
+        return;
+    }
+    
+    $.get('/user-panel/change-order-detail?detail_id=' + detailId + '&state=decrease').then(res => {
+        if (res.status === 'success') {
+            $('#order-detail-content').html(res.body);
+            // Update cart badge after successful operation
+            if (typeof window.updateCartCount === 'function') {
+                window.updateCartCount();
+            }
+        } else {
+            Swal.fire('خطا', 'مشکلی در به‌روزرسانی سبد خرید وجود دارد', 'error');
+        }
+    }).fail(function(xhr, status, error) {
+        Swal.fire('خطا', 'مشکلی در ارتباط با سرور وجود دارد', 'error');
+    });
+};
+
+window.removeOrderDetail = function(detailId) {
+    Swal.fire({
+        title: 'حذف محصول',
+        text: 'آیا از حذف این محصول مطمئن هستید؟',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'بله، حذف شود',
+        cancelButtonText: 'لغو'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.get('/user-panel/remove-order-detail?detail_id=' + detailId).then(res => {
+                console.log('Remove AJAX Response:', res); // Debug log
+                if (res.status === 'success') {
+                    $('#order-detail-content').html(res.body);
+                    console.log('Item removed successfully'); // Debug log
+                    // Update cart badge after successful removal
+                    if (typeof window.updateCartCount === 'function') {
+                        window.updateCartCount();
+                    }
+                } else {
+                    console.error('Remove failed:', res); // Debug log
+                    Swal.fire('خطا', 'حذف محصول با مشکل مواجه شد', 'error');
+                }
+            }).fail(function(xhr, status, error) {
+                console.error('Remove AJAX Error:', error); // Debug log
+                Swal.fire('خطا', 'مشکلی در ارتباط با سرور وجود دارد', 'error');
+            });
+        }
+    });
+};
+</script>
+{% endblock %}

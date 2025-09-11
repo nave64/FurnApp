@@ -1,0 +1,45 @@
+{% extends 'shared/_layout.html' %}
+{% load render_partial %}
+{%  block title %}
+     پنل کاربری/ویرایش اطلاعات کاربری
+{%  endblock %}
+{%  block content %}
+    <div class="text-right container mt-5 mb-5 yekan-font">
+    <div class="container alert alert-warning text-center yekan-font-second">
+        <p>.لطفا اطلاعات زیر را به درستی وارد و سپس بر روی دکمه ثبت کلیک کنید </p>
+    </div>
+    <form action="{% url 'edit-user-profile_urls' %}" method="post">
+        {% csrf_token %}
+    <div class="font-weight-bold mb-3 ">
+    {{ form.first_name.label }}
+    </div>
+    {{ form.first_name }}
+    <div class="font-weight-bold mb-3 mt-3">
+    {{ form.last_name.label }}
+    </div>
+    {{ form.last_name }}
+ <div class="font-weight-bold mb-3 mt-3">
+    {{ form.mobile.label }}
+    </div>
+        {{ form.mobile }}
+     <div class="font-weight-bold mb-3 mt-3">
+    {{ form.postal_code.label }}
+    </div>
+        {{ form.postal_code }}
+    <div class="font-weight-bold mb-3 mt-3">
+    {{ form.address.label }}
+    </div>
+    {{ form.address }}
+
+
+           <div class="submit-button text-center mt-5">
+                                        <button class="btn hvr-hover disabled" id="" type="submit" style="pointer-events: all; cursor: pointer;">ثبت </button>
+                                        <div id="msgSubmit" class="h3 text-center hidden"></div>
+                                        <div class="clearfix"></div>
+           </div>
+        </form>
+    </div>
+
+
+
+{%  endblock %}

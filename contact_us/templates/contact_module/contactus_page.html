@@ -1,0 +1,131 @@
+{% extends 'shared/_layout.html' %}
+
+{% block title %}
+    تماس با ما
+{% endblock %}
+
+{% block content %}
+<section class="contact-area pt-120 pb-50 fix" dir="rtl">
+    <div class="container">
+    {% if messages %}
+    <div class="row">
+        <div class="col-12">
+            {% for message in messages %}
+                <div class="alert alert-success text-center" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+        <div class="row">
+            <!-- Info Section -->
+            <div class="col-xxl-5 col-xl-6 col-lg-6">
+                <div class="sec-wrapper mb-4">
+                    <h5>ارتباط با ما</h5>
+                    <h2 class="absection-title">با کارشناس ما صحبت کنید</h2>
+                </div>
+                <div class="contact-info me-0 me-md-0 mb-30">
+                    <div class="single-contact-info d-flex align-items-center">
+    <div class="contact-info-icon me-3">
+        <i class="fal fa-phone-alt"></i>
+    </div>
+    <div class="contact-info-text mt-10">
+        <span>تماس تلفنی</span>
+        <h5><a href="tel:{{ site_settings.phone }}">{{ site_settings.phone }}</a></h5>
+    </div>
+</div>
+
+<div class="single-contact-info d-flex align-items-center">
+    <div class="contact-info-icon me-3">
+        <i class="fal fa-envelope"></i>
+    </div>
+    <div class="contact-info-text mt-10">
+        <span>ایمیل بفرستید</span>
+        <h5><a href="mailto:{{ site_settings.email }}">{{ site_settings.email }}</a></h5>
+    </div>
+</div>
+
+<div class="single-contact-info d-flex align-items-center">
+    <div class="contact-info-icon me-3">
+        <i class="fal fa-map-marker-alt"></i>
+    </div>
+    <div class="contact-info-text mt-10">
+        <span>آدرس دفتر</span>
+        <h5><a target="_blank" href="https://www.google.com/maps">{{ site_settings.business_address }}</a></h5>
+    </div>
+</div>
+
+                </div>
+            </div>
+
+            <!-- Form Section -->
+            <div class="col-xxl-7 col-xl-6 col-lg-6">
+                <form id="contacts-form" class="conatct-post-form mb-30" method="post" novalidate>
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-6">
+                            <div class="contact-icon p-relative contacts-name">
+                                {{ form.full_name.label_tag }}
+                                {{ form.full_name }}
+                                {% if form.full_name.errors %}
+                                    <small class="text-danger">{{ form.full_name.errors.0 }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6">
+                            <div class="contact-icon p-relative contacts-phone">
+                                {{ form.mobile.label_tag }}
+                                {{ form.mobile }}
+                                {% if form.mobile.errors %}
+                                    <small class="text-danger">{{ form.mobile.errors.0 }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="col-xl-12">
+                            <div class="contact-icon p-relative contacts-subject">
+                                {{ form.title.label_tag }}
+                                {{ form.title }}
+                                {% if form.title.errors %}
+                                    <small class="text-danger">{{ form.title.errors.0 }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="col-xl-12">
+                            <div class="contact-icon p-relative contacts-message">
+                                {{ form.message.label_tag }}
+                                {{ form.message }}
+                                {% if form.message.errors %}
+                                    <small class="text-danger">{{ form.message.errors.0 }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="col-xl-12">
+                            <div class="contact-icon p-relative contacts-captcha mt-3">
+                                {{ form.captcha }}
+                                {% if form.captcha.errors %}
+                                    <small class="text-danger">{{ form.captcha.errors.0 }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="col-xl-12">
+                            <div class="contact- mt-15">
+                                <button class="btn-tp mt-15" type="submit">ارسال پیام</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- reCAPTCHA Script -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}

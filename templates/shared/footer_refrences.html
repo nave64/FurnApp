@@ -1,0 +1,75 @@
+ <!-- JS here -->
+              <script src="/static/js/vendor/jquery.js"></script>
+              <script src="/static/js/vendor/waypoints.js"></script>
+              <script src="/static/js/bootstrap-bundle.js"></script>
+              <script src="/static/js/meanmenu.js"></script>
+              <script src="/static/js/swiper-bundle.js"></script>
+              <script src="/static/js/owl-carousel.js"></script>
+              <script src="/static/js/magnific-popup.js"></script>
+              <script src="/static/js/parallax.js"></script>
+              <script src="/static/js/backtotop.js"></script>
+              <script src="/static/js/nice-select.js"></script>
+              <script src="/static/js/counterup.js"></script>
+              <script src="/static/js/countdown.js"></script>
+              <script src="/static/js/wow.js"></script>
+              <script src="/static/js/isotope-pkgd.js"></script>
+              <script src="/static/js/imagesloaded-pkgd.js"></script>
+              <script src="/static/js/ajax-form.js"></script>
+ <!-- Swiper JS -->
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+              <script src="/static/js/main.js"></script>
+              
+<!-- Logout Confirmation Dialog -->
+<script>
+function confirmLogout() {
+    Swal.fire({
+        title: 'خروج از حساب کاربری',
+        text: 'آیا از خروج از حساب کاربری خود مطمئن هستید؟',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'بله، خروج',
+        cancelButtonText: 'لغو',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Redirect to logout URL
+            window.location.href = "{% url 'logout_page' %}";
+        }
+    });
+}
+
+// Cart Count Badge Update Function
+function updateCartCount() {
+    // This Django template tag ensures the AJAX call only happens for logged-in users.
+    {% if request.user.is_authenticated %}
+    $.get('/user-panel/get-cart-count/', function(response) {
+        if (response.status === 'success') {
+            const count = response.count;
+            
+            // Target all badges with one class selector and chain the methods.
+            // .text() sets the number, and .toggle() shows/hides the badge based on the condition.
+            $('.cart-count-badge').text(count).toggle(count > 0);
+        }
+    }).fail(function() {
+        // If the request fails for any reason, hide the badges.
+        $('.cart-count-badge').hide();
+    });
+    {% else %}
+    // For non-authenticated users, the badges are always hidden.
+    $('.cart-count-badge').hide();
+    {% endif %}
+}
+
+$(document).ready(function() {
+    // Update the cart count as soon as the page is ready.
+    updateCartCount();
+
+    // Make the function globally available so other scripts can call it.
+    window.updateCartCount = updateCartCount;
+});
+</script>

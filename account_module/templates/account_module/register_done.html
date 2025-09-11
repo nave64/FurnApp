@@ -1,0 +1,42 @@
+{% extends 'shared/_layout.html' %}
+{% block title %}
+{% endblock %}
+{% block content %}
+<h2 class="text-center alert alert-dark mt-5 yekan-font container ">
+کد   5  رقمی فعالسازی حساب کاربری به شماره موبایل شما ارسال شد
+</h2>
+    <p class="alert alert-warning text-center yekan-font container">
+.به منظور ثبت سفارش و استفاده از لطفا کد را وارد کنید و سپس وارد شوید
+        </p>
+
+>
+
+               <form action="{% url 'register_done_page' %}" method="post" dir="rtl">
+        {% csrf_token %}
+{#                   <div class="d-flex justify-content-center alert alert-dark yekan-font p-1 ">#}
+{#                    {{ valid_form.vertification.label }}#}
+{#                   </div>#}
+                    <div class="register-page-label d-flex justify-content-center container ">
+                    {{ valid_form.vertification }}
+                            </div>
+                    <div class="justify-content-center d-flex">
+{#        <button class=" registered-done-page-link btn hvr-hover yekan-font  mt-5 mb-5 " id="" type="submit" style="pointer-events: all; cursor: pointer;">تایید  </button></a>#}
+                        <button class="btn hvr-hover registered-done-page-link mb-5 mt-5 yekan-font disabled" id="" type="submit" style="pointer-events: all; cursor: pointer;">ورود </button>
+    </div>
+                   <div class="register-page-label  ">
+<div>
+                {% if messages %}
+                    <div class="d-flex justify-content-center alert alert-danger container">
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+
+    {% endif %}
+        </div>
+    </div>
+                   </div>
+               </form>
+</div>
+                </div>
+
+{% endblock%}

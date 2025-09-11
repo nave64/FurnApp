@@ -1,0 +1,104 @@
+{% extends 'shared/_layout.html' %}
+{% load static %}
+{% load poll_extras %}
+{% load crispy_forms_tags %}
+{% block title %} پنل کاربری {% endblock %}
+
+{% block content %}
+
+<div class="dashboard-container container mt-5 mb-5" dir="rtl">
+    <div> </div>
+    <div class="dashboard-header text-center mb-5" dir="rtl">
+        <h2 class="dashboard-title"> خوش آمدید {{ user.first_name }}🎉</h2>
+        <p class="dashboard-subtitle">در اینجا می‌توانید به همه امکانات پنل کاربری دسترسی داشته باشید</p>
+    </div>
+
+    {% if messages %}
+    <div class="alert alert-success text-center">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="row dashboard-card-wrapper text-center">
+
+        <!-- سفارش‌ها -->
+        <div class="col-md-4 mb-4">
+            <a href="{% url 'user_shoppings_page' %}" class="dashboard-card">
+                <div class="dashboard-icon mb-3"><i class="fas fa-shopping-cart"></i></div>
+                <h5 class="dashboard-link-title">تاریخچه سفارشات</h5>
+                <p class="dashboard-link-desc">مشاهده سفارش‌ها</p>
+            </a>
+        </div>
+
+        <!-- اطلاعات کاربری -->
+        <div class="col-md-4 mb-4">
+            <a href="{% url 'edit-user-profile_urls' %}" class="dashboard-card">
+                <div class="dashboard-icon mb-3"><i class="fas fa-user-cog"></i></div>
+                <h5 class="dashboard-link-title">ویرایش اطلاعات</h5>
+                <p class="dashboard-link-desc">ویرایش اطلاعات کاربری شما</p>
+            </a>
+        </div>
+
+        <!-- تغییر رمز عبور -->
+        <div class="col-md-4 mb-4">
+            <a href="{% url 'change_password_page_urls' %}" class="dashboard-card">
+                <div class="dashboard-icon mb-3"><i class="fas fa-key"></i></div>
+                <h5 class="dashboard-link-title">تغییر رمز عبور</h5>
+                <p class="dashboard-link-desc">بروزرسانی رمز عبور شما</p>
+            </a>
+        </div>
+
+        <!-- سبد خرید -->
+        <div class="col-md-4 mb-4">
+            <a href="{% url 'user_basket_page' %}" class="dashboard-card">
+                <div class="dashboard-icon mb-3"><i class="fas fa-shopping-basket"></i></div>
+                <h5 class="dashboard-link-title">سبد خرید</h5>
+                <p class="dashboard-link-desc">مشاهده و نهایی‌سازی سفارشات</p>
+            </a>
+        </div>
+
+        <!-- لیست علاقه‌مندی‌ها -->
+        <div class="col-md-4 mb-4">
+            <a href="{% url 'wishlist_page' %}" class="dashboard-card">
+                <div class="dashboard-icon mb-3"><i class="fas fa-heart"></i></div>
+                <h5 class="dashboard-link-title">لیست علاقه‌مندی‌ها</h5>
+                <p class="dashboard-link-desc">محصولات مورد علاقه شما</p>
+            </a>
+        </div>
+<!-- ارسال تصویر برای مدیریت -->
+<div class="col-md-4 mb-4">
+    <a href="{% url 'user_upload_images_page' %}" class="dashboard-card">
+        <div class="dashboard-icon mb-3"><i class="fas fa-image"></i></div>
+        <h5 class="dashboard-link-title">ارسال تصاویر</h5>
+        <p class="dashboard-link-desc">بارگذاری تصاویر برای بررسی مدیریت</p>
+    </a>
+</div>
+        <!-- مشاهده میزان اعتبار خرید چکی -->
+<div class="col-md-4 mb-4">
+    <div class="dashboard-card">
+        <div class="dashboard-icon mb-3"><i class="fas fa-credit-card"></i></div>
+        <h5 class="dashboard-link-title">مشاهده میزان اعتبار خرید چکی</h5>
+        <p class="dashboard-link-desc">
+            دارای اعتبار خرید چکی:
+            <strong>
+                {% if user.has_check_purchase_permission %}
+                    بله
+                {% else %}
+                    خیر
+                {% endif %}
+            </strong>
+            <br/>
+            {% if user.has_check_purchase_permission %}
+                اعتبار فعلی: <strong>{{ user.check_purchase_credit|three_digits_currency }} </strong><br>
+                <span>برای خرید چکی با پشتیبانی فروشگاه تماس بگیرید.</span>
+            {% endif %}
+        </p>
+    </div>
+</div>
+
+
+    </div>
+</div>
+{% endblock %}

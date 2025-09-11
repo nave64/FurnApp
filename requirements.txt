@@ -1,0 +1,45 @@
+# Production deployment requirements
+# Use this for deployment to avoid virtual environment conflicts
+# Compatible with Python 3.12
+
+# Django Core
+Django==5.1.4
+asgiref==3.9.1
+sqlparse==0.5.3
+
+# Image Processing
+Pillow==11.3.0
+
+# Rich Text Editor
+django-ckeditor==6.7.3
+django-js-asset==3.1.2
+
+# Forms
+django-crispy-forms==2.4
+
+# Date/Time (Persian/Jalali)
+django-jalali-date==2.0.0
+jalali_core==1.0.0
+jdatetime==5.2.0
+
+# Security
+django-recaptcha==4.1.0
+
+# Template Rendering
+django-render-partial==0.4
+
+# HTTP Requests
+requests==2.32.4
+urllib3==2.5.0
+
+# SMS Service (Kavenegar)
+kavenegar==1.1.2
+
+# Utilities
+certifi==2025.7.14
+charset-normalizer==3.4.2
+idna==3.10
+typing_extensions==4.14.1
+
+# Production WSGI server
+gunicorn==21.2.0

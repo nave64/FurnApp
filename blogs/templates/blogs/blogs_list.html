@@ -1,0 +1,35 @@
+{% extends 'shared/_layout.html' %}
+{% block content %}
+<section class="blog-area mt-100 mb-50 text-center" dir="rtl">
+    <div class="container custom-container">
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-lg-8">
+                <div class="blog__wrapper pr-50">
+                    {% for blog in blogs %}
+                    <div class="blog-wrap blog-item mb-50">
+                        <div class="blog-thumb">
+                            <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
+                        </div>
+                        <div class="blog-details mt-35">
+                            <ul class="blog-meta">
+                                <li><i class="fal fa-clock"></i> {{ blog.get_jalali_date }}</li>
+                            </ul>
+                            <h3 class="blog-title">
+                                <a href="{% url 'blog_details' blog.id %}">{{ blog.title }}</a>
+                            </h3>
+                            <p>{{ blog.short_description }}</p>
+                            <div class="blog-btn mt-25">
+                                <a href="{% url 'blog_details' blog.id %}" class="btn-tp">مشاهده</a>
+                            </div>
+                             <hr>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

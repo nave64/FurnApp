@@ -1,0 +1,83 @@
+<!-- Simplified Footer Sections: Need Help, Useful Links, Logo & Copyright -->
+<footer dir="rtl">
+    <div class="footer__area footer-bg">
+        <div class="footer__top footer__top-space pb-50">
+            <div class="container">
+                <div class="row">
+
+                    <!-- Logo Section (Left in RTL) -->
+                    <div class="col-xxl-3 col-xl-3 col-lg-4 col-md-4 col-sm-6">
+                        <div class="footer__widget pb-30 text-center text-xxl-start">
+                            <a href="/">
+                                <img src="{{ site_settings.site_logo.url }}" alt="{{ site_settings.site_name }}" style="max-width: 120px;">
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Need Help Section -->
+                    <div class="col-xxl-3 col-xl-3 col-lg-4 col-md-4 col-sm-6">
+                        <div class="footer__widget pb-30">
+                            <h3 class="footer__widget-title footer__widget-title-3">راه های ارتباطی</h3>
+                            <div class="footer__widget-content">
+                                <div class="footer__contact">
+                                    <h3 class="footer__contact-phone">
+                                        <a href="tel:1234-5678-90">{{ site_settings.phone }}</a>
+                                    </h3>
+                                    <div class="footer__opening mb-15">
+                                        <p>{{ site_settings.business_address }}</p>
+                                        <p>پشتیبانی 24 ساعت و 7 روز هفته</p>
+                                    </div>
+                                    <div class="footer__contact-email footer__contact-email-2">
+                                        <p><a href="mailto:{{ site_settings.email }}">{{ site_settings.email }}</a></p>
+                                    </div>
+                                    <div class="footer__social footer__social-3">
+                                        <ul>
+                                            <li><a href="{{ site_settings.instagram_address }}"><i class="fab fa-instagram"></i></a></li>
+                                            <li><a href="{{ site_settings.telegram_link }}"><i class="fab fa-telegram"></i></a></li>
+                                            <li><a href="{{ site_settings.whatsapp_number }}"><i class="fab fa-whatsapp"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Useful Links Section -->
+                    <div class="col-xxl-3 col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6">
+                        <div class="footer__widget footer-col-3 pb-30">
+                            <h3 class="footer__widget-title footer__widget-title-3">دسترسی سریع</h3>
+                            <div class="footer__widget-content">
+                                <div class="footer__links footer__links-2">
+                                    <ul>
+                                        <li><a href="{% url 'index_page_urls' %}">صفحه اصلی</a></li>
+                                        <li><a href="{% url 'blog_list' %}">مجله اینترنتی</a></li>
+                                        <li><a href="{% url 'contact_page_urls' %}">تماس با ما</a></li>
+                                        <!-- <li><a href="contact.html">انتخاب و خرید پارچه مبلی</a></li> -->
+                                        <li><a href="{% url 'product_list' %}">فروشگاه</a></li>
+                                        <li><a href="{% url 'register_page' %}">ثبت نام</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div> <!-- End row -->
+            </div> <!-- End container -->
+        </div> <!-- End footer top -->
+
+        <!-- Copyright -->
+        <div class="footer__bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xxl-12">
+                        <div class="footer__bottom-wrapper text-center">
+                            <div class="footer__copyright">
+                                <p>{{ site_settings.copyright }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

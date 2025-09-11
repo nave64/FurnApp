@@ -1,0 +1,12 @@
+{% extends 'shared/_layout.html' %}
+{% block title %} نتیجه پرداخت {% endblock %}
+{% block content %}
+<div class="alert alert-success text-center mt-5 mb-5 payment-result-failed-style yekan-font" role="alert">
+  .پرداخت شما با موفقیت انجام شد
+    در صورت نیاز برای اطلاعات بیشتر درباره سفارش خود با پشتیبانی سایت تماس حاصل فرمایید.
+مبلند
+</div>
+    <div class="d-flex justify-content-center mb-5 yekan-font">
+<a class="btn hvr-hover payment-result-failed-style-hover" href="{% url 'index_page_urls' %}">بازگشت به سایت</a>
+    </div>
+{% endblock %}

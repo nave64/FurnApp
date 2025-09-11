@@ -1,0 +1,113 @@
+{% load poll_extras %}
+<div id="order-detail-content">
+    {% if order.orderdetail_set.all %}
+    <div class="table-content table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>تصویر</th>
+                    <th>نام محصول</th>
+                    <th>قیمت واحد</th>
+                    <th>تعداد</th>
+                    <th>قیمت کل</th>
+                    <th>حذف</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for detail in order.orderdetail_set.all %}
+                <tr>
+                    <td class="product-thumbnail">
+                        <a href="{{ detail.product.get_absolute_url }}">
+                           {% if detail.product.images.all %}
+                            {% with main_image=detail.product.images.first %}
+                             {% if main_image.alt_text %}
+                              <img id="main-product-image" src="{{ main_image.image.url }}" alt="{{ main_image.alt_text }}" width="70">
+                             {% else %}
+                              <img id="main-product-image" src="{{ main_image.image.url }}" alt="{{ detail.product.title }}" width="70">
+                             {% endif %}
+                            {% endwith %}
+                           {% elif detail.product.image %}
+                             <img id="main-product-image" src="{{ detail.product.image.url }}" alt="{{ detail.product.title }}" width="70">
+                           {% endif %}   
+
+                        </a>
+                    </td>
+                    <td class="product-name">
+                        <a href="{{ detail.product.get_absolute_url }}">{{ detail.product.title }}</a>
+                        
+                        <!-- Debug info -->
+                        <!-- <div class="debug-info mt-1" style="font-size: 10px; color: #999;">
+                            Debug: selected_addons = {{ detail.selected_addons }}<br>
+                            Debug: product addons count = {{ detail.product.addons.count }}
+                        </div> -->
+                        
+                        {% if detail.selected_addons %}
+                        <div class="addons-list mt-2">
+                            <small class="text-muted">افزونه‌های انتخاب شده:</small>
+                            <ul class="list-unstyled mb-0">
+                                {% for addon_id in detail.selected_addons %}
+                                    {% for addon in detail.product.addons.all %}
+                                        {% if addon.id == addon_id or addon.id|stringformat:"s" == addon_id|stringformat:"s" %}
+                                        <li class="small text-success">
+                                            <i class="fa fa-plus"></i> {{ addon.name }} (+{{ addon.additional_cost|three_digits_currency }})
+                                        </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </td>
+                    <td class="product-price">
+                        <span class="amount">{{ detail.final_price|three_digits_currency }}</span>
+                        {% if detail.selected_addons %}
+                        <div class="addon-cost mt-1">
+                            <small class="text-success">+{{ detail.get_total_addon_cost|three_digits_currency }}</small>
+                        </div>
+                        {% endif %}
+                    </td>
+                    <td class="product-quantity">
+                        <div class="input-group justify-content-center" style="max-width: 140px; margin: auto;">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="window.decreaseQuantity(this)">-</button>
+                            <input type="text" name="count_{{ detail.id }}" class="form-control text-center" value="{{ detail.count }}" readonly style="width: 50px;">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="window.increaseQuantity(this)">+</button>
+                        </div>
+                    </td>
+                    <td class="product-subtotal">
+                        <span class="amount">{% multiply detail.count detail.get_final_price_with_addons %}</span>
+                    </td>
+                    <td class="product-remove">
+                        <a href="javascript:void(0);" onclick="window.removeOrderDetail('{{ detail.id }}')">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="coupon2 mt-3 text-end">
+        <button class="btn-tp-2 w-100" type="button" onclick="location.reload()">به‌روزرسانی سبد خرید</button>
+    </div>
+
+    <div class="row justify-content-end mt-4">
+        <div class="col-md-5">
+            <div class="cart-page-total">
+                <h2>مجموع سبد خرید</h2>
+                <ul class="mb-20">
+                    <li> <span class="text-center">{{ sum|three_digits_currency }}</span></li>
+                    <!-- Debug: Raw sum value: {{ sum }} -->
+                    <!-- Debug: Order details count: {{ order.orderdetail_set.count }} -->
+                </ul>
+                <a class="btn-tp-2 w-100 text-center" href="{% url 'order_payment' %}">ادامه فرآیند پرداخت</a>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <div class="alert alert-warning text-center">
+        سبد خرید شما خالی است.
+    </div>
+    {% endif %}
+</div> <!-- end of order-detail-content -->

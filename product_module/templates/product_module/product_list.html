@@ -1,0 +1,192 @@
+{% extends 'shared/_layout.html' %}
+{% load render_partial %}
+{% load poll_extras %}
+{% load humanize %}
+
+{% block title %} فروشگاه مبلند {% endblock %}
+
+{% block content %}
+<section class="page__title p-relative d-flex align-items-center"
+         {% if page_setting %}
+             data-background="{{ page_setting.background_image.url }}"
+             style="background-image: url('{{ page_setting.background_image.url }}'); position: relative;"
+         {% endif %}>
+    <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.5); z-index: 1;"></div>
+    <div class="container" style="position: relative; z-index: 2;">
+        <div class="row">
+            <div class="col-12">
+                <div class="page__title-inner text-center">
+                    <h1 class="text-white">{{ page_setting.title }}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="shop-details pt-90 pb-90">
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3">
+                <div class="pproduct-sidebar-area">
+                    <div class="product-widget mb-30" dir="rtl">
+                        <h5 class="pt-title mb-20">دسته‌بندی محصولات</h5>
+                        <div class="widget-category-list">
+                            <form method="get" action="{% url 'product_list' %}">
+                                {% for category in categories %}
+                                    <div class="single-widget-category">
+                                        <input type="checkbox"
+                                               id="cat-item-{{ category.id }}"
+                                               name="category"
+                                               value="{{ category.url_title }}"
+                                               {% if category.url_title in selected_categories %}checked{% endif %}>
+                                        <label for="cat-item-{{ category.id }}">
+                                            {{ category.title }} <span>({{ category.product_categories.count }})</span>
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                                <div class="product__select-button mt-3">
+                                    <button type="submit" class="select-btn w-100">فیلتر</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Content -->
+            <div class="col-lg-9">
+                <div class="shop-top-area mb-20">
+                    <div class="row align-items-center">
+                        <div class="col text-center">
+                            <h5 class="show-total-result">نمایش محصولات</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product List -->
+                <div class="shop-main-area mb-40" dir="rtl">
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="tab1">
+                            <div class="row">
+                                {% for product in products %}
+                                <div class="col-xl-4 col-md-6 col-sm-12">
+                                    <div class="product__item mb-4">
+                                        <div class="product__thumb w-img fix">
+                                            <a href="{{ product.get_absolute_url }}">
+                                               {% if product.images.all %}
+                                                {% with main_image=product.images.first %}
+                                                 {% if main_image.alt_text %}
+                                                  <img id="main-product-image" src="{{ main_image.image.url }}" alt="{{ main_image.alt_text }}" class="img-fluid">
+                                                 {% else %}
+                                                  <img id="main-product-image" src="{{ main_image.image.url }}" alt="{{ product.title }}" class="img-fluid">
+                                                 {% endif %}
+                                                {% endwith %}
+                                               {% elif product.image %}
+                                                 <img id="main-product-image" src="{{ product.image.url }}" alt="{{ product.title }}" class="img-fluid">
+                                               {% endif %}                                                                                               
+                                            </a>
+                                            {% if product.badge_text or product.is_new or product.discount_percent %}
+                                            <div class="product__flash-4 d-flex flex-column align-items-start gap-1">
+                                                {% if product.badge_text %}
+                                                    <span class="badge badge-neutral rect-badge">{{ product.badge_text }}</span>
+                                                {% endif %}
+                                                {% if product.is_new %}
+                                                    <span class="badge badge-neutral rect-badge">جدید</span>
+                                                {% endif %}
+                                                {% if product.discount_percent %}
+                                                    <span class="badge badge-danger rect-badge titr-font">{{ product.discount_percent }}%</span>
+                                                {% endif %}
+                                            </div>
+                                            {% endif %}
+                                            <div class="product__action transition-3">
+                                                <ul>
+                                                    <li><a href="{{ product.get_absolute_url }}"><i class="far fa-eye"></i></a></li>
+                                                    <li>
+                                                        <form method="post" action="{% url 'add_to_compare' %}" style="display: inline;">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="product_id" value="{{ product.id }}">
+                                                            <a href="#" onclick="this.closest('form').submit(); return false;" title="افزودن به مقایسه">
+                                                                <i class="fal fa-exchange-alt"></i>
+                                                            </a>
+                                                        </form>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{% url 'add_to_wishlist' product.id %}">
+                                                            <i class="fal fa-heart"></i>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="product__conten text-center mt-3">
+                                            <h3 class="product__title">
+                                                <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
+                                            </h3>
+                                            <div class="product__tag product__tag-4 text-center">
+                                                {% for cat in product.category.all %}
+                                                    <span><a href="#">{{ cat.title }}</a></span>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="product__price product__price-4 mb-10 text-center titr-font">
+                                                {% if product.is_discount_active and product.discount_price %}
+                                                    <del class="d-block text-muted mb-1 titr-font">{{ product.price|three_digits_currency }}</del>
+                                                    <span class="price text-danger d-block titr-font">{{ product.discount_price|three_digits_currency }}</span>
+                                                {% else %}
+                                                    <span class="price d-block text-danger titr-font">{{ product.price|three_digits_currency }}</span>
+                                                {% endif %}
+                                            </div>
+                                            <div class="product__select-button">
+                                                <a href="{{ product.get_absolute_url }}" class="select-btn w-100">مشاهده جزئیات</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% empty %}
+                                <div class="col-12">
+                                    <p class="text-center">محصولی برای نمایش وجود ندارد.</p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if is_paginated %}
+                <div class="shop-pagination mt-30">
+                    <div class="basic-pagination d-flex justify-content-center">
+                        <nav>
+                            <ul>
+                                {% if page_obj.has_previous %}
+                                    <li>
+                                        <a href="?page={{ page_obj.previous_page_number }}{% for cat in selected_categories %}&category={{ cat }}{% endfor %}">
+                                            <i class="far fa-angle-left"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                {% for page_num in paginator.page_range %}
+                                    {% if page_obj.number == page_num %}
+                                        <li><a class="active">{{ page_num }}</a></li>
+                                    {% else %}
+                                        <li>
+                                            <a href="?page={{ page_num }}{% for cat in selected_categories %}&category={{ cat }}{% endfor %}">{{ page_num }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if page_obj.has_next %}
+                                    <li>
+                                        <a href="?page={{ page_obj.next_page_number }}{% for cat in selected_categories %}&category={{ cat }}{% endfor %}">
+                                            <i class="far fa-angle-right"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

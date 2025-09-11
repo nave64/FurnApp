@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting to SamanEPay...</title>
+</head>
+<body>
+    <h3>Redirecting to SamanEPay...</h3>
+    <form id="samanepayForm" action="https://sep.shaparak.ir/OnlinePG/OnlinePG" method="post">
+        <input type="hidden" name="Token" value="{{ token }}">
+    </form>
+    <script type="text/javascript">
+        document.getElementById('samanepayForm').submit();
+    </script>
+</body>
+</html>

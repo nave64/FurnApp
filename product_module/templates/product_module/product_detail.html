@@ -1,0 +1,472 @@
+{% extends 'shared/_layout.html' %}
+{% load poll_extras %}
+{% load render_partial %}
+{% load humanize %}
+
+{% block title %}{{ product.title }}{% endblock %}
+
+{% block content %}
+<section class="product-details pt-90 pb-50" dir="rtl">
+  <div class="container">
+    <div class="row">
+
+      <!-- Product Image Album -->
+      <div class="product-album mb-4 col-xl-4 col-lg-4">
+
+       <div class="position-relative" style="display: inline-block;">
+
+        {# Main Image (fallback to product.image if no gallery images) #}
+        {% if product.images.all %}
+            {% with main_image=product.images.first %}
+             {% if main_image.alt_text %}
+              <img id="main-product-image" src="{{ main_image.image.url }}" alt="{{ main_image.alt_text }}" class="img-fluid mb-3" style="max-width: 100%; cursor: pointer;" onclick="openLightbox(this.src)">
+             {% else %}
+              <img id="main-product-image" src="{{ main_image.image.url }}" alt="{{ product.title }}" class="img-fluid mb-3" style="max-width: 100%; cursor: pointer;" onclick="openLightbox(this.src)">
+             {% endif %}
+
+            {% endwith %}
+        {% elif product.image %}
+            <img id="main-product-image" src="{{ product.image.url }}" alt="{{ product.title }}" class="img-fluid mb-3" style="max-width: 100%; cursor: pointer;" onclick="openLightbox(this.src)">
+        {% endif %}
+        <!-- Badges -->
+        {% if product.badge_text or product.is_new or product.discount_percent %}
+        <div class="product__flash-4 position-absolute top-0 start-0 d-flex flex-column align-items-start gap-1 p-2" style="z-index: 2;">
+          {% if product.badge_text %}
+              <span class="badge badge-neutral rect-badge">{{ product.badge_text }}</span>
+          {% endif %}
+          {% if product.is_new %}
+              <span class="badge badge-neutral rect-badge">جدید</span>
+          {% endif %}
+          {% if product.discount_percent %}
+              <span class="badge badge-danger rect-badge titr-font">{{ product.discount_percent }}%</span>
+          {% endif %}
+        </div>
+        {% endif %}
+
+       </div>
+
+
+        {# Thumbnails #}
+
+        <div class="swiper-container product-thumbnails-slider" id="product-thumbnails-swiper" style="max-width: 450px;">
+          <div class="swiper-wrapper">
+            {% for img in product.images.all %}
+              <div class="swiper-slide">
+                <img src="{{ img.image.url }}" alt="{{ img.alt_text }}" class="img-thumbnail"
+                     style="width: 80px; cursor:pointer;"
+                     onclick="document.getElementById('main-product-image').src=this.src;">
+              </div>
+            {% endfor %}
+            {% if not product.images.all and product.image %}
+              <div class="swiper-slide">
+                <img src="{{ product.image.url }}" alt="{{ product.title }}" class="img-thumbnail"
+                     style="width: 80px; cursor:pointer;"
+                     onclick="document.getElementById('main-product-image').src=this.src;">
+              </div>
+            {% endif %}
+          </div>
+          <!-- Add Arrows -->
+           <!-- Custom Next Button -->
+
+           <div class="swiper-button-next custom-swiper-arrow"></div>
+           <div class="swiper-button-prev custom-swiper-arrow"></div>
+        </div>
+                
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var thumbCount = document.querySelectorAll('#product-thumbnails-swiper .swiper-slide').length;
+        var slidesPerView = Math.min(5, thumbCount);
+        var nextBtn = document.querySelector('#product-thumbnails-swiper .swiper-button-next');
+        var prevBtn = document.querySelector('#product-thumbnails-swiper .swiper-button-prev');
+
+        console.log("count:",thumbCount);
+  // Hide arrows if 5 or fewer images
+  if (thumbCount <= 5) {
+    if (nextBtn) nextBtn.style.display = 'none';
+    if (prevBtn) prevBtn.style.display = 'none';
+  } else {
+    if (nextBtn) nextBtn.style.display = '';
+    if (prevBtn) prevBtn.style.display = '';
+  }        
+        var swiper = new Swiper('#product-thumbnails-swiper', {
+          slidesPerView: slidesPerView,
+          spaceBetween: 8,
+          navigation: {
+            nextEl: '#product-thumbnails-swiper .swiper-button-next',
+            prevEl: '#product-thumbnails-swiper .swiper-button-prev',
+          },
+          // Only enable sliding if more than 5 images
+          watchOverflow: true,
+        });
+      });
+    </script>    
+
+      <!-- Product Info -->
+<div class="col-xl-6 col-lg-6">
+  <div class="product__modal-content-2">
+    <h4>{{ product.title }}</h4>
+
+    <div class="product__price mb-25 text-end">
+      {% if product.is_discount_active and product.discount_price %}
+        <del class="d-block text-muted mb-1 titr-font">{{ product.price|three_digits_currency }}</del>
+        <span class="price text-danger d-block titr-font">{{ product.discount_price|three_digits_currency }}</span>
+      {% else %}
+        <span class="price text-danger d-block titr-font">{{ product.price|three_digits_currency }}</span>
+      {% endif %}
+      {% if product.cheque_price %}
+        <br>
+        <span class="price text-muted d-block titr-font">قیمت چکی : {{ product.cheque_price|three_digits_currency }}</span>
+      {% endif %}
+    </div>
+
+    <!-- Product Add-ons Section -->
+    {% if product.addons.exists %}
+    <div class="product-addons mb-25">
+      {% csrf_token %}
+      <h5 class="mb-3">افزونه‌های قابل انتخاب</h5>
+      <div class="addons-list">
+        {% for addon in product.addons.all %}
+          {% if addon.is_active %}
+          <div class="addon-item mb-3 p-2 border rounded">
+            <div class="form-check d-flex justify-content-between align-items-center">
+              <div class="form-check-input-container">
+                <input class="form-check-input" type="checkbox" 
+                       id="addon_{{ addon.id }}" 
+                       name="addons" 
+                       value="{{ addon.id }}"
+                       {% if addon.is_required %}checked disabled{% endif %}
+                       onchange="updateTotalPrice()">
+                <label class="form-check-label" for="addon_{{ addon.id }}">
+                  <strong>{{ addon.name }}</strong>
+                  {% if addon.description %}
+                    <br><small class="text-muted">{{ addon.description }}</small>
+                  {% endif %}
+                </label>
+              </div>
+              <div class="addon-price">
+                <span class="text-success titr-font">+{{ addon.additional_cost|three_digits_currency }}</span>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      
+      <!-- Total Price Display -->
+      <div class="total-price-display mt-3 p-3 bg-light rounded">
+        <div class="d-flex justify-content-between align-items-center">
+          <span class="fw-bold">قیمت نهایی:</span>
+          <span id="total-price" class="text-danger titr-font fw-bold">
+            {% if product.is_discount_active and product.discount_price %}
+              {{ product.discount_price|three_digits_currency }}
+            {% else %}
+              {{ product.price|three_digits_currency }}
+            {% endif %}
+          </span>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Add to Cart placed immediately below price -->
+    <div class="add-to-cart mt-4 mb-20">
+      <div class="d-flex align-items-center gap-2">
+        <input type="number" id="product-count" value="1" min="1" class="form-control w-auto" style="max-width: 100px;">
+        <button type="button" onclick="addProductToOrderWithAddons({{ product.id }})" class="add-to-cart-btn">افزودن به سبد خرید</button>
+      </div>
+    </div>
+
+    <div class="product__modal-des mb-30">
+      {{ product.short_description|safe }}
+    </div>
+
+    <!-- Category List -->
+    <div class="product__tag mb-25">
+      <span class="ct mr-20">دسته بندی:</span>
+      {% for cat in product.category.all %}
+        <span><a href="{% url 'product-categories_list' cat.url_title %}">{{ cat.title }}</a></span>
+      {% endfor %}
+    </div>
+
+    <!-- Dynamic Filtered Options -->
+    {% if product.has_custom_options and product.selectable_options.exists %}
+      <div class="product__filters mt-4">
+        <h5>مشخصات قابل انتخاب</h5>
+        <form method="POST" action="">
+          {% csrf_token %}
+          {% for option in product.selectable_options.all %}
+            <div class="form-group mb-3">
+              <label>{{ option.option_type.name }}</label>
+              <select name="option_{{ option.option_type.id }}" class="form-control">
+                {% for value in option.allowed_values.all %}
+                  <option value="{{ value.id }}">{{ value.value }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          {% endfor %}
+          <button type="submit" class="add-to-cart-btn">افزودن به سبد خرید</button>
+        </form>
+      </div>
+    {% endif %}
+
+    <!-- Share Buttons -->
+    <div class="product__share mt-4">
+      <span>اشتراک گذاری:</span>
+      <ul>
+        <li><a href="https://wa.me/?text={{ request.build_absolute_uri }}" target="_blank"><i class="fab fa-whatsapp"></i></a></li>
+        <li><a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text={{ product.title }}" target="_blank"><i class="fab fa-telegram"></i></a></li>
+        <li><a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+    </div>
+
+    <!-- Tabs -->
+    <div class="row mt-70">
+      <div class="col-xl-12">
+        <div class="product__details-tab">
+          <div class="product__details-tab-nav text-center mb-45">
+            <nav>
+              <div class="nav nav-tabs justify-content-start justify-content-sm-center" id="pro-details" role="tablist">
+                <a class="nav-item nav-link active" id="des-tab" data-bs-toggle="tab" href="#des" role="tab" aria-controls="des" aria-selected="true">توضیحات</a>
+                <a class="nav-item nav-link" id="review-tab" data-bs-toggle="tab" href="#review" role="tab" aria-controls="review" aria-selected="false">نظرات کاربران ({{ comments|length }})</a>
+              </div>
+            </nav>
+          </div>
+
+          <div class="tab-content" id="pro-detailsContent">
+            <!-- Full Description -->
+            <div class="tab-pane fade active show" id="des" role="tabpanel">
+              <div class="product__details-des mb-20">
+                {{ product.description|safe }}
+              </div>
+            </div>
+
+            <!-- Comments -->
+            <div class="tab-pane fade" id="review" role="tabpanel">
+              <div class="product__details-review mb-35">
+                <div class="postbox__comments">
+                  <div class="postbox__comment-title mb-30">
+                    <h3>نظرات کاربران</h3>
+                  </div>
+                  <div class="latest-comments mb-30">
+                    <ul>
+                      {% for comment in comments %}
+                        <li>
+                          <div class="comments-box d-flex align-items-start gap-3">
+                            <div class="comments-avatar flex-shrink-0">
+                              <img src="/static/img/istockphoto-1130884625-612x612.jpg" alt="user" class="rounded-circle" style="width: 45px; height: 45px; object-fit: cover;">
+                            </div>
+                            <div class="comments-text">
+                              <h5 class="d-inline">{{ comment.user.get_full_name|default:comment.user.username }}</h5>
+                              {% if comment.is_verified_buyer %}
+                                <span class="badge bg-success text-white ms-2">خریدار محصول</span>
+                              {% endif %}
+                              <span class="d-block text-muted mt-1"> - {{ comment.created_at|show_jalali_date }}</span>
+                              <p class="mt-2 mb-0">{{ comment.text }}</p>
+                            </div>
+                          </div>
+                        </li>
+                      {% empty %}
+                        <li><p>نظری برای این محصول ثبت نشده است.</p></li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+
+                {% if request.user.is_authenticated %}
+                  <div class="post-comments-form">
+                    <div class="post-comments-title mb-30">
+                      <h3>ثبت نظر</h3>
+                    </div>
+                    <form method="post" action="">
+                      {% csrf_token %}
+                      <div class="row">
+                        <div class="col-12">{{ form.text }}</div>
+                        <div class="col-12 mt-3">
+                          <button class="add-cart-btn" type="submit">ارسال نظر</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                {% else %}
+                  <p class="text-danger">برای ثبت نظر لطفاً ابتدا وارد حساب کاربری شوید.</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if trending_products %}
+  <div class="row mt-50">
+    <div class="col-12">
+      <div class="trending__info text-center">
+        <h5>محصولات مرتبط</h5>
+        <p>بر اساس دسته‌بندی مشابه</p>
+      </div>
+    </div>
+
+    <!-- Trending slider with arrows -->
+    <div class="col-12 position-relative">
+      <!-- Custom Prev Button -->
+      <div class="trending-slider-nav trending-slider-prev">
+        <button class="trending-arrow-btn"><i class="far fa-angle-right"></i></button>
+      </div>
+
+      <!-- Slider -->
+      <div class="trending-slider owl-carousel owl-theme mt-40">
+        {% for trend in trending_products %}
+          <div class="item">
+            <div class="trending-card">
+              <div class="trending-image">
+                <a href="{{ trend.get_absolute_url }}">
+                  <img src="{{ trend.image.url }}" alt="{{ trend.title }}" class="img-fluid">
+                </a>
+              </div>
+              <div class="trending-content text-center mt-2">
+                <h6 class="mb-1">{{ trend.title }}</h6>
+                {% if trend.is_discount_active and trend.discount_price %}
+                  <del class="d-block text-muted titr-font">{{ trend.price|three_digits_currency }}</del>
+                  <span class="text-danger d-block titr-font">{{ trend.discount_price|three_digits_currency }}</span>
+                {% else %}
+                  <span class="d-block titr-font">{{ trend.price|three_digits_currency }}</span>
+                {% endif %}
+                <a href="{{ trend.get_absolute_url }}" class="select-btn btn-sm mt-2">مشاهده</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- Custom Next Button -->
+      <div class="trending-slider-nav trending-slider-next">
+        <button class="trending-arrow-btn"><i class="far fa-angle-left"></i></button>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+  </div>
+</section>
+
+{# Lightbox Modal #}
+<div id="productLightbox" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); align-items:center; justify-content:center;">
+    <span onclick="closeLightbox()" style="position:absolute; top:30px; right:40px; color:#fff; font-size:2rem; cursor:pointer;">&times;</span>
+    <img id="lightboxImage" src="" style="max-width:90vw; max-height:90vh; display:block; margin:auto;">
+</div>
+
+<script>
+function openLightbox(src) {
+    var lightbox = document.getElementById('productLightbox');
+    var img = document.getElementById('lightboxImage');
+    img.src = src;
+    lightbox.style.display = 'flex';
+}
+function closeLightbox() {
+    document.getElementById('productLightbox').style.display = 'none';
+}
+// Optional: Close on background click
+window.onclick = function(event) {
+    var lightbox = document.getElementById('productLightbox');
+    if (event.target === lightbox) {
+        closeLightbox();
+    }
+}
+
+// Add-on price calculation
+function updateTotalPrice() {
+    {% if product.addons.exists %}
+    var basePrice = {% if product.is_discount_active and product.discount_price %}{{ product.discount_price|default:0 }}{% else %}{{ product.price|default:0 }}{% endif %};
+    var totalPrice = basePrice;
+    
+    // Get all checked add-ons
+    var checkedAddons = document.querySelectorAll('input[name="addons"]:checked');
+    checkedAddons.forEach(function(addon) {
+        var addonId = addon.value;
+        {% for addon in product.addons.all %}
+        if (addonId == '{{ addon.id }}') {
+            totalPrice += {{ addon.additional_cost }};
+        }
+        {% endfor %}
+    });
+    
+    // Update the total price display
+    var totalPriceElement = document.getElementById('total-price');
+    if (totalPriceElement) {
+        totalPriceElement.textContent = new Intl.NumberFormat('fa-IR').format(totalPrice) + ' ریال';
+    }
+    {% endif %}
+}
+
+// Initialize total price on page load
+document.addEventListener('DOMContentLoaded', function() {
+    updateTotalPrice();
+});
+
+// Add product to cart with selected add-ons
+function addProductToOrderWithAddons(productId) {
+    var count = $('#product-count').val();
+    var selectedAddons = [];
+    
+    // Get all checked add-ons
+    $('input[name="addons"]:checked').each(function() {
+        selectedAddons.push($(this).val());
+    });
+    
+    // Build URL with parameters
+    var url = '/order/add-to-order?product_id=' + productId + '&count=' + count;
+    if (selectedAddons.length > 0) {
+        url += '&selected_addons=' + encodeURIComponent(JSON.stringify(selectedAddons));
+    }
+    
+    // Send AJAX request using jQuery (same as existing function)
+    $.get(url).then(res => {
+        if (res.status === 'success') {
+            // Success dialog with two buttons (same as existing function)
+            Swal.fire({
+                title: 'اعلان',
+                text: res.text,
+                icon: res.icon,
+                showCancelButton: true,
+                confirmButtonText: 'مشاهده سبد خرید',
+                cancelButtonText: 'تایید',
+                confirmButtonColor: '#ff8429',
+                cancelButtonColor: '#3085d6'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/user-panel/user-basket';
+                }
+            });
+        } else {
+            // Error dialog
+            Swal.fire({
+                title: 'خطا',
+                text: res.text,
+                icon: res.icon,
+                confirmButtonText: res.confirm_button_text,
+                confirmButtonColor: '#3085d6'
+            });
+        }
+    }).catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+            title: 'خطا',
+            text: 'خطا در ارتباط با سرور',
+            icon: 'error',
+            confirmButtonText: 'تایید',
+            confirmButtonColor: '#3085d6'
+        });
+    });
+}
+</script>
+{% endblock %}

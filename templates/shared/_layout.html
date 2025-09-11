@@ -1,0 +1,21 @@
+{% load render_partial %}
+{% include 'shared/header_refrences.html' %}
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<body>
+{% render_partial 'home_module.views.site_header_partial' %}
+{% block content %}{% endblock %}
+{% render_partial 'home_module.views.site_footer_partial' %}
+    <a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
+    
+    <!-- Progress Wrap for Back to Top -->
+    <div class="progress-wrap">
+        <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+        </svg>
+    </div>
+    
+   {% include 'shared/footer_refrences.html' %}
+</body>
