@@ -76,8 +76,8 @@ class ProductAddonAdminForm(forms.ModelForm):
 class ProductSelectableOptionInline(admin.StackedInline):
     model = ProductSelectableOption
     extra = 1
-    verbose_name = 'گزینه قابل انتخاب دیگر'
-    verbose_name_plural = 'گزینه‌های قابل انتخاب دیگر'
+    verbose_name = 'گزینه قابل انتخاب'
+    verbose_name_plural = 'گزینه‌های قابل انتخاب'
     #filter_horizontal = ['allowed_values']
 
 # ------------------------------------
