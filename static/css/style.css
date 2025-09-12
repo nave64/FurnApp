@@ -74,8 +74,30 @@ body {
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: 'BYekan';
+  src: url('/static/fonts/BYekan.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Samim';
+  src: url('/static/fonts/Samim-FD.woff2') format('woff2'),
+       url('/static/fonts/Samim-FD.woff') format('woff'),
+       url('/static/fonts/Samim-FD.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Iraniansans';
+  src: url('/static/fonts/Iraniansans.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 .titr-font {
-  font-family: 'Titr', sans-serif !important;
+  font-family: 'BYekan', 'Samim', 'Lalezar', 'Iraniansans', sans-serif !important;
   direction: rtl;
 }
 
