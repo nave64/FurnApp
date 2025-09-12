@@ -8,6 +8,15 @@
 {% block content %}
 <section class="product-details pt-90 pb-50" dir="rtl">
   <div class="container">
+    <!-- Back Button -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <button type="button" class="btn btn-outline-secondary" onclick="goBack()" style="border-radius: 6px;">
+          <i class="fa fa-arrow-right me-2"></i> بازگشت
+        </button>
+      </div>
+    </div>
+    
     <div class="row">
 
       <!-- Product Image Album -->
@@ -413,6 +422,22 @@ document.addEventListener('DOMContentLoaded', function() {
     updateTotalPrice();
 });
 
+// Intelligent back button function
+function goBack() {
+    // Check if there's a referrer and it's from the same domain
+    if (document.referrer && document.referrer.includes(window.location.hostname)) {
+        // Check if the referrer is not the same as current page
+        if (document.referrer !== window.location.href) {
+            // Go back to the previous page
+            window.history.back();
+            return;
+        }
+    }
+    
+    // If no valid referrer or same page, redirect to products page
+    window.location.href = "{% url 'product_list' %}";
+}
+
 // Add product to cart with selected add-ons
 function addProductToOrderWithAddons(productId) {
     var count = $('#product-count').val();
@@ -447,6 +472,11 @@ function addProductToOrderWithAddons(productId) {
                     window.location.href = '/user-panel/user-basket';
                 }
             });
+            
+            // Update cart badge after successful add to cart
+            if (typeof window.updateCartCount === 'function') {
+                window.updateCartCount();
+            }
         } else {
             // Error dialog
             Swal.fire({

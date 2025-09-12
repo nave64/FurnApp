@@ -66,9 +66,9 @@
                         {% endif %}
                     </td>
                     <td class="product-quantity">
-                        <div class="input-group justify-content-center" style="max-width: 140px; margin: auto;">
+                        <div class="input-group justify-content-center" style="max-width: 110px; margin: auto;">
                             <button type="button" class="btn btn-outline-secondary btn-sm" onclick="window.decreaseQuantity(this)">-</button>
-                            <input type="text" name="count_{{ detail.id }}" class="form-control text-center" value="{{ detail.count }}" readonly style="width: 50px;">
+                            <input type="text" name="count_{{ detail.id }}" class="form-control text-center" value="{{ detail.count }}" readonly style="width: 30px; padding: 5px 5px;">
                             <button type="button" class="btn btn-outline-secondary btn-sm" onclick="window.increaseQuantity(this)">+</button>
                         </div>
                     </td>

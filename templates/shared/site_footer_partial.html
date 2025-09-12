@@ -54,7 +54,11 @@
                                         <li><a href="{% url 'contact_page_urls' %}">تماس با ما</a></li>
                                         <!-- <li><a href="contact.html">انتخاب و خرید پارچه مبلی</a></li> -->
                                         <li><a href="{% url 'product_list' %}">فروشگاه</a></li>
-                                        <li><a href="{% url 'register_page' %}">ثبت نام</a></li>
+                                        {% if request.user.is_authenticated %}
+                                            <li><a href="{% url 'user_panel_urls' %}">پنل کاربری</a></li>
+                                        {% else %}
+                                            <li><a href="{% url 'login_page' %}">ورود</a></li>
+                                        {% endif %}
                                     </ul>
                                 </div>
                             </div>

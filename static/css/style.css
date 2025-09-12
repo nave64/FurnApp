@@ -1601,7 +1601,7 @@ input {
 /* Cart Count Badge */
 .cart-count-badge {
   position: absolute;
-  top: -2px;
+  top: 2px;
   right: -8px;
   display: none; /* Hidden by default */
   min-width: 18px;
@@ -7717,16 +7717,31 @@ p.checkout-coupon input[type=text]::placeholder {
 
 @media (max-width: 576px) {
   .category-image {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
   }
 
   .category-title {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   .category-count {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .category-image {
+    width: 60px;
+    height: 60px;
+  }
+
+  .category-title {
+    font-size: 0.8rem;
+  }
+
+  .category-count {
+    font-size: 0.7rem;
   }
 }
 .main-furniture-section {
@@ -8281,8 +8296,8 @@ p.checkout-coupon input[type=text]::placeholder {
   align-items: center;
   justify-content: center;
   height: 28px;
-  min-width: 80px;
-  padding: 0 16px;
+  min-width: 60px;
+  padding: 0 8px;
   font-size: 13px;
   font-weight: 600;
   border-radius: 4px; /* slightly rounded corners */
@@ -8307,7 +8322,7 @@ p.checkout-coupon input[type=text]::placeholder {
   align-items: center;
   justify-content: center;
   height: 18px;
-  min-width: 40px;
+  min-width: 50px;
   padding: 0 8px;
   font-size: 11px;
   font-weight: 600;
@@ -8316,12 +8331,13 @@ p.checkout-coupon input[type=text]::placeholder {
   white-space: nowrap;
 }
 
-/* Rectangle badge override — breaks the circular badge rules */
+/* Rectangle badge override — breaks the circular badge rules - products page badges */
 .product__flash-4 span.rect-badge {
   width: auto !important;
-  height: 28px !important;
+  min-width: 48px;
+  height: 25px !important;
   line-height: 1 !important;
-  padding: 4px 14px !important;
+  padding: 2px 8px !important;
   border-radius: 4px !important;
   display: inline-flex !important;
   align-items: center;
@@ -8330,19 +8346,140 @@ p.checkout-coupon input[type=text]::placeholder {
   font-size: 13px !important;
 }
 
-/* Rectangle badge override — breaks the circular badge rules */
+/* Rectangle badge override — breaks the circular badge rules - main page badges*/
 .product__flash-4 span.rect-badge-sm {
   width: auto !important;
-  min-width: 45px;
-  height: 18px !important;
+  min-width: 38px;
+  height: 22px !important;
   line-height: 1 !important;
-  padding: 0px 8px !important;
+  padding: 0px 4px !important;
   border-radius: 4px !important;
   display: inline-flex !important;
   align-items: center;
   justify-content: center;
   white-space: nowrap;
-  font-size: 11px !important;
+  font-size: 12px !important;
+}
+
+/* Mobile Menu Header Spacing */
+#offCanvasModal .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+}
+
+#offCanvasModal .modal-header .modal-title {
+  margin: 0;
+  flex-grow: 1;
+}
+
+#offCanvasModal .modal-header .btn-close {
+  margin-left: 1rem;
+  margin-right: 0;
+}
+
+/* Mobile Menu User Panel and Admin Panel Colors */
+#offCanvasModal .nav-link.text-warning {
+  color: #2c5aa0 !important; /* Dark blue for better contrast on white background */
+  font-weight: 600;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  padding: 0.75rem 1rem !important;
+  margin: 0.25rem 0;
+  border: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+#offCanvasModal .nav-link.text-warning:hover {
+  color: #1e3a5f !important;
+  background-color: #e9ecef;
+  border-color: #dee2e6;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Mobile Menu Regular Items Styling */
+#offCanvasModal .nav-link:not(.text-warning) {
+  color: #333 !important;
+  font-weight: 500;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  padding: 0.75rem 1rem !important;
+  margin: 0.25rem 0;
+  border: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+#offCanvasModal .nav-link:not(.text-warning):hover {
+  color: #000 !important;
+  background-color: #e9ecef;
+  border-color: #dee2e6;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Active state for mobile menu items */
+#offCanvasModal .nav-link.active {
+  color: #fff !important;
+  background-color: #ff8429;
+  border-color: #ff8429;
+}
+
+#offCanvasModal .nav-link.active:hover {
+  color: #fff !important;
+  background-color: #e67300;
+  border-color: #e67300;
+}
+
+/* Mobile Cart Icon Styling */
+.mobile-cart-icon {
+  display: flex;
+  align-items: center;
+}
+
+.mobile-cart-icon a {
+  display: inline-block;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.mobile-cart-icon a:hover {
+  background-color: #f8f9fa;
+  transform: scale(1.1);
+}
+
+.mobile-cart-icon a:hover i {
+  color: #ff8429 !important;
+}
+
+/* Mobile cart badge positioning */
+.mobile-cart-icon .cart-count-badge {
+  position: absolute;
+  top: -2px;
+  right: -8px;
+  display: none; /* Hidden by default */
+  min-width: 18px;
+  height: 18px;
+  line-height: 18px;
+  text-align: center;
+  font-size: 11px;
+  color: #ffffff;
+  background-color: #db3340;
+  font-weight: 600;
+  border-radius: 50%;
+  padding: 0 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Cart quantity buttons - sharp corners */
+.product-quantity .btn {
+  border-radius: 0 !important;
+  min-width: 20px !important;
+  width: 20px !important;
+  padding: 0 !important;
+  text-align: center;
 }
 
 /* Increase font size of the 'اعتبار خرید چکی' column header */

@@ -42,7 +42,7 @@
     <div class="row justify-content-center">
       <hr>
       {% for category in dynamic_categories %}
-      <div class="col-6 col-sm-4 col-md-3">
+      <div class="col-3 col-sm-3 col-md-3">
           <div class="category-card text-center">
             <a href="{% url 'product_list' %}?category={{ category.url_title }}">
               <img src="{{ category.image.url }}" alt="{{ category.title }}" class="category-image">
