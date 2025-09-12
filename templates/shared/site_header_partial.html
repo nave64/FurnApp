@@ -173,13 +173,13 @@
                             <i class="fa fa-shopping-cart"></i> سبد خرید
                             <span class="cart-count-badge" id="cart-count-badge-mobile">0</span>
                         </a></li>
-                        <li><a href="shop.html" class="nav-link text-warning">مشاهده پنل کاربری</a></li>
+                        <li><a href="{% url 'user_panel_urls' %}" class="nav-link text-warning">مشاهده پنل کاربری</a></li>
                         {% if request.user.is_superuser %}
                             <li><a href="{% url 'admin:index' %}" class="nav-link text-warning">پنل مدیریت</a></li>
                         {% endif %}
                         <li><a href="javascript:void(0);" onclick="confirmLogout()" class="nav-link">خروج</a></li>
                     {% else %}
-                        <li><a href="shop.html" class="nav-link">ورود</a></li>
+                        <li><a href="{% url 'login_page' %}" class="nav-link">ورود</a></li>
                         <li><a href="{% url 'register_page' %}" class="nav-link">ثبت نام</a></li>
                     {% endif %}
                 </ul>
