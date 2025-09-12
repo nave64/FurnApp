@@ -56,6 +56,28 @@
                             </ul>
                         </div>
                         {% endif %}
+                        
+                        {% if detail.selected_options %}
+                        <div class="options-list mt-2">
+                            <small class="text-muted">مشخصات انتخاب شده:</small>
+                            <ul class="list-unstyled mb-0">
+                                {% for option_name, option_value_id in detail.selected_options.items %}
+                                    {% for option_type in detail.product.selectable_options.all %}
+                                        {% if option_name|option_name_match:option_type.option_type.id %}
+                                            <li class="small text-info">
+                                                <strong>{{ option_type.option_type.name }}:</strong>
+                                                {% for value in option_type.allowed_values.all %}
+                                                    {% if value.id|stringformat:"s" == option_value_id|stringformat:"s" %}
+                                                        {{ value.value }}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
                     </td>
                     <td class="product-price">
                         <span class="amount price-font">{{ detail.final_price|three_digits_currency }}</span>

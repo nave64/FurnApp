@@ -90,6 +90,7 @@ def add_product_to_order(request: HttpRequest):
         product_id = int(request.POST.get('product_id'))
         count = int(request.POST.get('count'))
         selected_addons_json = request.POST.get('selected_addons', '[]')
+        selected_options_json = request.POST.get('selected_options', '{}')
         
         try:
             selected_addons = json.loads(selected_addons_json)
@@ -97,10 +98,16 @@ def add_product_to_order(request: HttpRequest):
             selected_addons = [int(addon_id) for addon_id in selected_addons if str(addon_id).isdigit()]
         except (json.JSONDecodeError, ValueError):
             selected_addons = []
+            
+        try:
+            selected_options = json.loads(selected_options_json)
+        except (json.JSONDecodeError, ValueError):
+            selected_options = {}
     else:
         product_id = int(request.GET.get('product_id'))
         count = int(request.GET.get('count'))
         selected_addons_json = request.GET.get('selected_addons', '[]')
+        selected_options_json = request.GET.get('selected_options', '{}')
         
         try:
             selected_addons = json.loads(selected_addons_json)
@@ -108,6 +115,11 @@ def add_product_to_order(request: HttpRequest):
             selected_addons = [int(addon_id) for addon_id in selected_addons if str(addon_id).isdigit()]
         except (json.JSONDecodeError, ValueError):
             selected_addons = []
+            
+        try:
+            selected_options = json.loads(selected_options_json)
+        except (json.JSONDecodeError, ValueError):
+            selected_options = {}
 
     if count < 1:
         return JsonResponse({
@@ -127,9 +139,10 @@ def add_product_to_order(request: HttpRequest):
             existing_details = current_order.orderdetail_set.filter(product_id=product_id)
             current_order_detail = None
             
-            # Find matching order detail with same add-ons
+            # Find matching order detail with same add-ons and options
             for detail in existing_details:
-                if set(detail.selected_addons) == set(selected_addons):
+                if (set(detail.selected_addons) == set(selected_addons) and 
+                    detail.selected_options == selected_options):
                     current_order_detail = detail
                     break
             
@@ -151,7 +164,8 @@ def add_product_to_order(request: HttpRequest):
                     product_id=product_id,
                     count=count,
                     final_price=final_price,
-                    selected_addons=selected_addons
+                    selected_addons=selected_addons,
+                    selected_options=selected_options
                 )
                 new_detail.save()
                 print(f"DEBUG: Created new OrderDetail with selected_addons: {new_detail.selected_addons}")

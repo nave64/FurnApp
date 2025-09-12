@@ -130,6 +130,26 @@
       {% endif %}
     </div>
 
+    <!-- Dynamic Filtered Options -->
+    {% if product.has_custom_options and product.selectable_options.exists %}
+      <div class="product__filters mt-4">
+        <h5>مشخصات قابل انتخاب</h5>
+        <form method="POST" action="">
+          {% csrf_token %}
+          {% for option in product.selectable_options.all %}
+            <div class="form-group mb-3">
+              <label>{{ option.option_type.name }}</label>
+              <select name="option_{{ option.option_type.id }}" class="form-control">
+                {% for value in option.allowed_values.all %}
+                  <option value="{{ value.id }}">{{ value.value }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          {% endfor %}
+        </form>
+      </div>
+    {% endif %}
+
     <!-- Product Add-ons Section -->
     {% if product.addons.exists %}
     <div class="product-addons mb-25">
@@ -198,27 +218,6 @@
         <span><a href="{% url 'product-categories_list' cat.url_title %}">{{ cat.title }}</a></span>
       {% endfor %}
     </div>
-
-    <!-- Dynamic Filtered Options -->
-    {% if product.has_custom_options and product.selectable_options.exists %}
-      <div class="product__filters mt-4">
-        <h5>مشخصات قابل انتخاب</h5>
-        <form method="POST" action="">
-          {% csrf_token %}
-          {% for option in product.selectable_options.all %}
-            <div class="form-group mb-3">
-              <label>{{ option.option_type.name }}</label>
-              <select name="option_{{ option.option_type.id }}" class="form-control">
-                {% for value in option.allowed_values.all %}
-                  <option value="{{ value.id }}">{{ value.value }}</option>
-                {% endfor %}
-              </select>
-            </div>
-          {% endfor %}
-          <button type="submit" class="add-to-cart-btn">افزودن به سبد خرید</button>
-        </form>
-      </div>
-    {% endif %}
 
     <!-- Share Buttons -->
     <div class="product__share mt-4">
@@ -438,20 +437,31 @@ function goBack() {
     window.location.href = "{% url 'product_list' %}";
 }
 
-// Add product to cart with selected add-ons
+// Add product to cart with selected add-ons and options
 function addProductToOrderWithAddons(productId) {
     var count = $('#product-count').val();
     var selectedAddons = [];
+    var selectedOptions = {};
     
     // Get all checked add-ons
     $('input[name="addons"]:checked').each(function() {
         selectedAddons.push($(this).val());
     });
     
+    // Get all selected options
+    $('.product__filters select[name^="option_"]').each(function() {
+        var optionName = $(this).attr('name');
+        var optionValue = $(this).val();
+        selectedOptions[optionName] = optionValue;
+    });
+    
     // Build URL with parameters
     var url = '/order/add-to-order?product_id=' + productId + '&count=' + count;
     if (selectedAddons.length > 0) {
         url += '&selected_addons=' + encodeURIComponent(JSON.stringify(selectedAddons));
+    }
+    if (Object.keys(selectedOptions).length > 0) {
+        url += '&selected_options=' + encodeURIComponent(JSON.stringify(selectedOptions));
     }
     
     // Send AJAX request using jQuery (same as existing function)

@@ -8550,3 +8550,72 @@ th.column-formatted_credit {
 /*----------------------------------------*/
 /*  Product Detail Tabs Line CSS END
 /*----------------------------------------*/
+
+/*----------------------------------------*/
+/*  Product Selectable Specifications Font Size
+/*----------------------------------------*/
+
+/* Selectable specifications section font sizes - easily customizable */
+.product__filters h5 {
+    font-size: 16px; /* Title font size - change this value */
+    font-family: 'samim', 'byekan', 'lalezar', 'iraniansans', sans-serif;
+}
+
+.product__filters .form-group label {
+    font-size: 17px; /* Label font size - change this value */
+    font-family: 'samim', 'byekan', 'lalezar', 'iraniansans', sans-serif;
+}
+
+.product__filters .form-control {
+    font-size: 16px; /* Select dropdown font size - change this value */
+    font-family: 'samim', 'byekan', 'lalezar', 'iraniansans', sans-serif;
+    padding-top: 0px !important;
+    padding-left: 10px !important;
+    width: 300px !important;
+    max-width: 130px !important;
+    height: 35px !important;
+}
+
+.product__filters .form-control option {
+    font-size: 16px; /* Option items font size - change this value */
+    font-family: 'samim', 'byekan', 'lalezar', 'iraniansans', sans-serif;
+}
+
+.product__filters .add-to-cart-btn {
+    font-size: 15px; /* Add to cart button font size - change this value */
+    font-family: 'samim', 'byekan', 'lalezar', 'iraniansans', sans-serif;
+}
+
+/*----------------------------------------*/
+/*  End Selectable Specifications Font Size
+/*----------------------------------------*/
+
+/*----------------------------------------*/
+/*  Cart Selected Options Dark Orange Color
+/*----------------------------------------*/
+
+/* Override text-info color in cart page for selected options */
+.options-list .text-info {
+    color: #cc5500 !important; /* Dark orange instead of blue */
+}
+
+.options-list .text-info strong {
+    color: #cc5500 !important; /* Dark orange for option names */
+}
+
+/*----------------------------------------*/
+/*  End Cart Selected Options Dark Orange Color
+/*----------------------------------------*/
+
+/*----------------------------------------*/
+/*  Product View Details Button Bold Font
+/*----------------------------------------*/
+
+/* Make مشاهده جزئیات button font bold */
+.select-btn {
+    font-weight: bold !important;
+}
+
+/*----------------------------------------*/
+/*  End Product View Details Button Bold Font
+/*----------------------------------------*/

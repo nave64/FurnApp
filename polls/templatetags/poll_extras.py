@@ -50,3 +50,10 @@ def persian_numbers(value):
 @register.simple_tag
 def multiply(quantity, price, *args, **kwargs):
     return three_digits_currency(quantity * price)
+
+
+@register.filter(name='option_name_match')
+def option_name_match(option_name, option_type_id):
+    """Check if option_name matches option_option_type_id format"""
+    expected_name = f"option_{option_type_id}"
+    return option_name == expected_name

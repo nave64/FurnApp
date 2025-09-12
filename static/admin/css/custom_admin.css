@@ -1,0 +1,18 @@
+/* Custom admin styles for OrderDetail */
+
+/* Increase width of final_price field */
+.field-final_price input[type="number"] {
+    width: 130px !important;
+    min-width: 130px !important;
+}
+
+/* Also increase width in list view if needed */
+.field-final_price {
+    min-width: 120px;
+}
+
+/* Make the field more prominent */
+.field-final_price input[type="number"] {
+    font-weight: bold;
+    text-align: left;
+}

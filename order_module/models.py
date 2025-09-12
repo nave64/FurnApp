@@ -9,7 +9,8 @@ class Order(models.Model):
     payment_date = models.DateField(null=True, blank=True, verbose_name='تاریخ پرداخت')
 
     def __str__(self):
-        return str(self.user)
+        status = "پرداخت شده" if self.is_paid else "در انتظار پرداخت"
+        return f"سفارش #{self.id} - {self.user.username} ({status})"
 
     def calculate_total_price(self):
         total_amount = 0
@@ -31,6 +32,7 @@ class OrderDetail(models.Model):
     final_price = models.IntegerField(null=True, blank=True, verbose_name='قیمت نهایی محصول تکی ')
     count = models.IntegerField(verbose_name='تعداد')
     selected_addons = models.JSONField(default=list, blank=True, verbose_name='افزونه‌های انتخاب شده')
+    selected_options = models.JSONField(default=dict, blank=True, verbose_name='گزینه‌های انتخاب شده')
 
     def __str__(self):
         return f"Order ID: {self.order.id}, Product: {self.product.title}, Count: {self.count}"
@@ -53,6 +55,32 @@ class OrderDetail(models.Model):
         """Get final price including add-ons"""
         base_price = self.final_price or self.product.price
         return base_price + self.get_total_addon_cost()
+
+    def get_addons_display(self):
+        """Get user-friendly display of selected addons"""
+        from product_module.models import ProductAddon
+        addon_names = []
+        for addon_id in self.selected_addons:
+            try:
+                addon_id_int = int(addon_id) if isinstance(addon_id, str) else addon_id
+                addon = ProductAddon.objects.get(id=addon_id_int, is_active=True)
+                addon_names.append(addon.name)
+            except (ProductAddon.DoesNotExist, ValueError):
+                continue
+        return " | ".join(addon_names) if addon_names else "هیچ افزونه‌ای انتخاب نشده"
+
+    def get_options_display(self):
+        """Get user-friendly display of selected options"""
+        option_texts = []
+        for option_name, option_value_id in self.selected_options.items():
+            for option_type in self.product.selectable_options.all():
+                if option_name == f"option_{option_type.option_type.id}":
+                    for value in option_type.allowed_values.all():
+                        if str(value.id) == str(option_value_id):
+                            option_texts.append(f"{option_type.option_type.name}: {value.value}")
+                            break
+                    break
+        return " | ".join(option_texts) if option_texts else "هیچ گزینه‌ای انتخاب نشده"
 
     class Meta:
         verbose_name = 'جزئیات سبد خرید '
