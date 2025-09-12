@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Liara pre-start script to ensure uploads directory exists and has proper permissions
+# Liara pre-start script to ensure uploads directory exists and run migrations
 
 # Create uploads directory if it doesn't exist
 mkdir -p /uploads
@@ -22,3 +22,9 @@ mkdir -p /uploads/user_uploads
 chmod -R 755 /uploads
 
 echo "Uploads directory setup completed successfully"
+
+# Run database migrations
+echo "Running database migrations..."
+python manage.py migrate --noinput
+
+echo "Database migrations completed successfully"
