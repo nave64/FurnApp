@@ -12,6 +12,10 @@ class UserImageUpload(models.Model):
     image_2 = models.ImageField(upload_to='user_uploads/')
     submitted_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name = 'تصاویر ارسالی کاربران'
+        verbose_name_plural = 'تصاویر ارسالی کاربران'
+
     def __str__(self):
         return f"{self.user.username} - {self.submitted_at.strftime('%Y-%m-%d %H:%M')}"
 
