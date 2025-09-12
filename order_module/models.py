@@ -79,7 +79,11 @@ class Payment(models.Model):
     payment_date = models.DateTimeField(null=True, blank=True, verbose_name='تاریخ پرداخت')
 
     def __str__(self):
-        return f"پرداخت {self.id} - {self.user.get_full_name()} - {self.amount} ریال"
+        if self.user:
+            user_name = self.user.get_full_name() or self.user.username
+            return f"پرداخت {self.id} - {user_name} - {self.amount} ریال"
+        else:
+            return f"پرداخت {self.id} - کاربر نامشخص - {self.amount} ریال"
 
     class Meta:
         verbose_name = 'پرداخت'

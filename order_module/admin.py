@@ -16,8 +16,20 @@ class OrderDetailAdmin(admin.ModelAdmin):
 
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user', 'amount', 'status', 'ref_id', 'created_at', 'payment_date']
+    list_display = ['id', 'get_user_display', 'amount', 'status', 'ref_id', 'created_at', 'payment_date']
     list_filter = ['status', 'created_at', 'payment_date']
-    search_fields = ['user__username', 'user__email', 'ref_id', 'authority']
+    search_fields = ['user__username', 'user__email', 'user__first_name', 'user__last_name', 'ref_id', 'authority']
     readonly_fields = ['created_at', 'updated_at']
     ordering = ['-created_at']
+    
+    def get_user_display(self, obj):
+        """Display user information in a more readable format"""
+        if obj.user:
+            if obj.user.get_full_name():
+                return f"{obj.user.get_full_name()} ({obj.user.username})"
+            else:
+                return obj.user.username
+        return "کاربر نامشخص"
+    
+    get_user_display.short_description = 'کاربر'
+    get_user_display.admin_order_field = 'user__username'

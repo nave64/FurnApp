@@ -1,11 +1,5 @@
 {
   "django": {
     "settingsFile": "mobland/settings.py"
-  },
-  "disks": [
-    {
-      "name": "database",
-      "mountTo": "database"
-    }
-  ]
+  }
 }

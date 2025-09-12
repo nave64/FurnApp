@@ -155,7 +155,11 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files (User uploads)
 MEDIA_URL = '/uploads/'
-MEDIA_ROOT = BASE_DIR / 'uploads'
+# Use mounted disk in production, local directory in development
+if os.getenv('LIARA_DISK_UPLOADS'):
+    MEDIA_ROOT = '/uploads'  # Liara mounted disk
+else:
+    MEDIA_ROOT = BASE_DIR / 'uploads'  # Local development
 
 AUTH_USER_MODEL = 'account_module.User'
 LOGIN_URL = '/login'
