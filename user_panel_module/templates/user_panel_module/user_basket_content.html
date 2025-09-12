@@ -49,8 +49,7 @@
                                     {% for addon in detail.product.addons.all %}
                                         {% if addon.id == addon_id or addon.id|stringformat:"s" == addon_id|stringformat:"s" %}
                                         <li class="small text-success">
-                                            <i class="fa fa-plus"></i> {{ addon.name }} (+{{ addon.additional_cost|three_digits_currency }})
-                                        </li>
+                                            <i class="fa fa-plus"></i> {{ addon.name }} (+<span class="price-font">{{ addon.additional_cost|three_digits_currency }}</span>)                                        </li>
                                         {% endif %}
                                     {% endfor %}
                                 {% endfor %}
@@ -59,10 +58,10 @@
                         {% endif %}
                     </td>
                     <td class="product-price">
-                        <span class="amount">{{ detail.final_price|three_digits_currency }}</span>
+                        <span class="amount price-font">{{ detail.final_price|three_digits_currency }}</span>
                         {% if detail.selected_addons %}
                         <div class="addon-cost mt-1">
-                            <small class="text-success">+{{ detail.get_total_addon_cost|three_digits_currency }}</small>
+                            <small class="text-success price-font">+{{ detail.get_total_addon_cost|three_digits_currency }}</small>
                         </div>
                         {% endif %}
                     </td>
@@ -74,7 +73,7 @@
                         </div>
                     </td>
                     <td class="product-subtotal">
-                        <span class="amount">{% multiply detail.count detail.get_final_price_with_addons %}</span>
+                        <span class="amount price-font">{% multiply detail.count detail.get_final_price_with_addons %}</span>
                     </td>
                     <td class="product-remove">
                         <a href="javascript:void(0);" onclick="window.removeOrderDetail('{{ detail.id }}')">
@@ -96,7 +95,7 @@
             <div class="cart-page-total">
                 <h2>مجموع سبد خرید</h2>
                 <ul class="mb-20">
-                    <li> <span class="text-center">{{ sum|three_digits_currency }}</span></li>
+                    <li> <span class="text-center price-font">{{ sum|three_digits_currency }}</span></li>
                     <!-- Debug: Raw sum value: {{ sum }} -->
                     <!-- Debug: Order details count: {{ order.orderdetail_set.count }} -->
                 </ul>

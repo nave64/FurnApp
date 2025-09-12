@@ -97,7 +97,11 @@ body {
   font-style: normal;
 }
 .titr-font {
-  font-family: 'BYekan', 'Samim', 'Lalezar', 'Iraniansans', sans-serif !important;
+  font-family: 'Samim', 'BYekan', 'Lalezar', 'Iraniansans', sans-serif !important;
+  direction: rtl;
+}
+.price-font {
+  font-family: 'Samim', 'BYekan', 'Lalezar', 'Iraniansans', sans-serif !important;
   direction: rtl;
 }
 
@@ -2845,10 +2849,10 @@ input {
   color: #ffffff;
 }
 .product__title {
-  font-size: 14px;
+  font-size: 16px;
   color: #222;
   margin-bottom: 3px;
-  font-weight: 500;
+  font-weight: 600;
 }
 .product__title a:hover {
   color: #b9a16b;
@@ -2862,7 +2866,7 @@ input {
   color: #b9a16b;
 }
 .product__title-3 {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   color: #222;
   margin-bottom: 0;
@@ -2934,6 +2938,14 @@ input {
   color: #555555;
   font-weight: 400;
 }
+/* Custom price fonts */
+.product__price .price,
+.product__price-2 .price,
+.product__price-3 .price,
+.product__price-4 .price {
+  font-family: 'Samim', 'BYekan', 'Lalezar', 'Iraniansans', sans-serif !important;
+}
+
 .product__sale-slider .owl-nav {
   position: absolute;
   top: -60px;
@@ -3406,7 +3418,7 @@ input {
   }
 }
 .product__modal-content-2 h4 {
-  font-size: 16px;
+  font-size: 18px;
   margin-bottom: 17px;
   color: #282828;
 }
@@ -3478,7 +3490,7 @@ input {
   text-decoration: line-through;
 }
 .product__modal-content-2 .product__price span {
-  font-size: 14px;
+  font-size: 16px;
   color: #222;
   font-weight: 500;
   margin-right: 7px;
