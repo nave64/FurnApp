@@ -100,8 +100,8 @@ class ForgetPasswordForm(forms.Form):
         widget=forms.NumberInput(
             attrs={'placeholder': ' شماره موبایل خود را وارد کنید  ', 'class': 'form-control text-center mt-4 mb-3'}),
         validators=[
-            validators.MaxLengthValidator(100),
-            validators.EmailValidator,
+            validators.MaxLengthValidator(11),
+            validators.MinLengthValidator(11),
         ]
     )
 

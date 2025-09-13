@@ -29,6 +29,11 @@
             {% endfor %}
 
             <button class="btn-tp w-100 mt-3">ورود</button>
+            
+            <div class="text-center mt-3">
+                <a href="{% url 'forget_password_page' %}" class="text-muted">فراموشی کلمه عبور</a>
+            </div>
+            
             <div class="sign__new text-center mt-3">
                 <p>حساب ندارید؟ <a href="{% url 'register_page' %}">ثبت نام</a></p>
             </div>
