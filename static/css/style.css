@@ -2691,6 +2691,13 @@ input {
 }
 .product__item {
   /* trending slider */
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product__item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 .product__item:hover .product__thumb img {
   -webkit-transform: scale(1.1);
@@ -2741,6 +2748,17 @@ input {
     display: none;
   }
 }
+.product__item-3 {
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px; /* Add padding to the card */
+}
+
+.product__item-3:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
 .product__item-3:hover .product__thumb-3 img {
   -webkit-transform: scale(1.1);
   -moz-transform: scale(1.1);
@@ -2755,6 +2773,32 @@ input {
   opacity: 1;
   right: 15px;
   top: 70px;
+}
+
+
+.product__thumb-3 {
+  margin-bottom: 5px; /* Add space between image and content */
+}
+
+/* Ensure add-to-cart section has proper spacing */
+.product__item-3 .add-to-cart {
+  margin-top: 0px; /* Add space above add-to-cart section */
+  padding: 0 0px; /* Add horizontal padding */
+}
+
+/* Reduce width of number input in hot deal cards */
+.product__item-3 .add-to-cart input[type="number"] {
+  max-width: 60px !important; /* Reduce from 100px to 60px */
+  width: 60px !important;
+}
+
+/* Reduce gap between price and add-to-cart section */
+.product__item-3 .product__price-4 {
+  margin-bottom: 7px !important; /* Reduce from mb-10 (40px) to 5px */
+}
+
+.product__item-3 .add-to-cart {
+  margin-top: 7px !important; /* Reduce from mt-4 (24px) to 5px */
 }
 .product__item-slider-2 .owl-nav {
   display: flex;
@@ -2831,8 +2875,8 @@ input {
 }
 .product__flash-4 {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 15px;
+  left: 15px;
 }
 .product__flash-4 span {
   display: inline-block;
@@ -7688,6 +7732,17 @@ p.checkout-coupon input[type=text]::placeholder {
 .category-card {
   text-align: center;
   margin-bottom: 30px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  padding: 10px;
+  background-color: #fff;
+  min-width: 170px; /* 150px circle + 20px padding */
+}
+
+.category-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .category-image {
@@ -7715,6 +7770,12 @@ p.checkout-coupon input[type=text]::placeholder {
   margin-top: 5px;
 }
 
+@media (max-width: 766px) {
+  .category-card {
+    margin-left: -30px; /* Shift cards left when overlapping */
+  }
+}
+
 @media (max-width: 576px) {
   .category-image {
     width: 80px;
@@ -7727,6 +7788,11 @@ p.checkout-coupon input[type=text]::placeholder {
 
   .category-count {
     font-size: 0.8rem;
+  }
+
+  .category-card {
+    min-width: 100px; /* 80px circle + 20px padding */
+    margin-left: 0px;
   }
 }
 
@@ -7742,6 +7808,11 @@ p.checkout-coupon input[type=text]::placeholder {
 
   .category-count {
     font-size: 0.7rem;
+  }
+
+  .category-card {
+    min-width: 80px; /* 60px circle + 20px padding */
+    margin-left: 0px;
   }
 }
 .main-furniture-section {
@@ -7783,7 +7854,13 @@ p.checkout-coupon input[type=text]::placeholder {
   text-align: center;
   padding: 15px;
   margin-bottom: 30px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.furniture-product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .furniture-product-image {
