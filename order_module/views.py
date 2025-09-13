@@ -21,6 +21,19 @@ def make_zarinpal_graphql_request(query, variables=None):
     """
     Make a GraphQL request to Zarinpal API
     """
+    # Validate required configuration
+    if not settings.ZARINPAL_ACCESS_TOKEN or settings.ZARINPAL_ACCESS_TOKEN == 'YOUR_ACCESS_TOKEN':
+        return {
+            'success': False,
+            'errors': [{'message': 'Zarinpal access token not configured'}]
+        }
+    
+    if not settings.ZARINPAL_MERCHANT_ID or settings.ZARINPAL_MERCHANT_ID == 'test':
+        return {
+            'success': False,
+            'errors': [{'message': 'Zarinpal merchant ID not configured'}]
+        }
+    
     headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -33,8 +46,19 @@ def make_zarinpal_graphql_request(query, variables=None):
     }
     
     try:
-        response = requests.post(ZP_GRAPHQL_ENDPOINT, json=data, headers=headers)
+        response = requests.post(ZP_GRAPHQL_ENDPOINT, json=data, headers=headers, timeout=30)
+        response.raise_for_status()  # Raise exception for HTTP errors
         return response.json()
+    except requests.exceptions.Timeout:
+        return {
+            'success': False,
+            'errors': [{'message': 'Zarinpal API timeout - please try again'}]
+        }
+    except requests.exceptions.RequestException as e:
+        return {
+            'success': False,
+            'errors': [{'message': f'Zarinpal API error: {str(e)}'}]
+        }
     except Exception as e:
         return {
             'success': False,
@@ -81,7 +105,7 @@ mutation VerifyPayment($input: PaymentVerifyInput!) {
 
 # Create your views here
 description = 'پرداخت اصفهان ابزار '
-callback_url = 'https://abzaresf.ir/order/verify/'
+# callback_url is now dynamically generated using request.build_absolute_uri()
 
 
 def add_product_to_order(request: HttpRequest):

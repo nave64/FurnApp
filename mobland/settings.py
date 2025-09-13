@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@cf86i@iun-ibc)o)7i%v@xnvq_1cn35d%-_(9_z1jltz@am71'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-@cf86i@iun-ibc)o)7i%v@xnvq_1cn35d%-_(9_z1jltz@am71')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
@@ -90,11 +94,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mobland.wsgi.application'
 
 # Zarinpal Payment Gateway Configuration
-ZARINPAL_MERCHANT_ID = 'test'  # Test merchant ID for development
-ZARINPAL_ACCESS_TOKEN = 'YOUR_ACCESS_TOKEN'  # OAuth 2.0 Access Token for GraphQL API
-ZARINPAL_SANDBOX = True  # Set to False for production
-ZARINPAL_CALLBACK_URL = 'http://localhost:8000/order/payment-verify/'  # Update with your domain
-ZARINPAL_MOCK_MODE = True  # Enable mock mode for testing
+ZARINPAL_MERCHANT_ID = os.getenv('ZARINPAL_MERCHANT_ID', 'test')  # Use environment variable
+ZARINPAL_ACCESS_TOKEN = os.getenv('ZARINPAL_ACCESS_TOKEN', 'YOUR_ACCESS_TOKEN')  # OAuth 2.0 Access Token for GraphQL API
+ZARINPAL_SANDBOX = os.getenv('ZARINPAL_SANDBOX', 'True').lower() == 'true'  # Set to False for production
+ZARINPAL_CALLBACK_URL = os.getenv('ZARINPAL_CALLBACK_URL', 'http://localhost:8000/order/payment-verify/')  # Use environment variable
+ZARINPAL_MOCK_MODE = os.getenv('ZARINPAL_MOCK_MODE', 'True').lower() == 'true'  # Enable mock mode for testing
+
+# Site URL for email templates and absolute URLs
+SITE_URL = os.getenv('SITE_URL', 'http://localhost:8000')
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -173,9 +180,14 @@ EMAIL_HOST_USER = str(os.getenv('EMAIL_USER'))
 EMAIL_HOST_PASSWORD = str(os.getenv('EMAIL_PASSWORD'))
 EMAIL_PORT = 587
 
-RECAPTCHA_PUBLIC_KEY = '6Ld9GR4rAAAAAHdEGfJNKZnIRcpU_OWf2M7hdp28'
-RECAPTCHA_PRIVATE_KEY = '6Ld9GR4rAAAAAPhCx9m0EPa6TQA-Or-XrjEAcA-O'
-NOCAPTCHA = True  # for checkbox style
+RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY', '6Ld9GR4rAAAAAHdEGfJNKZnIRcpU_OWf2M7hdp28')
+RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY', '6Ld9GR4rAAAAAPhCx9m0EPa6TQA-Or-XrjEAcA-O')
+NOCAPTCHA = True
+
+# Kavenegar SMS Service Configuration
+KAVENEGAR_API_KEY = os.getenv('KAVENEGAR_API_KEY', '316A6A486777346739666B5868655269564E6C39644B396249566E705070374A6A7854686879394A746C493D')
+KAVENEGAR_TEMPLATE_REGISTER = os.getenv('KAVENEGAR_TEMPLATE_REGISTER','Activation');  # Template for registration OTP
+KAVENEGAR_TEMPLATE_RESET = os.getenv('KAVENEGAR_TEMPLATE_RESET','ResetPassword');  # Template for password reset OTP  # for checkbox style
 
 
 # Default primary key field type

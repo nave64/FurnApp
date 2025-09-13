@@ -18,7 +18,7 @@
 # Zarinpal Payment Gateway Configuration
 ZARINPAL_MERCHANT_ID = 'YOUR_MERCHANT_ID'  # کد مرچنت خود را وارد کنید
 ZARINPAL_SANDBOX = True  # برای تست True، برای تولید False
-ZARINPAL_CALLBACK_URL = 'http://localhost:8000/order/payment-verify/'  # آدرس کالبک خود را وارد کنید
+ZARINPAL_CALLBACK_URL = 'https://yourdomain.com/order/payment-verify/'  # آدرس کالبک خود را وارد کنید
 ```
 
 ### 2. نصب وابستگی‌ها
