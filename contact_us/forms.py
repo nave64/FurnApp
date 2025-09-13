@@ -8,11 +8,12 @@ from django_recaptcha.widgets import ReCaptchaV2Checkbox
 from contact_us.models import ContactUs
 
 class ContactUsModelForm(forms.ModelForm):
-    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
+    # Temporarily disable captcha for development
+    # captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
 
     class Meta:
         model = ContactUs
-        fields = ['full_name', 'mobile', 'title', 'message', 'captcha']
+        fields = ['full_name', 'mobile', 'title', 'message']  # Removed 'captcha'
         widgets = {
             'full_name': forms.TextInput(attrs={
                 'class': 'form-control',

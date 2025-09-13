@@ -8426,6 +8426,32 @@ p.checkout-coupon input[type=text]::placeholder {
 /* Rectangle badge override — breaks the circular badge rules - main page badges */
 .product__flash-4 span.rect-badge-sm {
   width: auto !important;
+}
+
+/* Darker color for option type names (like رنگ) and addon names */
+.product__filters .form-group label {
+  color: #2c3e50 !important; /* Darker color for option type names */
+  font-weight: 500;
+}
+
+.product-addons .form-check-label strong {
+  color: #2c3e50 !important; /* Darker color for addon names */
+}
+
+/* Increase font size for final price section */
+.total-price-display {
+  font-size: 15px; /* Increase from default size */
+}
+
+.total-price-display .fw-bold {
+  font-size: 15px; /* Make the "قیمت نهایی:" text larger */
+}
+
+.total-price-display #total-price {
+  font-size: 15px; /* Make the actual price number larger */
+}
+
+.rect-badge-sm {
   min-width: 46px;
   height: 24px !important;
   line-height: 1 !important;

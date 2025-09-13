@@ -25,9 +25,17 @@
                                      <img id="main-product-image" src="{{ product.image.url }}" alt="{{ product.title }}" class="img-fluid">
                                    {% endif %}                                      
                                 </a>
-                                {% if product.badge_text %}
-                                <div class="product__flash-4">
-                                    <span>{{ product.badge_text }}</span>
+                                {% if product.badge_text or product.is_new or product.discount_percent %}
+                                <div class="product__flash-4 d-flex flex-column align-items-start gap-1">
+                                    {% if product.badge_text %}
+                                        <span class="badge badge-neutral rect-badge">{{ product.badge_text }}</span>
+                                    {% endif %}
+                                    {% if product.is_new %}
+                                        <span class="badge badge-neutral rect-badge">جدید</span>
+                                    {% endif %}
+                                    {% if product.discount_percent %}
+                                        <span class="badge badge-danger rect-badge titr-font">{{ product.discount_percent }}%</span>
+                                    {% endif %}
                                 </div>
                                 {% endif %}
                                 <div class="product__action transition-3">
