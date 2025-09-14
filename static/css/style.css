@@ -7974,6 +7974,22 @@ p.checkout-coupon input[type=text]::placeholder {
   z-index: 2;
 }
 
+/* Ensure description text in video section is white */
+.video__content .lead {
+  color: #ffffff !important;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* Make subtitle in video section bigger */
+.video__content .d-block {
+  font-size: 1.2rem !important;
+  font-weight: 600 !important;
+  color: #ffffff !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5) !important;
+}
+
 
 /* .............. */
 .furniture-section {
