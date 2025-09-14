@@ -7936,17 +7936,42 @@ p.checkout-coupon input[type=text]::placeholder {
   font-size: 1rem;
 }
 
-.furniture-detail-btn {
-  background-color: #fff;
-  border: 1px solid #dee2e6;
-  padding: 5px 15px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  transition: background-color 0.3s ease;
+/* Furniture slider items with consistent height */
+.furniture-product-card-wrapper {
+  height: 304px; /* Fixed height for all furniture slider items */
+  display: flex;
+  flex-direction: column;
 }
 
-.furniture-detail-btn:hover {
-  background-color: #f1f1f1;
+.furniture-product-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Smaller off price labels in furniture slider */
+.furniture-product-price .text-muted,
+.furniture-product-price .old-price,
+.furniture-product-price .price-old {
+  font-size: 14px !important; /* Smaller off price labels */
+  color: #6c757d !important;
+  text-decoration: line-through;
+}
+
+.furniture-detail-btn {
+  display: none; /* Hide the details button */
+}
+
+/* Make furniture product cards clickable */
+.furniture-product-card {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.furniture-product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* video_slider

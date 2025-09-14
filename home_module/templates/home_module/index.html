@@ -214,8 +214,8 @@
         <div class="furniture-slider owl-carousel" id="furniture-slider-{{ main_cat.id }}-all">
           {% for product in main_cat.all_subcat_products|slice:":10" %}
             <div class="furniture-product-card-wrapper">
+             <a href="{{ product.get_absolute_url }}">              
               <div class="furniture-product-card position-relative">
-                <a href="{{ product.get_absolute_url }}">
                   {% if product.images.all %}
                   {% with main_image=product.images.first %}
                    {% if main_image.alt_text %}
@@ -227,7 +227,6 @@
                  {% elif product.image %}
                    <img id="main-product-image" src="{{ product.image.url }}" alt="{{ product.title }}" class="furniture-product-image">
                  {% endif %}   
-                </a>
                 {% if product.badge_text or product.is_new or product.discount_percent %}
                 <div class="product__flash-4 position-absolute top-15 start-20 d-flex flex-column align-items-start gap-1 pl-10 pt-10 style="z-index: 2;">
                   {% if product.badge_text %}
@@ -252,6 +251,7 @@
                 </div>
                 <a href="{{ product.get_absolute_url }}" class="furniture-detail-btn">جزئیات</a>
               </div>
+             </a>              
             </div>
           {% endfor %}
         </div>
