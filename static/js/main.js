@@ -383,10 +383,6 @@
     nav: false, // We're using custom buttons instead
     dots: false,
     rtl: true,  // For RTL support
-    touchDrag: true,
-    mouseDrag: true,
-    pullDrag: true,
-    freeDrag: false,
     responsive: {
       0: {
         items: 1
@@ -410,48 +406,6 @@
 
   $('.hot-slider-next').on('click', function () {
     hotSlider.trigger('next.owl.carousel');
-  });
-
-  // Enhanced touch handling for hot slider
-  var hotSliderWrapper = $('.product__hot-slider-wrapper');
-  var isDragging = false;
-  var startY = 0;
-  var startX = 0;
-
-  // Prevent vertical scrolling during horizontal drag
-  hotSliderWrapper.on('touchstart', function(e) {
-    var touch = e.originalEvent.touches[0];
-    startY = touch.clientY;
-    startX = touch.clientX;
-    isDragging = false;
-  });
-
-  hotSliderWrapper.on('touchmove', function(e) {
-    if (!isDragging) {
-      var touch = e.originalEvent.touches[0];
-      var deltaY = Math.abs(touch.clientY - startY);
-      var deltaX = Math.abs(touch.clientX - startX);
-      
-      // If horizontal movement is greater than vertical, prevent page scroll
-      if (deltaX > deltaY) {
-        isDragging = true;
-        e.preventDefault();
-        hotSliderWrapper.addClass('slider-dragging');
-      }
-    } else {
-      e.preventDefault();
-    }
-  });
-
-  hotSliderWrapper.on('touchend', function(e) {
-    isDragging = false;
-    hotSliderWrapper.removeClass('slider-dragging');
-  });
-
-  // Additional touch event handling
-  hotSliderWrapper.on('touchcancel', function(e) {
-    isDragging = false;
-    hotSliderWrapper.removeClass('slider-dragging');
   });
 });
 	$(document).ready(function () {

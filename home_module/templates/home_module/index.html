@@ -530,27 +530,65 @@ document.addEventListener('DOMContentLoaded', function() {
                 playButton.classList.add('show');
                 playButton.style.pointerEvents = 'auto';
                 
-                // Make the video element itself clickable as a fallback
+                // Make the entire video section clickable for iOS
+                const videoSection = video.closest('.video__hero');
+                if (videoSection) {
+                    videoSection.style.cursor = 'pointer';
+                    videoSection.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log('Video section clicked');
+                        hidePlayButtonAndPlay(e);
+                    });
+                    videoSection.addEventListener('touchstart', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log('Video section touched');
+                        hidePlayButtonAndPlay(e);
+                    });
+                }
+                
+                // Also make the video element itself clickable as a fallback
                 video.style.cursor = 'pointer';
-                video.addEventListener('click', hidePlayButtonAndPlay);
-                video.addEventListener('touchstart', hidePlayButtonAndPlay);
+                video.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Video element clicked');
+                    hidePlayButtonAndPlay(e);
+                });
+                video.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Video element touched');
+                    hidePlayButtonAndPlay(e);
+                });
                 
                 console.log('Video autoplay failed, showing play button');
             }
         };
         
         // Function to hide play button and play video
-        const hidePlayButtonAndPlay = function() {
+        const hidePlayButtonAndPlay = function(event) {
             console.log('Play button clicked, attempting to play video');
+            console.log('Event:', event);
+            console.log('Video element:', video);
+            console.log('Video paused state:', video.paused);
+            console.log('Video ready state:', video.readyState);
+            
             if (playButton) {
                 playButton.classList.remove('show');
                 playButton.style.pointerEvents = 'none';
             }
             
-            // Remove video click handlers
+            // Remove all click handlers
             video.style.cursor = 'default';
-            video.removeEventListener('click', hidePlayButtonAndPlay);
-            video.removeEventListener('touchstart', hidePlayButtonAndPlay);
+            const videoSection = video.closest('.video__hero');
+            if (videoSection) {
+                videoSection.style.cursor = 'default';
+                // Clone and replace the section to remove all event listeners
+                const newSection = videoSection.cloneNode(true);
+                videoSection.parentNode.replaceChild(newSection, videoSection);
+            }
             
             // For iOS, we need to ensure the video is ready and handle restrictions
             if (isIOS) {
@@ -558,17 +596,42 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Ensure video is muted for iOS
                 video.muted = true;
                 video.volume = 0;
+                video.setAttribute('playsinline', 'true');
+                video.setAttribute('webkit-playsinline', 'true');
                 
-                // Try to play with promise handling
+                // Try immediate play first
                 video.play().then(function() {
                     console.log('Video started playing successfully on iOS');
                 }).catch(function(error) {
-                    console.log('Video play failed on iOS:', error);
-                    // If still fails, try again after a short delay
-                    setTimeout(function() {
-                        video.play().catch(function(retryError) {
-                            console.log('Retry play failed:', retryError);
+                    console.log('Immediate play failed:', error);
+                    
+                    // Try with focus and multiple attempts
+                    video.focus();
+                    
+                    const attemptPlay = function(attemptNumber) {
+                        console.log('iOS play attempt #' + attemptNumber);
+                        video.play().then(function() {
+                            console.log('Video started playing successfully on iOS attempt #' + attemptNumber);
+                        }).catch(function(error) {
+                            console.log('Video play failed on iOS attempt #' + attemptNumber + ':', error);
+                            if (attemptNumber < 3) {
+                                setTimeout(function() {
+                                    attemptPlay(attemptNumber + 1);
+                                }, 500);
+                            } else {
+                                console.log('All iOS play attempts failed');
+                                // Show play button again as last resort
+                                if (playButton) {
+                                    playButton.classList.add('show');
+                                    playButton.style.pointerEvents = 'auto';
+                                }
+                            }
                         });
+                    };
+                    
+                    // Start first attempt after a short delay
+                    setTimeout(function() {
+                        attemptPlay(1);
                     }, 100);
                 });
             } else {
@@ -647,21 +710,38 @@ document.addEventListener('DOMContentLoaded', function() {
             playButton.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                hidePlayButtonAndPlay();
+                console.log('Play button clicked');
+                hidePlayButtonAndPlay(e);
             });
             
             playButton.addEventListener('touchstart', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                hidePlayButtonAndPlay();
+                console.log('Play button touched');
+                hidePlayButtonAndPlay(e);
             });
             
             // Also add touchend as backup
             playButton.addEventListener('touchend', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                hidePlayButtonAndPlay();
+                console.log('Play button touch ended');
+                hidePlayButtonAndPlay(e);
             });
+            
+            // For iOS, add a special handler that creates a synthetic click on the video
+            if (isIOS) {
+                playButton.addEventListener('click', function(e) {
+                    console.log('iOS special handler triggered');
+                    // Create a synthetic click event on the video element
+                    const syntheticEvent = new MouseEvent('click', {
+                        bubbles: true,
+                        cancelable: true,
+                        view: window
+                    });
+                    video.dispatchEvent(syntheticEvent);
+                });
+            }
         }
         
         // Force play on any user interaction (as last resort)
