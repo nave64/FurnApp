@@ -8842,3 +8842,21 @@ th.column-formatted_credit {
 /*----------------------------------------*/
 /*  End Product View Details Button Bold Font
 /*----------------------------------------*/
+
+/* Fix return button height on mobile devices */
+@media (max-width: 768px) {
+  .btn-outline-secondary {
+    height: 37px !important;
+    width: 97px !important;
+    padding: 8px 16px !important;
+    font-size: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  .btn-outline-secondary i {
+    font-size: 14px !important;
+    margin-left: 8px !important;
+  }
+}
