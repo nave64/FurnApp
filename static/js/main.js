@@ -261,7 +261,7 @@
 	$(".product__item-slider-2").owlCarousel({
 		//add owl carousel in activation class
 		loop: true,
-		margin: 30,
+		margin: 5,
 		items: 2,
 		navText: ['<button class="nav-left"><i class="far fa-angle-left"></i></button>', '<button class="nav-right"><i class="far fa-angle-right"></i></button>'],
 		nav: true,
@@ -375,28 +375,48 @@
 	///////////////////////////////////////////////////
 	// 16. product__hot-slider
 	$(document).ready(function () {
+  // Function to calculate optimal number of items based on container width
+  function calculateItems() {
+    const container = $(".product__hot-slider");
+    const containerWidth = container.width();
+    const itemWidth = 200; // Fixed item width (min-width from CSS)
+    const margin = 15; // Fixed margin between items
+    const minItems = 1; // Minimum items to show
+    const maxItems = 5; // Maximum items to show
+    
+    // Calculate how many items can fit
+    let items = Math.floor((containerWidth + margin) / (itemWidth + margin));
+    
+    // Ensure items are within bounds
+    items = Math.max(minItems, Math.min(maxItems, items));
+    
+    return items;
+  }
+
   // Initialize Owl Carousel for the product__hot-slider
   var hotSlider = $(".product__hot-slider").owlCarousel({
     loop: true,
-    margin: 30,
-    items: 3,
+    margin: 15,
+    items: calculateItems(),
     nav: false, // We're using custom buttons instead
     dots: false,
     rtl: true,  // For RTL support
-    responsive: {
-      0: {
-        items: 1
-      },
-      576: {
-        items: 2
-      },
-      992: {
-        items: 2
-      },
-      1200: {
-        items: 3
-      }
-    }
+    responsive: false // Disable responsive to use our dynamic calculation
+  });
+
+  // Update items count on window resize
+  $(window).on('resize', function() {
+    const newItems = calculateItems();
+    hotSlider.trigger('destroy.owl.carousel');
+    hotSlider.owlCarousel({
+      loop: true,
+      margin: 15,
+      items: newItems,
+      nav: false,
+      dots: false,
+      rtl: true,
+      responsive: false
+    });
   });
 
   // Bind custom navigation buttons
@@ -417,7 +437,7 @@
       // Initialize carousel if more than one
       $slider.owlCarousel({
         loop: true,
-        margin: 15,
+        margin: 8,
         rtl: true,
         nav: false,
         dots: false,
@@ -426,7 +446,8 @@
           0: { items: 2 },
           576: { items: 2 },
           768: { items: 3 },
-          992: { items: 4 }
+          992: { items: 4 },
+		  1200: { items: 5 }
         }
       });
     } else {
