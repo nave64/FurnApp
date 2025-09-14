@@ -1050,5 +1050,28 @@ function addProductToOrder(productId) {
 
 // Cart quantity functions moved to user_basket.html template for AJAX functionality
 
-
+// Screen Width Debug Label
+$(document).ready(function() {
+    function updateScreenWidth() {
+        // Use multiple methods to ensure we get the correct width
+        const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        const element = document.getElementById('screen-width-value');
+        if (element) {
+            element.textContent = width;
+        }
+    }
+    
+    // Update on page load with a small delay to ensure DOM is ready
+    setTimeout(updateScreenWidth, 100);
+    
+    // Update on window resize
+    $(window).on('resize', function() {
+        updateScreenWidth();
+    });
+    
+    // Also update when window loads completely
+    $(window).on('load', function() {
+        updateScreenWidth();
+    });
+});
 

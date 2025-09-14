@@ -8135,7 +8135,7 @@ p.checkout-coupon input[type=text]::placeholder {
   gap: 1rem;
   flex-wrap: nowrap;
   overflow-x: auto;
-  padding: 0 1rem;
+  padding: 0 2px;
 }
 
 .product-card {
