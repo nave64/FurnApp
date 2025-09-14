@@ -8960,6 +8960,24 @@ th.column-formatted_credit {
 
 /* Native video controls styling */
 
+/* Hot deals section internal spacing */
+.product__hot-area .container {
+  /* padding-bottom: 2rem !important; */
+}
+
+.product__hot-area .row {
+  /* margin-bottom: 1.5rem !important; */
+}
+
+/* Ensure product items have proper bottom spacing */
+.product__hot-area .product__item-3 {
+  margin-bottom: 5px !important;
+}
+
+.product__hot-area .product__hot-slider-wrapper {
+  /* padding-bottom: 1rem !important; */
+}
+
 /* Page zoom out styling */
 body {
   overflow-x: auto !important;
