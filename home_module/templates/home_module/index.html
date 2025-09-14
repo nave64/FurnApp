@@ -11,7 +11,7 @@
             <!-- slider area start -->
 {% if home_video %}
 <section class="video__hero position-relative">
-    <video class="video__bg" autoplay muted loop playsinline>
+    <video class="video__bg" autoplay muted loop playsinline webkit-playsinline preload="metadata">
         <source src="{{ home_video.video_file.url }}" type="video/mp4">
         مرورگر شما از ویدیو پشتیبانی نمی‌کند.
     </video>
