@@ -20,7 +20,7 @@
 
     <div class="container h-100">
         <div class="row h-100 align-items-center justify-content-center text-center">
-            <div class="col-12">
+            <div class="col-12" hidden>
                 <div class="video__content text-white position-relative z-2">
                     <span class="d-block mb-3" data-animation="fadeInUp" data-delay=".3s">{{ home_video.subtitle }}</span>
                     <h3 class="slider__title mb-3" data-animation="fadeInUp" data-delay=".5s">{{ home_video.title }}</h3>
@@ -566,6 +566,45 @@ document.addEventListener('DOMContentLoaded', function() {
             }, { once: true });
         });
     }
+});
+
+// Zoom out page view after load
+window.addEventListener('load', function() {
+    // Wait a bit for everything to load
+    setTimeout(function() {
+        // Method 1: Using CSS zoom (works on most browsers)
+        document.body.style.zoom = '0.7'; // 70% zoom (30% zoom out)
+        
+        // Method 2: Also apply to html element for better coverage
+        document.documentElement.style.zoom = '0.7';
+        
+        // Method 3: For mobile devices, try to manipulate viewport
+        if (/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            // Try to set a smaller viewport scale
+            let viewport = document.querySelector('meta[name="viewport"]');
+            if (viewport) {
+                viewport.setAttribute('content', 'width=device-width, initial-scale=0.4, maximum-scale=1.0, user-scalable=yes');
+            }
+        }
+        
+        // Method 4: Alternative using transform scale for better browser support
+        document.body.style.transform = 'scale(0.7)';
+        document.body.style.transformOrigin = 'top left';
+        document.body.style.width = '142.86%'; // Compensate for scale
+        
+        console.log('Page zoomed out to 70%');
+    }, 500);
+});
+
+// Also try on DOMContentLoaded as backup
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        if (document.body.style.zoom === '') {
+            document.body.style.zoom = '0.7';
+            document.documentElement.style.zoom = '0.7';
+            console.log('Page zoomed out on DOMContentLoaded');
+        }
+    }, 1000);
 });
 </script>
 

@@ -8959,3 +8959,21 @@ th.column-formatted_credit {
 }
 
 /* Native video controls styling */
+
+/* Page zoom out styling */
+body {
+  overflow-x: auto !important;
+  min-width: 100% !important;
+}
+
+/* Ensure zoom doesn't break layout */
+html {
+  overflow-x: auto !important;
+}
+
+/* Fix for zoomed content */
+@media screen and (max-width: 1200px) {
+  body {
+    zoom: 0.75 !important;
+  }
+}
