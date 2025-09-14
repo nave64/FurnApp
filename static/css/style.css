@@ -8891,6 +8891,92 @@ th.column-formatted_credit {
   }
 }
 
+/* Fix hot slider touch/swipe issues on mobile */
+.product__hot-slider-wrapper {
+  touch-action: pan-x !important;
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+
+.product__hot-slider {
+  touch-action: pan-x !important;
+  -webkit-overflow-scrolling: touch !important;
+  overflow: hidden !important;
+}
+
+.product__hot-slider .owl-stage {
+  touch-action: pan-x !important;
+}
+
+.product__hot-slider .owl-item {
+  touch-action: pan-x !important;
+  -webkit-touch-callout: none !important;
+}
+
+/* Prevent page scroll during slider interaction */
+.product__hot-slider-wrapper:active,
+.product__hot-slider:active,
+.product__hot-slider .owl-stage:active {
+  touch-action: pan-x !important;
+}
+
+/* Mobile-specific touch improvements */
+@media (max-width: 768px) {
+  .product__hot-slider-wrapper {
+    touch-action: pan-x !important;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+    position: relative !important;
+    z-index: 1 !important;
+    overflow: hidden !important;
+  }
+  
+  .product__hot-slider {
+    touch-action: pan-x !important;
+    -webkit-overflow-scrolling: touch !important;
+    overflow: hidden !important;
+    position: relative !important;
+  }
+  
+  .product__hot-slider .owl-item {
+    touch-action: pan-x !important;
+    pointer-events: auto !important;
+    -webkit-touch-callout: none !important;
+  }
+  
+  .product__hot-slider .owl-stage {
+    touch-action: pan-x !important;
+    -webkit-transform: translate3d(0, 0, 0) !important;
+    transform: translate3d(0, 0, 0) !important;
+  }
+  
+  /* Prevent overscroll behavior */
+  .product__hot-slider-wrapper {
+    overscroll-behavior-x: contain !important;
+    overscroll-behavior-y: auto !important;
+  }
+  
+  /* Improve touch responsiveness */
+  .product__hot-slider-wrapper.slider-dragging {
+    touch-action: pan-x !important;
+    -webkit-touch-callout: none !important;
+  }
+  
+  .product__hot-slider-wrapper.slider-dragging * {
+    pointer-events: none !important;
+  }
+  
+  /* Ensure smooth transitions */
+  .product__hot-slider .owl-stage-outer {
+    overflow: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+}
+
 /* Video Play Button Overlay for iOS */
 .video-play-overlay {
   position: absolute;
