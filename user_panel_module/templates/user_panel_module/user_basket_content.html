@@ -43,7 +43,7 @@
                         
                         {% if detail.selected_addons %}
                         <div class="addons-list mt-2">
-                            <small class="text-muted">افزونه‌های انتخاب شده:</small>
+                            <small class="text-muted">افزونه‌ های انتخابی:</small>
                             <ul class="list-unstyled mb-0">
                                 {% for addon_id in detail.selected_addons %}
                                     {% for addon in detail.product.addons.all %}
@@ -59,7 +59,7 @@
                         
                         {% if detail.selected_options %}
                         <div class="options-list mt-2">
-                            <small class="text-muted">مشخصات انتخاب شده:</small>
+                            <small class="text-muted">مشخصات انتخابی:</small>
                             <ul class="list-unstyled mb-0">
                                 {% for option_name, option_value_id in detail.selected_options.items %}
                                     {% for option_type in detail.product.selectable_options.all %}
