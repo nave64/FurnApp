@@ -8971,9 +8971,9 @@ html {
   overflow-x: auto !important;
 }
 
-/* Fix for zoomed content */
+/* Fix for zoomed content - subtle like natural pinch */
 @media screen and (max-width: 1200px) {
   body {
-    zoom: 0.75 !important;
+    zoom: 0.9 !important;
   }
 }
