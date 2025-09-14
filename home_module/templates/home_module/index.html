@@ -573,7 +573,7 @@ window.addEventListener('load', function() {
     // Wait a bit for everything to load
     setTimeout(function() {
         // Subtle zoom out like a natural pinch-out gesture
-        const zoomLevel = '1.05'; // 90% zoom (10% zoom out) - subtle like natural pinch
+        const zoomLevel = '0.95'; // 90% zoom (10% zoom out) - subtle like natural pinch
         
         // Method 1: Using CSS zoom (works on most browsers)
         document.body.style.zoom = zoomLevel;
@@ -598,7 +598,7 @@ window.addEventListener('load', function() {
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(function() {
         if (document.body.style.zoom === '') {
-            const zoomLevel = '0.9';
+            const zoomLevel = '0.95';
             document.body.style.zoom = zoomLevel;
             document.documentElement.style.zoom = zoomLevel;
             console.log('Page zoomed out on DOMContentLoaded (natural pinch-out)');
