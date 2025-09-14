@@ -8986,6 +8986,6 @@ html {
 /* Fix for zoomed content - subtle like natural pinch */
 @media screen and (max-width: 1200px) {
   body {
-    zoom: 0.95 !important;
+    zoom: 0.99 !important;
   }
 }
