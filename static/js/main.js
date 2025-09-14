@@ -417,13 +417,13 @@
       // Initialize carousel if more than one
       $slider.owlCarousel({
         loop: true,
-        margin: 20,
+        margin: 15,
         rtl: true,
         nav: false,
         dots: false,
         items: 4,
         responsive: {
-          0: { items: 1 },
+          0: { items: 2 },
           576: { items: 2 },
           768: { items: 3 },
           992: { items: 4 }
@@ -468,13 +468,13 @@
 	// Initialize the trending slider
 $('.trending-slider').owlCarousel({
   loop: true,
-  margin: 20,
+  margin: 15,
   rtl: true,
   nav: false,
   dots: false,
   items: 4,
   responsive: {
-    0: { items: 1 },
+    0: { items: 2 },
     576: { items: 2 },
     768: { items: 3 },
     992: { items: 4 }

@@ -1691,6 +1691,55 @@ input {
   background: #ffffff;
 }
 
+/* Change mobile search height to 37px for screens < 576px */
+@media (max-width: 991px) {
+  .mobile-header-area .input-group .form-control {
+    height: 37px !important;
+    font-size: 14px !important;
+    padding: 8px 12px !important;
+    direction: rtl !important;
+    text-align: right !important;
+  }
+  
+  .mobile-header-area .input-group .btn {
+    height: 37px !important;
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  .mobile-header-area .input-group .btn i {
+    font-size: 14px !important;
+  }
+}
+
+/* Hide header__top on screens less than 991px */
+@media (max-width: 990px) {
+  .header__top {
+    display: none !important;
+  }
+}
+
+/* Hide mobile header for screens >= 992px */
+@media (min-width: 992px) {
+  .mobile-header-area {
+    display: none !important;
+  }
+}
+
+/* Reduce header__bottom padding for medium screens */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .header__bottom {
+    padding: 5px 0px !important; /* Reduce from 20px to 10px */
+  }
+  
+  .header-bar.mb-6 {
+    padding-top: 10px !important; /* Bring burger button down by 10px */
+  }
+}
+
 /* main menu css start */
 .main-menu-border {
   padding-right: 35px;
@@ -7852,7 +7901,7 @@ p.checkout-coupon input[type=text]::placeholder {
   background-color: #fff;
   border-radius: 10px;
   text-align: center;
-  padding: 15px;
+  padding: 12px; /* Reduced padding for better fit */
   margin-bottom: 30px;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -7865,7 +7914,7 @@ p.checkout-coupon input[type=text]::placeholder {
 
 .furniture-product-image {
   width: 100%;
-  height: 180px;
+  height: 160px; /* Reduced height for more compact cards */
   object-fit: cover;
   border-radius: 10px;
 }
@@ -7999,6 +8048,22 @@ p.checkout-coupon input[type=text]::placeholder {
   padding: 10px 0;
   border-top: 1px solid #eee;
 }
+
+/* Add header__link after header-bar-btn for medium screens (768px - 991px) */
+/* @media (min-width: 991px) and (max-width: 1200px) {
+  .header-bar-btn::after {
+    content: "منو";
+    font-family: inherit;
+    font-size: 14px;
+    color: #333;
+    margin-right: 10px;
+    position: absolute;
+    left: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+  }
+} */
 
 .header__link {
   color: #333;
@@ -8223,7 +8288,7 @@ p.checkout-coupon input[type=text]::placeholder {
 .furniture-product-card-wrapper {
   max-width: 270px; /* Adjust to match Owl's single slide width */
   width: 100%;
-  padding: 10px;
+  padding: 5px; /* Reduced padding for better fit */
   margin: 0 auto;
 }
 
