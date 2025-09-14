@@ -17,6 +17,11 @@
     </video>
 
     <div class="video__overlay position-absolute w-100 h-100 top-0 start-0"></div>
+    
+    <!-- Play button overlay for iOS fallback -->
+    <div class="video-play-overlay" id="video-play-btn">
+        <i class="fas fa-play"></i>
+    </div>
 
     <div class="container h-100">
         <div class="row h-100 align-items-center justify-content-center text-center">
@@ -504,9 +509,13 @@
         </main>
 
 <script>
-// Force iOS video autoplay without user interaction
+// Enhanced iOS video autoplay with fallback play button
 document.addEventListener('DOMContentLoaded', function() {
     const video = document.getElementById('hero-video');
+    const playButton = document.getElementById('video-play-btn');
+    let autoplayFailed = false;
+    let isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    
     if (video) {
         // Set video properties for iOS
         video.muted = true;
@@ -514,10 +523,37 @@ document.addEventListener('DOMContentLoaded', function() {
         video.setAttribute('webkit-playsinline', 'true');
         video.setAttribute('autoplay', 'true');
         
+        // Function to show play button
+        const showPlayButton = function() {
+            if (playButton && !autoplayFailed) {
+                autoplayFailed = true;
+                playButton.classList.add('show');
+                console.log('Video autoplay failed, showing play button');
+            }
+        };
+        
+        // Function to hide play button and play video
+        const hidePlayButtonAndPlay = function() {
+            if (playButton) {
+                playButton.classList.remove('show');
+            }
+            video.play().catch(function(error) {
+                console.log('Manual play failed:', error);
+            });
+        };
+        
         // Multiple attempts to force autoplay
         const playVideo = function() {
-            video.play().catch(function(error) {
+            video.play().then(function() {
+                // Autoplay succeeded
+                if (playButton) {
+                    playButton.classList.remove('show');
+                }
+                console.log('Video autoplay successful');
+            }).catch(function(error) {
                 console.log('Autoplay attempt failed:', error);
+                // Show play button after multiple failed attempts
+                setTimeout(showPlayButton, 2000);
             });
         };
         
@@ -531,7 +567,7 @@ document.addEventListener('DOMContentLoaded', function() {
         video.addEventListener('canplaythrough', playVideo);
         
         // iOS specific fixes
-        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        if (isIOS) {
             // Force muted state
             video.muted = true;
             video.volume = 0;
@@ -542,21 +578,43 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(playVideo, 500);
             setTimeout(playVideo, 1000);
             
+            // Show play button after 3 seconds if still not playing
+            setTimeout(function() {
+                if (video.paused) {
+                    showPlayButton();
+                }
+            }, 3000);
+            
             // Try on page visibility change
             document.addEventListener('visibilitychange', function() {
-                if (!document.hidden) {
+                if (!document.hidden && video.paused) {
                     setTimeout(playVideo, 100);
                 }
             });
+        }
+        
+        // Play button click handler
+        if (playButton) {
+            playButton.addEventListener('click', hidePlayButtonAndPlay);
+            playButton.addEventListener('touchstart', hidePlayButtonAndPlay);
         }
         
         // Force play on any user interaction (as last resort)
         const events = ['touchstart', 'touchend', 'click', 'scroll'];
         events.forEach(function(event) {
             document.addEventListener(event, function() {
-                playVideo();
+                if (video.paused && !autoplayFailed) {
+                    playVideo();
+                }
             }, { once: true });
         });
+        
+        // Check if video is still paused after 5 seconds and show play button
+        setTimeout(function() {
+            if (video.paused && !autoplayFailed) {
+                showPlayButton();
+            }
+        }, 5000);
     }
 });
 </script>
