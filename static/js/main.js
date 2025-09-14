@@ -383,10 +383,6 @@
     nav: false, // We're using custom buttons instead
     dots: false,
     rtl: true,  // For RTL support
-    touchDrag: true,
-    mouseDrag: true,
-    pullDrag: true,
-    freeDrag: false,
     responsive: {
       0: {
         items: 1
@@ -411,61 +407,6 @@
   $('.hot-slider-next').on('click', function () {
     hotSlider.trigger('next.owl.carousel');
   });
-
-  // Enhanced touch event handling for mobile
-  var sliderWrapper = $('.product__hot-slider-wrapper');
-  var isDragging = false;
-  var startY = 0;
-  var startX = 0;
-
-  // Prevent page scroll during slider interaction
-  sliderWrapper.on('touchstart', function(e) {
-    var touch = e.originalEvent.touches[0];
-    startY = touch.clientY;
-    startX = touch.clientX;
-    isDragging = false;
-  });
-
-  sliderWrapper.on('touchmove', function(e) {
-    if (!isDragging) {
-      var touch = e.originalEvent.touches[0];
-      var deltaY = Math.abs(touch.clientY - startY);
-      var deltaX = Math.abs(touch.clientX - startX);
-      
-      // If horizontal movement is greater than vertical, prevent page scroll
-      if (deltaX > deltaY) {
-        isDragging = true;
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    } else {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-  });
-
-  sliderWrapper.on('touchend', function(e) {
-    isDragging = false;
-  });
-
-  // Additional mobile optimizations
-  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-    // Disable pull-to-refresh on slider
-    sliderWrapper.on('touchstart', function(e) {
-      if (e.originalEvent.touches.length === 1) {
-        e.preventDefault();
-      }
-    });
-
-    // Improve touch responsiveness
-    hotSlider.on('drag.owl.carousel', function() {
-      sliderWrapper.addClass('slider-dragging');
-    });
-
-    hotSlider.on('dragged.owl.carousel', function() {
-      sliderWrapper.removeClass('slider-dragging');
-    });
-  }
 });
 	$(document).ready(function () {
   $('.furniture-slider').each(function () {

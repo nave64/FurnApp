@@ -528,6 +528,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (playButton && !autoplayFailed) {
                 autoplayFailed = true;
                 playButton.classList.add('show');
+                playButton.style.pointerEvents = 'auto';
                 console.log('Video autoplay failed, showing play button');
             }
         };
@@ -568,6 +569,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // iOS specific fixes
         if (isIOS) {
+            console.log('iOS device detected, setting up enhanced fallback');
             // Force muted state
             video.muted = true;
             video.volume = 0;
@@ -578,9 +580,19 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(playVideo, 500);
             setTimeout(playVideo, 1000);
             
-            // Show play button after 3 seconds if still not playing
+            // Show play button immediately for iOS as fallback
             setTimeout(function() {
+                console.log('iOS fallback: Checking if video is paused');
                 if (video.paused) {
+                    console.log('Video is paused on iOS, showing play button');
+                    showPlayButton();
+                }
+            }, 1500);
+            
+            // Additional fallback after 3 seconds
+            setTimeout(function() {
+                if (video.paused && !autoplayFailed) {
+                    console.log('iOS 3-second fallback: showing play button');
                     showPlayButton();
                 }
             }, 3000);
