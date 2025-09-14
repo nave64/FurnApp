@@ -1,3 +1,12 @@
+// Simple debounce utility
+function debounce(fn, wait) {
+  let t;
+  return function() {
+    clearTimeout(t);
+    const ctx = this, args = arguments;
+    t = setTimeout(function(){ fn.apply(ctx, args); }, wait);
+  };
+}
 /***************************************************
 ==================== JS INDEX ======================
 ****************************************************
@@ -434,21 +443,40 @@
     const totalItems = $slider.find('.furniture-product-card-wrapper').length;
 
     if (totalItems > 1) {
+      // Pre-duplicate items to ensure a long stage so items don't "appear" late with autoWidth
+      (function ensureLongStage() {
+        const $baseItems = $slider.children('.furniture-product-card-wrapper').not('.fc-clone');
+        if ($baseItems.length === 0) return;
+        const containerWidth = $slider.width();
+        // Approximate item+gap width (matches CSS/JS config)
+        const unitWidth = 192 + 8; // item width + margin
+        let totalApprox = $slider.children('.furniture-product-card-wrapper').length * unitWidth;
+        let repeats = 0;
+        // Ensure at least ~3x container width worth of items present
+        while (totalApprox < containerWidth * 2.5 && repeats < 5) {
+          $baseItems.clone().addClass('fc-clone').appendTo($slider);
+          totalApprox += $baseItems.length * unitWidth;
+          repeats++;
+        }
+      })();
+
       // Initialize carousel if more than one
       $slider.owlCarousel({
-        loop: true,
-        margin: 8,
+        loop: true, // seamless carousel feel
+        margin: 8, // fixed gap between items
         rtl: true,
         nav: false,
         dots: false,
-        items: 4,
-        responsive: {
-          0: { items: 2 },
-          576: { items: 2 },
-          768: { items: 3 },
-          992: { items: 4 },
-		  1200: { items: 5 }
-        }
+        autoWidth: true, // allow partial items; width from item elements
+        slideBy: 1,
+        smartSpeed: 300,
+        dragEndSpeed: 300,
+        responsiveRefreshRate: 200,
+        checkVisible: false,
+        lazyLoad: true, // Enable lazy loading for images
+        lazyLoadEager: 1, // Load 1 item ahead of visible area
+        onInitialized: debounce(function(e){ $(e.target).trigger('refresh.owl.carousel'); }, 150),
+        onResized: debounce(function(e){ $(e.target).trigger('refresh.owl.carousel'); }, 200)
       });
     } else {
       // For single product: add styling class & hide arrows
@@ -471,6 +499,14 @@
 
       $blocks.addClass('d-none');
       $section.find('#' + subcatId).removeClass('d-none');
+
+      // Ensure Owl recalculates widths when a previously hidden slider becomes visible
+      const $visibleSlider = $section.find('#' + subcatId + ' .furniture-slider.owl-carousel');
+      if ($visibleSlider.length) {
+        setTimeout(function () {
+          $visibleSlider.trigger('refresh.owl.carousel');
+        }, 0);
+      }
     });
   });
 
@@ -483,6 +519,13 @@
   $('.furniture-slider-next').click(function () {
     const target = $(this).data('target');
     $(target).trigger('next.owl.carousel');
+  });
+});
+
+// Refresh after all assets load to avoid incorrect autoWidth measurements
+$(window).on('load', function () {
+  $('.furniture-slider.owl-carousel').each(function () {
+    debounce(function(){ $('.furniture-slider.owl-carousel').trigger('refresh.owl.carousel'); }, 150)();
   });
 });
 
@@ -1050,28 +1093,5 @@ function addProductToOrder(productId) {
 
 // Cart quantity functions moved to user_basket.html template for AJAX functionality
 
-// Screen Width Debug Label
-$(document).ready(function() {
-    function updateScreenWidth() {
-        // Use multiple methods to ensure we get the correct width
-        const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-        const element = document.getElementById('screen-width-value');
-        if (element) {
-            element.textContent = width;
-        }
-    }
-    
-    // Update on page load with a small delay to ensure DOM is ready
-    setTimeout(updateScreenWidth, 100);
-    
-    // Update on window resize
-    $(window).on('resize', function() {
-        updateScreenWidth();
-    });
-    
-    // Also update when window loads completely
-    $(window).on('load', function() {
-        updateScreenWidth();
-    });
-});
+
 

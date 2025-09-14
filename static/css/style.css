@@ -8425,15 +8425,15 @@ p.checkout-coupon input[type=text]::placeholder {
 
 /* Match card layout and width in both modes */
 .furniture-product-card-wrapper {
-  max-width: 270px; /* Adjust to match Owl's single slide width */
-  width: 100%;
+  width: 192px !important; /* Fixed item width for autoWidth */
   padding: 5px; /* Reduced padding for better fit */
-  margin: 0 auto;
+  margin: 0 0; /* Let Owl margin control spacing */
+  flex: 0 0 auto; /* Do not shrink or grow */
 }
 
 /* Optional: spacing between products inside Owl */
 .owl-carousel .furniture-product-card-wrapper {
-  margin: 0 8px;
+  margin: 0; /* spacing comes from Owl's margin option */
 }
 .trending-slider-nav {
   position: absolute;
@@ -9009,7 +9009,7 @@ th.column-formatted_credit {
 .furniture-product-card {
   padding: 8px !important;
   margin-bottom: 10px !important;
-  width: 200px !important;
+  width: 192px !important;
 }
 
 .furniture-product-card-wrapper {
