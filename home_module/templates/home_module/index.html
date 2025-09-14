@@ -529,18 +529,54 @@ document.addEventListener('DOMContentLoaded', function() {
                 autoplayFailed = true;
                 playButton.classList.add('show');
                 playButton.style.pointerEvents = 'auto';
+                
+                // Make the video element itself clickable as a fallback
+                video.style.cursor = 'pointer';
+                video.addEventListener('click', hidePlayButtonAndPlay);
+                video.addEventListener('touchstart', hidePlayButtonAndPlay);
+                
                 console.log('Video autoplay failed, showing play button');
             }
         };
         
         // Function to hide play button and play video
         const hidePlayButtonAndPlay = function() {
+            console.log('Play button clicked, attempting to play video');
             if (playButton) {
                 playButton.classList.remove('show');
+                playButton.style.pointerEvents = 'none';
             }
-            video.play().catch(function(error) {
-                console.log('Manual play failed:', error);
-            });
+            
+            // Remove video click handlers
+            video.style.cursor = 'default';
+            video.removeEventListener('click', hidePlayButtonAndPlay);
+            video.removeEventListener('touchstart', hidePlayButtonAndPlay);
+            
+            // For iOS, we need to ensure the video is ready and handle restrictions
+            if (isIOS) {
+                console.log('iOS detected, handling video play restrictions');
+                // Ensure video is muted for iOS
+                video.muted = true;
+                video.volume = 0;
+                
+                // Try to play with promise handling
+                video.play().then(function() {
+                    console.log('Video started playing successfully on iOS');
+                }).catch(function(error) {
+                    console.log('Video play failed on iOS:', error);
+                    // If still fails, try again after a short delay
+                    setTimeout(function() {
+                        video.play().catch(function(retryError) {
+                            console.log('Retry play failed:', retryError);
+                        });
+                    }, 100);
+                });
+            } else {
+                // For non-iOS devices
+                video.play().catch(function(error) {
+                    console.log('Manual play failed:', error);
+                });
+            }
         };
         
         // Multiple attempts to force autoplay
@@ -607,8 +643,25 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Play button click handler
         if (playButton) {
-            playButton.addEventListener('click', hidePlayButtonAndPlay);
-            playButton.addEventListener('touchstart', hidePlayButtonAndPlay);
+            // Use both click and touchstart for maximum compatibility
+            playButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                hidePlayButtonAndPlay();
+            });
+            
+            playButton.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                hidePlayButtonAndPlay();
+            });
+            
+            // Also add touchend as backup
+            playButton.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                hidePlayButtonAndPlay();
+            });
         }
         
         // Force play on any user interaction (as last resort)
