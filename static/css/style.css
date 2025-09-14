@@ -8019,42 +8019,27 @@ p.checkout-coupon input[type=text]::placeholder {
   pointer-events: auto !important;
 }
 
-/* Style native video controls for better visibility */
+/* Hide all native video controls */
 .video__bg::-webkit-media-controls {
-  background: rgba(0, 0, 0, 0.7) !important;
-  border-radius: 8px !important;
+  display: none !important;
 }
 
 .video__bg::-webkit-media-controls-panel {
-  background: rgba(0, 0, 0, 0.7) !important;
-  border-radius: 8px !important;
+  display: none !important;
 }
 
 .video__bg::-webkit-media-controls-play-button {
-  background: rgba(255, 255, 255, 0.9) !important;
-  border-radius: 50% !important;
-  width: 60px !important;
-  height: 60px !important;
-  margin: 10px !important;
+  display: none !important;
 }
 
 .video__bg::-webkit-media-controls-start-playback-button {
-  background: rgba(255, 255, 255, 0.9) !important;
-  border-radius: 50% !important;
-  width: 60px !important;
-  height: 60px !important;
-  margin: 10px !important;
+  display: none !important;
 }
 
 .video__bg::-webkit-media-controls-overlay-play-button {
-  background: rgba(255, 255, 255, 0.9) !important;
-  border-radius: 50% !important;
-  width: 80px !important;
-  height: 80px !important;
-  margin: 20px !important;
+  display: none !important;
 }
 
-/* Hide timeline and other controls to keep it simple */
 .video__bg::-webkit-media-controls-timeline {
   display: none !important;
 }
@@ -8076,6 +8061,15 @@ p.checkout-coupon input[type=text]::placeholder {
 }
 
 .video__bg::-webkit-media-controls-fullscreen-button {
+  display: none !important;
+}
+
+/* Hide controls for other browsers */
+.video__bg::-moz-media-controls {
+  display: none !important;
+}
+
+.video__bg::-ms-media-controls {
   display: none !important;
 }
 
