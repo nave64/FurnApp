@@ -586,11 +586,9 @@ window.addEventListener('load', function() {
             // Try to set a slightly smaller viewport scale (like natural pinch)
             let viewport = document.querySelector('meta[name="viewport"]');
             if (viewport) {
-                viewport.setAttribute('content', 'width=device-width, initial-scale=0.8, maximum-scale=1.0, user-scalable=yes');
+                viewport.setAttribute('content', 'width=device-width, initial-scale=0.8, maximum-scale=0.9, user-scalable=yes');
             }
         }
-        
-        console.log('Page zoomed out to 90% (natural pinch-out simulation)');
     }, 800); // Slightly longer delay to feel more natural
 });
 
