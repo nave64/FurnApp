@@ -7976,12 +7976,7 @@ p.checkout-coupon input[type=text]::placeholder {
 
 /* Video section pointer events handling */
 .video__hero {
-  pointer-events: none;
-}
-
-.video__hero.playable {
   pointer-events: auto;
-  cursor: pointer;
 }
 
 /* Ensure description text in video section is white */
@@ -8020,34 +8015,46 @@ p.checkout-coupon input[type=text]::placeholder {
   object-fit: cover !important;
   -webkit-object-fit: cover !important;
   z-index: 1 !important;
-  /* Hide native video controls */
-  pointer-events: none !important;
-  -webkit-touch-callout: none !important;
-  -webkit-user-select: none !important;
-  user-select: none !important;
+  /* Enable native video controls */
+  pointer-events: auto !important;
 }
 
-/* Hide native video controls completely */
+/* Style native video controls for better visibility */
 .video__bg::-webkit-media-controls {
-  display: none !important;
+  background: rgba(0, 0, 0, 0.7) !important;
+  border-radius: 8px !important;
 }
 
 .video__bg::-webkit-media-controls-panel {
-  display: none !important;
+  background: rgba(0, 0, 0, 0.7) !important;
+  border-radius: 8px !important;
 }
 
 .video__bg::-webkit-media-controls-play-button {
-  display: none !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-radius: 50% !important;
+  width: 60px !important;
+  height: 60px !important;
+  margin: 10px !important;
 }
 
 .video__bg::-webkit-media-controls-start-playback-button {
-  display: none !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-radius: 50% !important;
+  width: 60px !important;
+  height: 60px !important;
+  margin: 10px !important;
 }
 
 .video__bg::-webkit-media-controls-overlay-play-button {
-  display: none !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-radius: 50% !important;
+  width: 80px !important;
+  height: 80px !important;
+  margin: 20px !important;
 }
 
+/* Hide timeline and other controls to keep it simple */
 .video__bg::-webkit-media-controls-timeline {
   display: none !important;
 }
@@ -8951,86 +8958,4 @@ th.column-formatted_credit {
   }
 }
 
-/* Video Play Button Overlay for iOS */
-.video-play-overlay {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-  background: rgba(0, 0, 0, 0.8);
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.video-play-overlay.show {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-}
-
-.video-play-overlay:hover {
-  background: rgba(0, 0, 0, 0.8);
-  transform: translate(-50%, -50%) scale(1.1);
-}
-
-.video-play-overlay i {
-  color: #ffffff;
-  font-size: 32px;
-  margin-left: 4px; /* Adjust for play icon centering */
-}
-
-/* Mobile responsive play button */
-@media (max-width: 768px) {
-  .video-play-overlay {
-    width: 60px;
-    height: 60px;
-  }
-  
-  .video-play-overlay i {
-    font-size: 24px;
-    margin-left: 3px;
-  }
-}
-
-/* iOS specific video play button styles */
-@supports (-webkit-touch-callout: none) {
-  .video-play-overlay {
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    user-select: none;
-  }
-}
-
-/* iOS Safari viewport and scroll fixes */
-@supports (-webkit-touch-callout: none) {
-  body {
-    -webkit-overflow-scrolling: touch !important;
-    overscroll-behavior-y: auto !important;
-  }
-  
-  /* Prevent zoom-related scroll issues */
-  .product__hot-slider-wrapper {
-    -webkit-transform: translate3d(0, 0, 0) !important;
-    transform: translate3d(0, 0, 0) !important;
-    will-change: transform !important;
-  }
-  
-  /* Fix for iOS Safari refresh scroll issue */
-  .product__hot-slider {
-    -webkit-transform: translateZ(0) !important;
-    transform: translateZ(0) !important;
-    backface-visibility: hidden !important;
-    perspective: 1000px !important;
-  }
-}
+/* Native video controls styling */
