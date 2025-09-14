@@ -11,7 +11,7 @@
             <!-- slider area start -->
 {% if home_video %}
 <section class="video__hero position-relative">
-    <video class="video__bg" autoplay muted loop playsinline webkit-playsinline preload="auto" controls="false" id="hero-video">
+    <video class="video__bg" autoplay muted loop playsinline webkit-playsinline preload="auto" id="hero-video">
         <source src="{{ home_video.video_file.url }}" type="video/mp4">
         مرورگر شما از ویدیو پشتیبانی نمی‌کند.
     </video>
@@ -533,7 +533,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Make the entire video section clickable for iOS
                 const videoSection = video.closest('.video__hero');
                 if (videoSection) {
-                    videoSection.style.cursor = 'pointer';
+                    videoSection.classList.add('playable');
                     videoSection.addEventListener('click', function(e) {
                         e.preventDefault();
                         e.stopPropagation();
@@ -547,21 +547,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         hidePlayButtonAndPlay(e);
                     });
                 }
-                
-                // Also make the video element itself clickable as a fallback
-                video.style.cursor = 'pointer';
-                video.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log('Video element clicked');
-                    hidePlayButtonAndPlay(e);
-                });
-                video.addEventListener('touchstart', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log('Video element touched');
-                    hidePlayButtonAndPlay(e);
-                });
                 
                 console.log('Video autoplay failed, showing play button');
             }
@@ -581,10 +566,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Remove all click handlers
-            video.style.cursor = 'default';
             const videoSection = video.closest('.video__hero');
             if (videoSection) {
-                videoSection.style.cursor = 'default';
+                videoSection.classList.remove('playable');
                 // Clone and replace the section to remove all event listeners
                 const newSection = videoSection.cloneNode(true);
                 videoSection.parentNode.replaceChild(newSection, videoSection);
@@ -729,17 +713,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 hidePlayButtonAndPlay(e);
             });
             
-            // For iOS, add a special handler that creates a synthetic click on the video
+            // For iOS, add a special handler that directly triggers video play
             if (isIOS) {
                 playButton.addEventListener('click', function(e) {
                     console.log('iOS special handler triggered');
-                    // Create a synthetic click event on the video element
-                    const syntheticEvent = new MouseEvent('click', {
-                        bubbles: true,
-                        cancelable: true,
-                        view: window
-                    });
-                    video.dispatchEvent(syntheticEvent);
+                    // Directly call the play function since video has pointer-events: none
+                    hidePlayButtonAndPlay(e);
                 });
             }
         }

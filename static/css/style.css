@@ -7974,6 +7974,16 @@ p.checkout-coupon input[type=text]::placeholder {
   z-index: 2;
 }
 
+/* Video section pointer events handling */
+.video__hero {
+  pointer-events: none;
+}
+
+.video__hero.playable {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
 /* Ensure description text in video section is white */
 .video__content .lead {
   color: #ffffff !important;
@@ -8010,6 +8020,56 @@ p.checkout-coupon input[type=text]::placeholder {
   object-fit: cover !important;
   -webkit-object-fit: cover !important;
   z-index: 1 !important;
+  /* Hide native video controls */
+  pointer-events: none !important;
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+}
+
+/* Hide native video controls completely */
+.video__bg::-webkit-media-controls {
+  display: none !important;
+}
+
+.video__bg::-webkit-media-controls-panel {
+  display: none !important;
+}
+
+.video__bg::-webkit-media-controls-play-button {
+  display: none !important;
+}
+
+.video__bg::-webkit-media-controls-start-playback-button {
+  display: none !important;
+}
+
+.video__bg::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+}
+
+.video__bg::-webkit-media-controls-timeline {
+  display: none !important;
+}
+
+.video__bg::-webkit-media-controls-current-time-display {
+  display: none !important;
+}
+
+.video__bg::-webkit-media-controls-time-remaining-display {
+  display: none !important;
+}
+
+.video__bg::-webkit-media-controls-mute-button {
+  display: none !important;
+}
+
+.video__bg::-webkit-media-controls-volume-slider {
+  display: none !important;
+}
+
+.video__bg::-webkit-media-controls-fullscreen-button {
+  display: none !important;
 }
 
 /* Ensure video section works on mobile */
@@ -8949,5 +9009,28 @@ th.column-formatted_credit {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     user-select: none;
+  }
+}
+
+/* iOS Safari viewport and scroll fixes */
+@supports (-webkit-touch-callout: none) {
+  body {
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior-y: auto !important;
+  }
+  
+  /* Prevent zoom-related scroll issues */
+  .product__hot-slider-wrapper {
+    -webkit-transform: translate3d(0, 0, 0) !important;
+    transform: translate3d(0, 0, 0) !important;
+    will-change: transform !important;
+  }
+  
+  /* Fix for iOS Safari refresh scroll issue */
+  .product__hot-slider {
+    -webkit-transform: translateZ(0) !important;
+    transform: translateZ(0) !important;
+    backface-visibility: hidden !important;
+    perspective: 1000px !important;
   }
 }
