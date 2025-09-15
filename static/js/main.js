@@ -438,9 +438,43 @@ function debounce(fn, wait) {
   });
 });
 	$(document).ready(function () {
+  // Function to calculate dynamic gap based on screen width
+  function calculateFurnitureGap() {
+    const screenWidth = $(window).width();
+    let gap = 8; // Base gap (current minimum)
+    
+    if (screenWidth >= 1200) {
+      gap = 22; // Large screens
+    } else if (screenWidth >= 992) {
+      gap = 16; // Medium-large screens
+    } else if (screenWidth >= 768) {
+      gap = 12; // Medium screens
+    } else if (screenWidth >= 576) {
+      gap = 8; // Small-medium screens
+    }
+    // For screens < 576px, keep base gap of 8
+    
+    return gap;
+  }
+
+  // Function to get current breakpoint
+  function getCurrentBreakpoint() {
+    const screenWidth = $(window).width();
+    if (screenWidth >= 1200) return 'xl';
+    if (screenWidth >= 992) return 'lg';
+    if (screenWidth >= 768) return 'md';
+    if (screenWidth >= 576) return 'sm';
+    return 'xs';
+  }
+
+  // Track current breakpoint for each slider
+  const sliderBreakpoints = new Map();
+
   $('.furniture-slider').each(function () {
     const $slider = $(this);
     const totalItems = $slider.find('.furniture-product-card-wrapper').length;
+    const currentBreakpoint = getCurrentBreakpoint();
+    sliderBreakpoints.set($slider[0], currentBreakpoint);
 
     if (totalItems > 1) {
       // Pre-duplicate items to ensure a long stage so items don't "appear" late with autoWidth
@@ -448,8 +482,9 @@ function debounce(fn, wait) {
         const $baseItems = $slider.children('.furniture-product-card-wrapper').not('.fc-clone');
         if ($baseItems.length === 0) return;
         const containerWidth = $slider.width();
+        const currentGap = calculateFurnitureGap();
         // Approximate item+gap width (matches CSS/JS config)
-        const unitWidth = 192 + 8; // item width + margin
+        const unitWidth = 192 + currentGap; // item width + dynamic margin
         let totalApprox = $slider.children('.furniture-product-card-wrapper').length * unitWidth;
         let repeats = 0;
         // Ensure at least ~3x container width worth of items present
@@ -463,7 +498,7 @@ function debounce(fn, wait) {
       // Initialize carousel if more than one
       $slider.owlCarousel({
         loop: true, // seamless carousel feel
-        margin: 8, // fixed gap between items
+        margin: calculateFurnitureGap(), // dynamic gap between items
         rtl: true,
         nav: false,
         dots: false,
@@ -505,6 +540,56 @@ function debounce(fn, wait) {
       $slider.addClass('single-item-slider');
       $slider.closest('.subcategory-products').find('.furniture-slider-nav').hide();
     }
+  });
+
+  // Update gap only when breakpoint changes
+  $(window).on('resize', function() {
+    $('.furniture-slider.owl-carousel').each(function() {
+      const $slider = $(this);
+      const newBreakpoint = getCurrentBreakpoint();
+      const currentBreakpoint = sliderBreakpoints.get($slider[0]);
+      
+      // Only update if breakpoint actually changed
+      if (newBreakpoint !== currentBreakpoint) {
+        sliderBreakpoints.set($slider[0], newBreakpoint);
+        const newGap = calculateFurnitureGap();
+        
+        // Update the margin in the carousel
+        $slider.trigger('destroy.owl.carousel');
+        $slider.owlCarousel({
+          loop: true,
+          margin: newGap,
+          rtl: true,
+          nav: false,
+          dots: false,
+          autoWidth: true,
+          slideBy: 1,
+          smartSpeed: 250,
+          dragEndSpeed: 250,
+          responsiveRefreshRate: 150,
+          checkVisible: false,
+          lazyLoad: true,
+          lazyLoadEager: 1,
+          touchDrag: true,
+          mouseDrag: true,
+          pullDrag: true,
+          freeDrag: false,
+          touchClass: 'owl-touch',
+          grabClass: 'owl-grab',
+          slideTransition: 'ease-out',
+          animateOut: false,
+          animateIn: false,
+          onInitialized: debounce(function(e){ $(e.target).trigger('refresh.owl.carousel'); }, 100),
+          onResized: debounce(function(e){ $(e.target).trigger('refresh.owl.carousel'); }, 150),
+          onDrag: function() {
+            $('body').addClass('slider-dragging');
+          },
+          onDragged: function() {
+            $('body').removeClass('slider-dragging');
+          }
+        });
+      }
+    });
   });
 
   // Tab switching logic
