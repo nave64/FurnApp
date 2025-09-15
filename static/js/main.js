@@ -469,14 +469,36 @@ function debounce(fn, wait) {
         dots: false,
         autoWidth: true, // allow partial items; width from item elements
         slideBy: 1,
-        smartSpeed: 300,
-        dragEndSpeed: 300,
-        responsiveRefreshRate: 200,
+        smartSpeed: 250, // Faster animation for mobile
+        dragEndSpeed: 250, // Faster drag end for mobile
+        responsiveRefreshRate: 150, // More responsive on mobile
         checkVisible: false,
         lazyLoad: true, // Enable lazy loading for images
         lazyLoadEager: 1, // Load 1 item ahead of visible area
-        onInitialized: debounce(function(e){ $(e.target).trigger('refresh.owl.carousel'); }, 150),
-        onResized: debounce(function(e){ $(e.target).trigger('refresh.owl.carousel'); }, 200)
+        // Mobile-specific optimizations
+        touchDrag: true, // Enable touch dragging
+        mouseDrag: true, // Enable mouse dragging
+        pullDrag: true, // Allow pulling to drag
+        freeDrag: false, // Disable free drag for better control
+        // Touch performance optimizations
+        touchClass: 'owl-touch', // Custom touch class
+        grabClass: 'owl-grab', // Custom grab class
+        // Mobile-specific speed settings
+        slideTransition: 'ease-out', // Smoother transition
+        animateOut: false, // Disable animate out for performance
+        animateIn: false, // Disable animate in for performance
+        // Callbacks with mobile optimizations
+        onInitialized: debounce(function(e){ $(e.target).trigger('refresh.owl.carousel'); }, 100),
+        onResized: debounce(function(e){ $(e.target).trigger('refresh.owl.carousel'); }, 150),
+        // Mobile touch event optimizations
+        onDrag: function() {
+          // Disable text selection during drag for smoother experience
+          $('body').addClass('slider-dragging');
+        },
+        onDragged: function() {
+          // Re-enable text selection after drag
+          $('body').removeClass('slider-dragging');
+        }
       });
     } else {
       // For single product: add styling class & hide arrows
@@ -526,6 +548,50 @@ function debounce(fn, wait) {
 $(window).on('load', function () {
   $('.furniture-slider.owl-carousel').each(function () {
     debounce(function(){ $('.furniture-slider.owl-carousel').trigger('refresh.owl.carousel'); }, 150)();
+  });
+});
+
+// Mobile-specific furniture slider optimizations
+$(document).ready(function() {
+  // Detect mobile devices
+  const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  
+  if (isMobile) {
+    // Add mobile-specific classes for better touch handling
+    $('.furniture-slider').addClass('mobile-slider');
+    
+    // Optimize touch events for mobile
+    $('.furniture-slider').on('touchstart', function(e) {
+      // Prevent default touch behaviors that might interfere
+      e.preventDefault();
+    }, { passive: false });
+    
+    // Add momentum scrolling for iOS
+    $('.furniture-slider .owl-stage-outer').css({
+      '-webkit-overflow-scrolling': 'touch',
+      'overflow': 'hidden'
+    });
+    
+    // Optimize for mobile performance
+    $('.furniture-slider').each(function() {
+      const $slider = $(this);
+      
+      // Reduce animation complexity on mobile
+      $slider.find('.owl-item').css({
+        'transform': 'translate3d(0, 0, 0)',
+        'backface-visibility': 'hidden',
+        '-webkit-backface-visibility': 'hidden'
+      });
+    });
+  }
+  
+  // Add touch feedback for better UX
+  $('.furniture-product-card').on('touchstart', function() {
+    $(this).addClass('touch-active');
+  });
+  
+  $('.furniture-product-card').on('touchend touchcancel', function() {
+    $(this).removeClass('touch-active');
   });
 });
 

@@ -596,7 +596,7 @@ input {
   height: 50px;
   line-height: 46px;
   text-align: center;
-  padding: 0 40px;
+  padding: 0 30px;
 }
 .add-to-cart-btn:hover {
   background-color: #ffffff;
@@ -650,7 +650,7 @@ input {
   line-height: 36px;
   border: 1px solid #ff8429;
   border-radius: 2px;
-  padding: 0 15px;
+  padding: 0 10px;
   font-size: 14px;
   font-weight: 500;
   color: #ffffff;
