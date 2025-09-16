@@ -504,28 +504,43 @@ function debounce(fn, wait) {
         dots: false,
         autoWidth: true, // allow partial items; width from item elements
         slideBy: 1,
-        smartSpeed: 250, // Faster animation for mobile
-        dragEndSpeed: 250, // Faster drag end for mobile
-        responsiveRefreshRate: 150, // More responsive on mobile
+        smartSpeed: 200, // Faster animation
+        dragEndSpeed: 200, // Faster drag end
+        responsiveRefreshRate: 100, // More responsive
         checkVisible: false,
         lazyLoad: true, // Enable lazy loading for images
         lazyLoadEager: 1, // Load 1 item ahead of visible area
-        // Mobile-specific optimizations
+        // Performance optimizations
         touchDrag: true, // Enable touch dragging
         mouseDrag: true, // Enable mouse dragging
         pullDrag: true, // Allow pulling to drag
         freeDrag: false, // Disable free drag for better control
+        // Improve drag detection for fast clicks
+        threshold: 0, // No minimum distance to start drag
+        dragClass: 'owl-drag', // Custom drag class
+        // Better drag sensitivity
+        mouseDragThreshold: 1, // Very sensitive mouse drag
+        touchDragThreshold: 1, // Very sensitive touch drag
         // Touch performance optimizations
         touchClass: 'owl-touch', // Custom touch class
         grabClass: 'owl-grab', // Custom grab class
-        // Mobile-specific speed settings
+        // Performance settings
         slideTransition: 'ease-out', // Smoother transition
         animateOut: false, // Disable animate out for performance
         animateIn: false, // Disable animate in for performance
-        // Callbacks with mobile optimizations
-        onInitialized: debounce(function(e){ $(e.target).trigger('refresh.owl.carousel'); }, 100),
-        onResized: debounce(function(e){ $(e.target).trigger('refresh.owl.carousel'); }, 150),
-        // Mobile touch event optimizations
+        // Optimized callbacks
+        onInitialized: function(e){ 
+          // Add hardware acceleration to slider items
+          $(e.target).find('.owl-item').css({
+            'transform': 'translate3d(0, 0, 0)',
+            'backface-visibility': 'hidden',
+            'will-change': 'transform'
+          });
+        },
+        onResized: debounce(function(e){ 
+          $(e.target).trigger('refresh.owl.carousel'); 
+        }, 100),
+        // Touch event optimizations
         onDrag: function() {
           // Disable text selection during drag for smoother experience
           $('body').addClass('slider-dragging');
@@ -564,9 +579,9 @@ function debounce(fn, wait) {
           dots: false,
           autoWidth: true,
           slideBy: 1,
-          smartSpeed: 250,
-          dragEndSpeed: 250,
-          responsiveRefreshRate: 150,
+          smartSpeed: 200,
+          dragEndSpeed: 200,
+          responsiveRefreshRate: 100,
           checkVisible: false,
           lazyLoad: true,
           lazyLoadEager: 1,
@@ -574,13 +589,26 @@ function debounce(fn, wait) {
           mouseDrag: true,
           pullDrag: true,
           freeDrag: false,
+          // Improve drag detection for fast clicks
+          threshold: 0, // No minimum distance to start drag
+          dragClass: 'owl-drag', // Custom drag class
+          // Better drag sensitivity
+          mouseDragThreshold: 1, // Very sensitive mouse drag
+          touchDragThreshold: 1, // Very sensitive touch drag
           touchClass: 'owl-touch',
           grabClass: 'owl-grab',
           slideTransition: 'ease-out',
           animateOut: false,
           animateIn: false,
-          onInitialized: debounce(function(e){ $(e.target).trigger('refresh.owl.carousel'); }, 100),
-          onResized: debounce(function(e){ $(e.target).trigger('refresh.owl.carousel'); }, 150),
+          onInitialized: function(e){ 
+            // Add hardware acceleration to slider items
+            $(e.target).find('.owl-item').css({
+              'transform': 'translate3d(0, 0, 0)',
+              'backface-visibility': 'hidden',
+              'will-change': 'transform'
+            });
+          },
+          onResized: debounce(function(e){ $(e.target).trigger('refresh.owl.carousel'); }, 100),
           onDrag: function() {
             $('body').addClass('slider-dragging');
           },

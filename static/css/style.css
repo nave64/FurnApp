@@ -7906,19 +7906,22 @@ p.checkout-coupon input[type=text]::placeholder {
   border-radius: 10px;
   text-align: center;
   padding: 12px; /* Reduced padding for better fit */
-  margin-bottom: 30px;
-  transition: all 0.2s ease;
+  margin-bottom: 20px;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .furniture-product-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px) translateZ(0);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .furniture-product-image {
   width: 100%;
-  height: 160px; /* Reduced height for more compact cards */
+  height: 150px; /* Reduced height for more compact cards */
   object-fit: cover;
   border-radius: 10px;
 }
@@ -7927,27 +7930,44 @@ p.checkout-coupon input[type=text]::placeholder {
   font-weight: bold;
   font-size: 0.95rem;
   margin-top: 10px;
+  margin-bottom: auto; /* Push price to bottom */
   color: black !important;
+  /* Allow two lines with ellipsis */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+  min-height: 2.6em; /* Reserve space for 2 lines */
 }
 
 .furniture-product-price {
   color: #28a745;
-  margin: 10px 0;
+  margin: 0; /* Reset all margins */
   font-size: 1rem;
+  margin-top: auto; /* Push to bottom of card */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 2.5em; /* Reserve space for price area */
 }
 
 /* Furniture slider items with consistent height */
 .furniture-product-card-wrapper {
-  height: 304px; /* Fixed height for all furniture slider items */
+  height: 295px; /* Fixed height for all furniture slider items */
   display: flex;
   flex-direction: column;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .furniture-product-card {
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start; /* Changed from space-between */
 }
 
 /* Smaller off price labels in furniture slider */
@@ -7957,6 +7977,16 @@ p.checkout-coupon input[type=text]::placeholder {
   font-size: 14px !important; /* Smaller off price labels */
   color: #6c757d !important;
   text-decoration: line-through;
+  margin-bottom: 2px; /* Small gap between old and new price */
+}
+
+/* Current price styling */
+.furniture-product-price .current-price,
+.furniture-product-price .new-price,
+.furniture-product-price > span:not(.old-price):not(.price-old):not(.text-muted) {
+  /* font-weight: bold; */
+  font-size: 1rem;
+  color: #28a745;
 }
 
 .furniture-detail-btn {
@@ -7966,12 +7996,6 @@ p.checkout-coupon input[type=text]::placeholder {
 /* Make furniture product cards clickable */
 .furniture-product-card {
   cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.furniture-product-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* video_slider
@@ -8454,6 +8478,18 @@ p.checkout-coupon input[type=text]::placeholder {
   padding: 5px; /* Reduced padding for better fit */
   margin: 0 0; /* Let Owl margin control spacing */
   flex: 0 0 auto; /* Do not shrink or grow */
+}
+
+/* Prevent text selection during slider drag */
+.slider-dragging {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.slider-dragging * {
+  pointer-events: none;
 }
 
 /* Optional: spacing between products inside Owl */
