@@ -187,10 +187,10 @@
 												jQuery('.mean-expand').on("click",function(e){
 														e.preventDefault();
 															if (jQuery(this).hasClass("mean-clicked")) {
-																jQuery(this).prev('ul').slideUp(300, function(){});
+																jQuery(this).prev('ul').slideUp(100, function(){});
 																jQuery(this).parent().removeClass('dropdown-opened');
 														} else {
-																jQuery(this).prev('ul').slideDown(300, function(){});
+																jQuery(this).prev('ul').slideDown(100, function(){});
 																jQuery(this).parent().addClass('dropdown-opened');
 														}
 														jQuery(this).toggleClass("mean-clicked");
@@ -211,10 +211,10 @@
 												$navreveal.css("text-align", "center");
 												$navreveal.css("text-indent", "0");
 												$navreveal.css("font-size", meanMenuCloseSize);
-												jQuery('.mean-nav ul:first').slideDown();
+												jQuery('.mean-nav ul:first').slideDown(100);
 												menuOn = true;
 										} else {
-											jQuery('.mean-nav ul:first').slideUp();
+											jQuery('.mean-nav ul:first').slideUp(150);
 											menuOn = false;
 										}
 											$navreveal.toggleClass("meanclose");
@@ -225,7 +225,7 @@
 									// for one page websites, reset all variables...
 									if ( onePage ) {
 										jQuery('.mean-nav ul > li > a:first-child').on( "click" , function () {
-											jQuery('.mean-nav ul:first').slideUp();
+											jQuery('.mean-nav ul:first').slideUp(100);
 											menuOn = false;
 											jQuery($navreveal).toggleClass("meanclose").html(meanMenuOpen);
 										});

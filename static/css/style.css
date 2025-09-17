@@ -2885,6 +2885,8 @@ input {
 }
 .product__tag-4 span a {
   color: #ff8429;
+  margin-bottom: 8px;
+  line-height: 1.3;
 }
 .product__flash {
   position: absolute;
@@ -3043,6 +3045,48 @@ input {
   font-family: 'Samim', 'BYekan', 'Lalezar', 'Iraniansans', sans-serif !important;
 }
 
+/* Responsive font sizing for product prices on small screens */
+@media (max-width: 576px) {
+  .product__price .price,
+  .product__price-2 .price,
+  .product__price-3 .price,
+  .product__price-4 .price {
+    font-size: 14px !important;
+  }
+  
+  /* Target the del tag for old prices */
+  .product__price del,
+  .product__price-2 del,
+  .product__price-3 del,
+  .product__price-4 del {
+    font-size: 12px !important;
+  }
+  
+  .product__price .price.old-price,
+  .product__price-2 .price.old-price,
+  .product__price-3 .old-price {
+    font-size: 12px !important;
+  }
+  
+  .product__price .price.new-price,
+  .product__price-2 .price.new-price {
+    font-size: 15px !important;
+  }
+  
+  /* Responsive image sizing for mobile */
+  #main-product-image {
+    height: 150px;
+  }
+  
+  .product__thumb-3 {
+    height: 150px;
+  }
+  
+  .furniture-product-image {
+    height: 120px;
+  }
+}
+
 .product__sale-slider .owl-nav {
   position: absolute;
   top: -60px;
@@ -3075,7 +3119,7 @@ input {
   -moz-border-radius: 3px;
   border-radius: 3px;
 }
-@media (max-width: 575px) {
+@media (max-width: 576px) {
   .product__sale-wrapper {
     padding-left: 15px;
     padding-right: 15px;
@@ -7926,6 +7970,28 @@ p.checkout-coupon input[type=text]::placeholder {
   border-radius: 10px;
 }
 
+/* Consistent product image sizing for all product displays */
+#main-product-image {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+/* Ensure product thumb containers have consistent height */
+.product__thumb-3 {
+  height: 170px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.product__thumb-3 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .furniture-product-name {
   font-weight: bold;
   font-size: 0.95rem;
@@ -8376,13 +8442,18 @@ p.checkout-coupon input[type=text]::placeholder {
 .hot-slider-nav button {
   background-color: rgba(255, 255, 255, 0.7);
   border: 2px solid rgba(204, 204, 204, 0.7);
-  padding: 10px 14px;
+  padding: 6px 8px; /* Reduced from 10px 14px */
   border-radius: 50%;
-  font-size: 24px;
+  font-size: 16px; /* Reduced from 24px */
   font-weight: bold;
   color: #333;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+  width: 40px; /* Fixed width */
+  height: 40px; /* Fixed height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .hot-slider-nav button:hover {
@@ -8419,12 +8490,12 @@ p.checkout-coupon input[type=text]::placeholder {
 }
 
 .hot-slider-prev {
-  right: 5px;
+  right: 2px;
   top: 50%;
 }
 
 .hot-slider-next {
-  left: 5px;
+  left: 2px;
   top: 50%;
 }
 
@@ -8440,36 +8511,121 @@ p.checkout-coupon input[type=text]::placeholder {
 }
 
 .furniture-slider-prev {
-  right: -25px;
+  right: -17px;
 }
 
 .furniture-slider-next {
-  left: -25px;
+  left: -17px;
 }
 
 .furniture-arrow-btn {
-  background-color: #fff;
-  border: 2px solid #ccc;
-  padding: 10px 14px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: 2px solid rgba(204, 204, 204, 0.7);
+  padding: 6px 8px; /* Reduced from 10px 14px */
   border-radius: 50%;
-  font-size: 24px;
+  font-size: 16px; /* Reduced from 24px */
   font-weight: bold;
   color: #333;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
+  width: 34px; /* Fixed width */
+  height: 34px; /* Fixed height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .furniture-arrow-btn:hover {
-  background-color: #f5f5f5;
-  border-color: #999;
+  background-color: #ffffff;
+  border-color: #ccc;
   color: #000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Style for a single product that’s not inside Owl */
+/* Style for a single product that's not inside Owl */
 .single-item-slider {
   display: flex;
   justify-content: center;
   padding: 0 15px;
+}
+
+/* Product list responsive adjustments */
+@media (max-width: 767px) {
+  .col-sm-6 .product__item {
+    margin-bottom: 20px;
+  }
+  
+  .col-sm-6 .product__thumb {
+    margin-bottom: 15px;
+  }
+  
+  .col-sm-6 .product__conten {
+    padding: 0 10px;
+  }
+  
+  .col-sm-6 .product__title {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  
+  .col-sm-6 .product__price {
+    font-size: 14px;
+  }
+
+  .col-sm-6 .product__tag {
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }  
+  
+  .col-sm-6 .select-btn {
+    font-size: 12px;
+    padding: 1px 12px;
+  }
+}
+
+/* Force 2 columns on very small screens (576px and less) */
+@media (max-width: 576px) {
+  .col-sm-6 {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+  }
+  
+  .col-sm-6 .product__item {
+    margin-bottom: 15px;
+  }
+  
+  .col-sm-6 .product__thumb {
+    margin-bottom: 10px;
+  }
+  
+  .col-sm-6 .product__conten {
+    padding: 0 5px;
+  }
+  
+  .col-sm-6 .product__title {
+    font-size: 13px;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  
+  .col-sm-6 .product__price {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+  
+  .col-sm-6 .select-btn {
+    font-size: 11px;
+    padding: 1px 8px;
+  }
+  
+  .col-sm-6 .product__tag {
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  
+  .col-sm-6 .product__tag span {
+    font-size: 11px;
+  }
 }
 
 /* Match card layout and width in both modes */
@@ -8514,23 +8670,28 @@ p.checkout-coupon input[type=text]::placeholder {
 }
 
 .trending-slider-prev {
-  right: -25px;
+  right: 2px;
 }
 
 .trending-slider-next {
-  left: -25px;
+  left: 2px;
 }
 
 .trending-arrow-btn {
   background-color: #fff;
   border: 2px solid #ccc;
-  padding: 10px 14px;
+  padding: 6px 8px; /* Reduced from 10px 14px */
   border-radius: 50%;
-  font-size: 24px;
+  font-size: 16px; /* Reduced from 24px */
   font-weight: bold;
   color: #333;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
+  width: 34px; /* Fixed width */
+  height: 34px; /* Fixed height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .trending-arrow-btn:hover {

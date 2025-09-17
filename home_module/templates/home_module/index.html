@@ -256,11 +256,11 @@
           {% endfor %}
         </div>
 
-        <div class="hot-slider-nav furniture-slider-prev" data-target="#furniture-slider-{{ main_cat.id }}-all">
-          <button class="nav-button-circle" aria-label="Next"><i class="far fa-chevron-right"></i></button>
+        <div class="furniture-slider-nav furniture-slider-prev" data-target="#furniture-slider-{{ main_cat.id }}-all">
+          <button class="furniture-arrow-btn" aria-label="Previous"><i class="far fa-angle-right"></i></button>
         </div>
-        <div class="hot-slider-nav furniture-slider-next" data-target="#furniture-slider-{{ main_cat.id }}-all">
-          <button class="nav-button-circle" aria-label="Prev"><i class="far fa-chevron-left"></i></button>
+        <div class="furniture-slider-nav furniture-slider-next" data-target="#furniture-slider-{{ main_cat.id }}-all">
+          <button class="furniture-arrow-btn" aria-label="Next"><i class="far fa-angle-left"></i></button>
         </div>
       </div>
 
@@ -313,11 +313,11 @@
           {% endfor %}
         </div>
 
-        <div class="hot-slider-nav furniture-slider-prev" data-target="#furniture-slider-{{ main_cat.id }}-{{ forloop.counter }}">
-          <button class="nav-button-circle" aria-label="Next"><i class="far fa-chevron-right"></i></button>
+        <div class="furniture-slider-nav furniture-slider-prev" data-target="#furniture-slider-{{ main_cat.id }}-{{ forloop.counter }}">
+          <button class="furniture-arrow-btn" aria-label="Previous"><i class="far fa-angle-right"></i></button>
         </div>
-        <div class="hot-slider-nav furniture-slider-next" data-target="#furniture-slider-{{ main_cat.id }}-{{ forloop.counter }}">
-          <button class="nav-button-circle" aria-label="Prev"><i class="far fa-chevron-left"></i></button>
+        <div class="furniture-slider-nav furniture-slider-next" data-target="#furniture-slider-{{ main_cat.id }}-{{ forloop.counter }}">
+          <button class="furniture-arrow-btn" aria-label="Next"><i class="far fa-angle-left"></i></button>
         </div>
       </div>
       {% endfor %}
