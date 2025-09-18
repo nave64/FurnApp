@@ -2882,6 +2882,7 @@ input {
   color: #db3340;
   text-transform: uppercase;
   display: inline-block;
+  text-align: center;
 }
 .product__tag-4 span a {
   color: #ff8429;
@@ -2969,9 +2970,11 @@ input {
   font-weight: 500;
   color: #222;
   margin-bottom: 0;
+  text-align: center;
 }
 .product__title-3 a:hover {
   color: #db3340;
+  text-align: center;
 }
 .product__price .price {
   font-size: 16px;
@@ -3045,6 +3048,23 @@ input {
   font-family: 'Samim', 'BYekan', 'Lalezar', 'Iraniansans', sans-serif !important;
 }
 
+/* Reduce gap between old and new prices in hot deal items */
+.product__hot-slider .product__price-4 del {
+  margin-bottom: 1px !important; /* Minimal gap between old and new price in hot deals */
+}
+
+/* Reduce height of old price in hot deals */
+.product__hot-slider .product__price-4 .text-muted {
+  line-height: 1.2 !important; /* Reduce line height of old price */
+  margin-bottom: 0 !important; /* Remove bottom margin */
+  margin-top: 10px !important; /* Remove top margin */
+}
+
+/* Reduce font size of old price in trending slider */
+.trending-slider .text-muted {
+  font-size: 13px !important; /* Smaller old price in trending slider */
+}
+
 /* Responsive font sizing for product prices on small screens */
 @media (max-width: 576px) {
   .product__price .price,
@@ -3052,6 +3072,7 @@ input {
   .product__price-3 .price,
   .product__price-4 .price {
     font-size: 14px !important;
+    text-align: center;
   }
   
   /* Target the del tag for old prices */
@@ -3082,8 +3103,9 @@ input {
     height: 150px;
   }
   
+  /* mobile size */
   .furniture-product-image {
-    height: 120px;
+    height: 150px !important;
   }
 }
 
@@ -7965,7 +7987,7 @@ p.checkout-coupon input[type=text]::placeholder {
 
 .furniture-product-image {
   width: 100%;
-  height: 150px; /* Reduced height for more compact cards */
+  height: 150px !important; /* Reduced image height for better proportions */
   object-fit: cover;
   border-radius: 10px;
 }
@@ -8015,13 +8037,14 @@ p.checkout-coupon input[type=text]::placeholder {
   margin-top: auto; /* Push to bottom of card */
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  min-height: 2.5em; /* Reserve space for price area */
+  justify-content: center;
+  height: 50px; /* Fixed height for consistent spacing */
+  min-height: 50px; /* Ensure consistent height */
 }
 
 /* Furniture slider items with consistent height */
 .furniture-product-card-wrapper {
-  height: 295px; /* Fixed height for all furniture slider items */
+  height: 285px; /* Fixed height for all furniture slider items */
   display: flex;
   flex-direction: column;
   will-change: transform;
@@ -8040,19 +8063,21 @@ p.checkout-coupon input[type=text]::placeholder {
 .furniture-product-price .text-muted,
 .furniture-product-price .old-price,
 .furniture-product-price .price-old {
-  font-size: 14px !important; /* Smaller off price labels */
+  font-size: 12px !important; /* Smaller off price labels */
   color: #6c757d !important;
   text-decoration: line-through;
-  margin-bottom: 2px; /* Small gap between old and new price */
+  margin-bottom: 2px; /* Remove margin to fit in fixed height */
+  line-height: 1.2;
 }
 
 /* Current price styling */
 .furniture-product-price .current-price,
 .furniture-product-price .new-price,
 .furniture-product-price > span:not(.old-price):not(.price-old):not(.text-muted) {
-  /* font-weight: bold; */
-  font-size: 1rem;
+  font-size: 14px !important;
   color: #28a745;
+  line-height: 1.2;
+  margin-top: 2px;
 }
 
 .furniture-detail-btn {

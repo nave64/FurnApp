@@ -345,7 +345,7 @@
                 <h6 class="mb-1">{{ trend.title }}</h6>
                 {% if trend.is_discount_active and trend.discount_price %}
                   <del class="d-block text-muted titr-font">{{ trend.price|three_digits_currency }}</del>
-                  <span class="text-danger d-block titr-font">{{ trend.discount_price|three_digits_currency }}</span>
+                  <span class="text-danger d-block titr-font font-size-10">{{ trend.discount_price|three_digits_currency }}</span>
                 {% else %}
                   <span class="d-block titr-font">{{ trend.price|three_digits_currency }}</span>
                 {% endif %}
